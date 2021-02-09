@@ -1,4 +1,4 @@
 package org.progmatic.webshop;
 
-public class WebshopApplication {
+public class WebShopApplication {
 }
