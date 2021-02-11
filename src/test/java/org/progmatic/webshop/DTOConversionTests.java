@@ -30,15 +30,15 @@ public class DTOConversionTests {
     public void givenUserConvertToUserDTO_thenCorrect() {
         User user = new User();
         user.setId(3);
-       // user.setUsername("test");
-        user.setFirstName("test");
-        user.setLastName("test");
+        user.setFirstName("testFName");
+        user.setLastName("testLName");
         user.setEmail("test@test.hu");
         user.setUserRole("ROLE_USER");
         UserDto dto = mapper.map(user, UserDto.class);
 
         Assertions.assertEquals(dto.getId(), 3);
-        Assertions.assertEquals(dto.getUsername(), "test");
+        Assertions.assertEquals(dto.getFirstName(), "testFName");
+        Assertions.assertEquals(dto.getLastName(), "testLName");
         Assertions.assertEquals(dto.getUserRole(), "ROLE_USER");
         Assertions.assertEquals(dto.getEmail(), "test@test.hu");
     }
@@ -47,15 +47,13 @@ public class DTOConversionTests {
     public void givenUserDTOConvertToUser_thenCorrect() {
         UserDto dto = new UserDto();
         dto.setId(3);
-        dto.setUsername("test");
         dto.setEmail("test@test.hu");
         dto.setUserRole("ROLE_USER");
         User user = mapper.map(dto, User.class);
 
         Assertions.assertEquals(user.getId(), 3);
-        Assertions.assertEquals(user.getUsername(), "test");
-        Assertions.assertEquals(user.getUserRole(), "ROLE_USER");
         Assertions.assertEquals(user.getUsername(), "test@test.hu");
+        Assertions.assertEquals(user.getUserRole(), "ROLE_USER");
     }
 
     @Test

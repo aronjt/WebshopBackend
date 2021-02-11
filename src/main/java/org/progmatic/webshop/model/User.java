@@ -49,6 +49,10 @@ public class User extends BaseEntity implements UserDetails {
     public User() {
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     public void setEmail(String email) {
         this.email = email;
     }
