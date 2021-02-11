@@ -1,6 +1,8 @@
 package org.progmatic.webshop.autodata;
 
+import org.progmatic.webshop.helpers.ClothDataHelper;
 import org.progmatic.webshop.helpers.UserDataHelper;
+import org.progmatic.webshop.model.Type;
 import org.progmatic.webshop.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,17 +21,20 @@ public class DataLoader implements ApplicationRunner {
     private PasswordEncoder encoder;
 
     private UserData userData;
+    private TypeData typeData;
 
     @Autowired
-    public DataLoader(PasswordEncoder encoder, UserData userData) {
+    public DataLoader(PasswordEncoder encoder, UserData userData, TypeData typeData) {
         this.encoder = encoder;
         this.userData = userData;
+        this.typeData = typeData;
     }
 
     @Override
     @Transactional
     public void run(ApplicationArguments args) throws Exception {
         createAdmin();
+        createTypes();
     }
 
     public void createAdmin() {
@@ -46,6 +51,30 @@ public class DataLoader implements ApplicationRunner {
             userData.save(admin);
 
             LOG.debug("admin created");
+        }
+    }
+
+    public void createTypes() {
+        long typeNum = typeData.count();
+
+        if (typeNum == 0) {
+            Type shirt = new Type();
+            shirt.setType(ClothDataHelper.TYPE_TSHIRT);
+            typeData.save(shirt);
+
+            LOG.info("{} type created", shirt.getType());
+
+            Type pullover = new Type();
+            pullover.setType(ClothDataHelper.TYPE_PULLOVER);
+            typeData.save(pullover);
+
+            LOG.info("{} type created", pullover.getType());
+
+            Type pants = new Type();
+            pants.setType(ClothDataHelper.TYPE_PANTS);
+            typeData.save(pants);
+
+            LOG.info("{} type created", pants.getType());
         }
     }
 
