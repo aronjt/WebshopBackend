@@ -3,6 +3,7 @@ package org.progmatic.webshop.model;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.util.List;
 
 @Entity
@@ -14,8 +15,8 @@ public class OnlineOrder extends BaseEntity{
     @ManyToOne
     private User user;
 
-    @ManyToMany
-    private List<Clothes> clothes;
+    @OneToMany
+    private List<PurchasedClothes> purchasedClothesList;
 
     public OnlineOrder() {
     }
