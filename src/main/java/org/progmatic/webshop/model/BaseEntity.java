@@ -1,5 +1,8 @@
 package org.progmatic.webshop.model;
 
+import org.progmatic.webshop.helpers.DateFormatHelper;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
@@ -13,6 +16,7 @@ public class BaseEntity {
     @GeneratedValue
     private long id;
 
+    @DateTimeFormat(pattern = DateFormatHelper.DATE_TIME_FORMAT)
     private LocalDateTime creationTime;
 
     @PrePersist
