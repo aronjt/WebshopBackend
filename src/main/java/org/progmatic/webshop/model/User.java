@@ -15,19 +15,15 @@ import java.util.Set;
 @Entity
 public class User extends BaseEntity implements UserDetails {
 
+    @Email
     @NotBlank
     @NotNull
     @Column(unique = true)
-    private String username;
+    private String email;
 
     @NotBlank
     @NotNull
     private String password;
-
-    @Email
-    @NotBlank
-    @NotNull
-    private String email;
 
     @NotBlank
     @NotNull
@@ -45,20 +41,8 @@ public class User extends BaseEntity implements UserDetails {
     public User() {
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getAddress() {
@@ -101,10 +85,9 @@ public class User extends BaseEntity implements UserDetails {
         this.orders = orders;
     }
 
-    //TODO implement override methods to not return nulls
     @Override
     public String getPassword() {
-        return null;
+        return password;
     }
 
     @Override
@@ -114,26 +97,26 @@ public class User extends BaseEntity implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return email;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }
