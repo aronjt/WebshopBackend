@@ -30,7 +30,9 @@ public class DTOConversionTests {
     public void givenUserConvertToUserDTO_thenCorrect() {
         User user = new User();
         user.setId(3);
-        user.setUsername("test");
+       // user.setUsername("test");
+        user.setFirstName("test");
+        user.setLastName("test");
         user.setEmail("test@test.hu");
         user.setUserRole("ROLE_USER");
         UserDto dto = mapper.map(user, UserDto.class);
@@ -53,7 +55,7 @@ public class DTOConversionTests {
         Assertions.assertEquals(user.getId(), 3);
         Assertions.assertEquals(user.getUsername(), "test");
         Assertions.assertEquals(user.getUserRole(), "ROLE_USER");
-        Assertions.assertEquals(user.getEmail(), "test@test.hu");
+        Assertions.assertEquals(user.getUsername(), "test@test.hu");
     }
 
     @Test

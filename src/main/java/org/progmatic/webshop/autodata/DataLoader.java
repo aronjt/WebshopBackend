@@ -45,7 +45,9 @@ public class DataLoader implements ApplicationRunner {
          */
         if (usersNum == 0) {
             User admin = new User();
-            admin.setUsername("admin");
+          //  admin.setUsername("admin");
+            admin.setFirstName("Admin");
+            admin.setLastName("Admin");
             admin.setPassword("MRirdatlan007");
             admin.setEmail("webshopmnager@gmail.com");
             admin.setAddress("1234 Bp., Pf. 666.");
