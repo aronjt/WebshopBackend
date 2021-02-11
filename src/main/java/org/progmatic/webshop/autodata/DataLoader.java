@@ -2,10 +2,7 @@ package org.progmatic.webshop.autodata;
 
 import org.progmatic.webshop.helpers.ClothDataHelper;
 import org.progmatic.webshop.helpers.UserDataHelper;
-import org.progmatic.webshop.model.Clothes;
-import org.progmatic.webshop.model.Gender;
-import org.progmatic.webshop.model.Type;
-import org.progmatic.webshop.model.User;
+import org.progmatic.webshop.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +13,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class DataLoader implements ApplicationRunner {
@@ -29,15 +25,17 @@ public class DataLoader implements ApplicationRunner {
     private TypeData typeData;
     private GenderData genderData;
     private ClothesData clothesData;
+    private StockData stockData;
 
     @Autowired
     public DataLoader(PasswordEncoder encoder, UserData userData, TypeData typeData, GenderData genderData,
-                      ClothesData clothesData) {
+                      ClothesData clothesData, StockData stockData) {
         this.encoder = encoder;
         this.userData = userData;
         this.typeData = typeData;
         this.genderData = genderData;
         this.clothesData = clothesData;
+        this.stockData = stockData;
     }
 
     @Override
@@ -47,6 +45,7 @@ public class DataLoader implements ApplicationRunner {
         createTypes();
         createGenders();
         createClothes();
+        putSomeClothesIntoTheStock();
     }
 
     public void createAdmin() {
@@ -129,24 +128,26 @@ public class DataLoader implements ApplicationRunner {
         long clothNum = clothesData.count();
 
         if (clothNum == 0) {
-            createShirts();
+            Type shirt = typeData.findByType(ClothDataHelper.TYPE_TSHIRT);
+            Type pullover = typeData.findByType(ClothDataHelper.TYPE_PULLOVER);
+            Type pants = typeData.findByType(ClothDataHelper.TYPE_PANTS);
+
+            Gender male = genderData.findByGender(ClothDataHelper.GENDER_MALE);
+            Gender female = genderData.findByGender(ClothDataHelper.GENDER_FEMALE);
+            Gender unisex = genderData.findByGender(ClothDataHelper.GENDER_UNISEX);
+            Gender child = genderData.findByGender(ClothDataHelper.GENDER_CHILD);
+
+            createShirts(shirt, male, female, unisex);
+            createPullovers(pullover, male, female, child);
+            createPants(pants, male, female, unisex);
         }
     }
 
-    private void createShirts() {
-        Type type = typeData.findByType(ClothDataHelper.TYPE_TSHIRT);
-        Gender male = genderData.findByGender(ClothDataHelper.GENDER_MALE);
-        Gender female = genderData.findByGender(ClothDataHelper.GENDER_FEMALE);
-        Gender unisex = genderData.findByGender(ClothDataHelper.GENDER_UNISEX);
-
-        float price1 = 19.99f;
-        float price2 = 14.99f;
-        float price3 = 24.99f;
-
+    private void createShirts(Type type, Gender male, Gender female, Gender unisex) {
         Clothes shirt1 = new Clothes();
         shirt1.setName("Lansketon T-Shirt");
         shirt1.setDetails("The best shirt for fans!");
-        shirt1.setPrice(price1);
+        shirt1.setPrice(19.99f);
         shirt1.setColor(ClothDataHelper.COLOR_BLACK);
         shirt1.setType(type);
         shirt1.setGender(male);
@@ -158,7 +159,7 @@ public class DataLoader implements ApplicationRunner {
         Clothes shirt2 = new Clothes();
         shirt2.setName("Hello Kitty");
         shirt2.setDetails("Cutest t-shirt of the world!");
-        shirt2.setPrice(price2);
+        shirt2.setPrice(14.99f);
         shirt2.setColor(ClothDataHelper.COLOR_PINK);
         shirt2.setType(type);
         shirt2.setGender(female);
@@ -170,7 +171,7 @@ public class DataLoader implements ApplicationRunner {
         Clothes shirt3 = new Clothes();
         shirt3.setName("Progmatic");
         shirt3.setDetails("Best Academy of The World");
-        shirt3.setPrice(price3);
+        shirt3.setPrice(24.99f);
         shirt3.setColor(ClothDataHelper.COLOR_WHITE);
         shirt3.setType(type);
         shirt3.setGender(unisex);
@@ -178,7 +179,102 @@ public class DataLoader implements ApplicationRunner {
 
         LOG.info("added new {} to the database with name and price: {}, {}",
                 type.getType(), shirt3.getName(), shirt3.getPrice());
+    }
 
+    private void createPullovers(Type type, Gender male, Gender female, Gender child) {
+        Clothes pullover1 = new Clothes();
+        pullover1.setName("Jackie");
+        pullover1.setDetails("Very comfy.");
+        pullover1.setPrice(29.99f);
+        pullover1.setColor(ClothDataHelper.COLOR_BLUE);
+        pullover1.setType(type);
+        pullover1.setGender(male);
+        clothesData.save(pullover1);
+
+        LOG.info("added new {} to the database with name and price: {}, {}",
+                type.getType(), pullover1.getName(), pullover1.getPrice());
+
+        Clothes pullover2 = new Clothes();
+        pullover2.setName("Baby Doll");
+        pullover2.setDetails("Nice and soft.");
+        pullover2.setPrice(34.99f);
+        pullover2.setColor(ClothDataHelper.COLOR_PINK);
+        pullover2.setType(type);
+        pullover2.setGender(female);
+        clothesData.save(pullover2);
+
+        LOG.info("added new {} to the database with name and price: {}, {}",
+                type.getType(), pullover2.getName(), pullover2.getPrice());
+
+        Clothes pullover3 = new Clothes();
+        pullover3.setName("Mommy Little Baby");
+        pullover3.setDetails("For every darling.");
+        pullover3.setPrice(24.99f);
+        pullover3.setColor(ClothDataHelper.COLOR_WHITE);
+        pullover3.setType(type);
+        pullover3.setGender(child);
+        clothesData.save(pullover3);
+
+        LOG.info("added new {} to the database with name and price: {}, {}",
+                type.getType(), pullover3.getName(), pullover3.getPrice());
+    }
+
+    private void createPants(Type type, Gender male, Gender female, Gender unisex) {
+        Clothes pants1 = new Clothes();
+        pants1.setName("Jack's Pants");
+        pants1.setDetails("You cannot wear anything better.");
+        pants1.setPrice(39.99f);
+        pants1.setColor(ClothDataHelper.COLOR_BLACK);
+        pants1.setType(type);
+        pants1.setGender(male);
+        clothesData.save(pants1);
+
+        LOG.info("added new {} to the database with name and price: {}, {}",
+                type.getType(), pants1.getName(), pants1.getPrice());
+
+        Clothes pants2 = new Clothes();
+        pants2.setName("Meow");
+        pants2.setDetails("For ladies only!");
+        pants2.setPrice(39.99f);
+        pants2.setColor(ClothDataHelper.COLOR_PINK);
+        pants2.setType(type);
+        pants2.setGender(female);
+        clothesData.save(pants2);
+
+        LOG.info("added new {} to the database with name and price: {}, {}",
+                type.getType(), pants2.getName(), pants2.getPrice());
+
+        Clothes pants3 = new Clothes();
+        pants3.setName("Winter Wearer");
+        pants3.setDetails("Cold days will be no longer cold, if you wear these pants!");
+        pants3.setPrice(34.99f);
+        pants3.setColor(ClothDataHelper.COLOR_GRAY);
+        pants3.setType(type);
+        pants3.setGender(unisex);
+        clothesData.save(pants3);
+
+        LOG.info("added new {} to the database with name and price: {}, {}",
+                type.getType(), pants3.getName(), pants3.getPrice());
+    }
+
+    public void putSomeClothesIntoTheStock() {
+        long stockNum = stockData.count();
+
+        if (stockNum == 0) {
+            String[] sizes = {ClothDataHelper.SIZE_S, ClothDataHelper.SIZE_M, ClothDataHelper.SIZE_L, ClothDataHelper.SIZE_XL};
+            List<Clothes> clothes = clothesData.findAll();
+
+            for (Clothes c : clothes) {
+                Stock stock = new Stock();
+                stock.setSize(sizes[(int)(Math.random() * sizes.length)]);
+                stock.setQuantity((int)(Math.random() * 5));
+                stock.setClothes(c);
+                stockData.save(stock);
+
+                LOG.info("added clothes to the stock (in database), clothId {}, size {}, quantity {}",
+                        c.getId(), stock.getSize(), stock.getQuantity());
+            }
+        }
     }
 
 }
