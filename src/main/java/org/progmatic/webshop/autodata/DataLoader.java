@@ -40,10 +40,13 @@ public class DataLoader implements ApplicationRunner {
     public void createAdmin() {
         long usersNum = userData.count();
 
+        /* TODO
+            password should be encoded
+         */
         if (usersNum == 0) {
             User admin = new User();
             admin.setUsername("admin");
-            admin.setPassword(encoder.encode("MRirdatlan007"));
+            admin.setPassword("MRirdatlan007");
             admin.setEmail("webshopmnager@gmail.com");
             admin.setAddress("1234 Bp., Pf. 666.");
             admin.setPhoneNumber("06 1 234 5678");
