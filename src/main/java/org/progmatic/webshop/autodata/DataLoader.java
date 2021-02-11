@@ -53,7 +53,7 @@ public class DataLoader implements ApplicationRunner {
             admin.setUserRole(UserDataHelper.ROLE_ADMIN);
             userData.save(admin);
 
-            LOG.debug("admin created");
+            LOG.info("admin created");
         }
     }
 
@@ -65,19 +65,19 @@ public class DataLoader implements ApplicationRunner {
             shirt.setType(ClothDataHelper.TYPE_TSHIRT);
             typeData.save(shirt);
 
-            LOG.debug("{} type created", shirt.getType());
+            LOG.info("{} type created", shirt.getType());
 
             Type pullover = new Type();
             pullover.setType(ClothDataHelper.TYPE_PULLOVER);
             typeData.save(pullover);
 
-            LOG.debug("{} type created", pullover.getType());
+            LOG.info("{} type created", pullover.getType());
 
             Type pants = new Type();
             pants.setType(ClothDataHelper.TYPE_PANTS);
             typeData.save(pants);
 
-            LOG.debug("{} type created", pants.getType());
+            LOG.info("{} type created", pants.getType());
         }
     }
 
