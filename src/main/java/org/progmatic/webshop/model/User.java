@@ -101,19 +101,20 @@ public class User extends BaseEntity implements UserDetails {
         this.orders = orders;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
-
+    //TODO implement override methods to not return nulls
     @Override
     public String getPassword() {
         return null;
     }
 
     @Override
-    public String getUsername() {
+    public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
     }
 
     @Override
