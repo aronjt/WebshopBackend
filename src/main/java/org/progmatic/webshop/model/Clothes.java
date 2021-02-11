@@ -102,4 +102,6 @@ public class Clothes extends BaseEntity{
     public void setPurchasedClothesList(List<PurchasedClothes> purchasedClothesList) {
         this.purchasedClothesList = purchasedClothesList;
     }
+
+
 }
