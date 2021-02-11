@@ -17,7 +17,7 @@ public class Clothes extends BaseEntity{
     private String details;
 
     @NotNull
-    @NotBlank
+    //@NotBlank
     private float price;
 
     @NotNull

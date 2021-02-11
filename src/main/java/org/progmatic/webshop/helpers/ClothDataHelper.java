@@ -16,4 +16,10 @@ public class ClothDataHelper {
     public static final String SIZE_L = "L";
     public static final String SIZE_XL = "XL";
 
+    public static final String COLOR_BLACK = "black";
+    public static final String COLOR_WHITE = "white";
+    public static final String COLOR_GRAY = "gray";
+    public static final String COLOR_PINK = "pink";
+    public static final String COLOR_BLUE = "blue";
+
 }
