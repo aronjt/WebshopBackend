@@ -5,36 +5,35 @@ import org.dozer.DozerBeanMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.progmatic.webshop.controllers.ClothesController;
 import org.progmatic.webshop.dto.ClothDto;
+import org.progmatic.webshop.dto.OrderDto;
 import org.progmatic.webshop.dto.UserDto;
-import org.progmatic.webshop.helpers.ClothDataHelper;
-import org.progmatic.webshop.model.Clothes;
-import org.progmatic.webshop.model.Gender;
-import org.progmatic.webshop.model.Type;
-import org.progmatic.webshop.model.User;
+import org.progmatic.webshop.model.*;
 
 
 public class DTOConversionTests {
 
     DozerBeanMapper mapper;
+    private User testUser;
+
 
     @BeforeEach
     public void before() throws Exception {
         mapper = new DozerBeanMapper();
+        testUser = new org.progmatic.webshop.model.User();
+        testUser.setId(3);
+        testUser.setFirstName("testFName");
+        testUser.setLastName("testLName");
+        testUser.setEmail("test@test.hu");
+        testUser.setUserRole("ROLE_USER");
+
     }
 
 
     @Test
     public void givenUserConvertToUserDTO_thenCorrect() {
-        User user = new User();
-        user.setId(3);
-        user.setFirstName("testFName");
-        user.setLastName("testLName");
-        user.setEmail("test@test.hu");
-        user.setUserRole("ROLE_USER");
-        UserDto dto = mapper.map(user, UserDto.class);
+
+        UserDto dto = mapper.map(testUser, UserDto.class);
 
         Assertions.assertEquals(dto.getId(), 3);
         Assertions.assertEquals(dto.getFirstName(), "testFName");
@@ -93,6 +92,37 @@ public class DTOConversionTests {
                 "It is a subtle, complex and yet an extremely easy to use template for anyone, who wants to create own website in ANY area of expertise.");
         Assertions.assertEquals(cloth.getPrice(), 180.00f);
         Assertions.assertEquals(cloth.getColor(), "red");
+    }
+
+    @Test
+    public void givenOrderObject_whenConvertToOrderDTO_thenCorrect() {
+        OnlineOrder order = new OnlineOrder();
+        order.setId(3);
+        order.setTotalPrice(10000);
+        order.setUser(testUser);
+        order.setFinish(false);
+        OrderDto dto = mapper.map(order, OrderDto.class);
+
+        Assertions.assertEquals(dto.getId(), 3);
+        Assertions.assertEquals(dto.isFinish(), false);
+        Assertions.assertEquals(dto.getTotalPrice(), 10000);
+        Assertions.assertEquals(dto.getUser(), testUser);
+    }
+
+
+    @Test
+    public void givenOrderDTOObject_whenConvertToOrder_thenCorrect() {
+       OrderDto dto = new OrderDto();
+        dto.setId(3);
+        dto.setTotalPrice(10000);
+        dto.setUser(testUser);
+        dto.setFinish(false);
+        OnlineOrder order = mapper.map(dto, OnlineOrder.class);
+
+        Assertions.assertEquals(order.getId(), 3);
+        Assertions.assertEquals(order.isFinish(), false);
+        Assertions.assertEquals(order.getTotalPrice(), 10000);
+        Assertions.assertEquals(order.getUser(), testUser);
     }
 
 

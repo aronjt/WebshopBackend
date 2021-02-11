@@ -1,25 +1,26 @@
-package org.progmatic.webshop.model;
+package org.progmatic.webshop.dto;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import org.progmatic.webshop.model.PurchasedClothes;
+import org.progmatic.webshop.model.User;
+
 import java.util.List;
 
-@Entity
-public class OnlineOrder extends BaseEntity {
+public class OrderDto {
 
+    private int id;
     //TODO if price is float than totalPrice should be float as well. Is it a hungarian webshop or not?
-    //TODO same in OrderDTO
     private int totalPrice;
     private boolean isFinish;
-
-    @ManyToOne
     private User user;
-
-    @OneToMany
     private List<PurchasedClothes> purchasedClothesList;
 
-    public OnlineOrder() {
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getTotalPrice() {
