@@ -62,19 +62,19 @@ public class DataLoader implements ApplicationRunner {
             shirt.setType(ClothDataHelper.TYPE_TSHIRT);
             typeData.save(shirt);
 
-            LOG.info("{} type created", shirt.getType());
+            LOG.debug("{} type created", shirt.getType());
 
             Type pullover = new Type();
             pullover.setType(ClothDataHelper.TYPE_PULLOVER);
             typeData.save(pullover);
 
-            LOG.info("{} type created", pullover.getType());
+            LOG.debug("{} type created", pullover.getType());
 
             Type pants = new Type();
             pants.setType(ClothDataHelper.TYPE_PANTS);
             typeData.save(pants);
 
-            LOG.info("{} type created", pants.getType());
+            LOG.debug("{} type created", pants.getType());
         }
     }
 
