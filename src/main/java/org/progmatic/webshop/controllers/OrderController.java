@@ -2,6 +2,8 @@ package org.progmatic.webshop.controllers;
 
 import org.progmatic.webshop.dto.OrderDto;
 import org.progmatic.webshop.model.OnlineOrder;
+import org.progmatic.webshop.services.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,6 +11,13 @@ import java.util.List;
 
 @RestController
 public class OrderController {
+
+    private final OrderService service;
+
+    @Autowired
+    public OrderController(OrderService service) {
+        this.service = service;
+    }
 
     /* endpoints
         /order
