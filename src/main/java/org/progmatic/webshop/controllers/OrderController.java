@@ -3,5 +3,5 @@ package org.progmatic.webshop.controllers;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class CartController {
+public class OrderController {
 }

@@ -37,7 +37,6 @@ public class User extends BaseEntity implements UserDetails {
     @NotBlank
     @NotNull
     private String address;
-
     @NotBlank
     @NotNull
     private String phoneNumber;
