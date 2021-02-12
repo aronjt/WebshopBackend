@@ -16,9 +16,6 @@ public class Email {
     @GeneratedValue
     private Long emailId;
 
-    public Email(String messageType) {
-        this.messageType = messageType;
-    }
 
     public Email() {
 

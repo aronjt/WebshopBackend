@@ -1,9 +1,13 @@
 package org.progmatic.webshop.emails;
 
+import org.progmatic.webshop.autodata.EmailData;
 import org.progmatic.webshop.model.User;
+import org.progmatic.webshop.services.MyUserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.mail.*;
 import javax.mail.internet.*;
+import javax.transaction.Transactional;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -11,14 +15,22 @@ import java.util.Properties;
 import java.util.Scanner;
 
 public class SendEmail {
-    public SendEmail(User toUser, Email email) {
+    @Autowired
+    private EmailData emailData;
 
-//        final String password = getPasswordFromFirstUser;
-        String fromPassword = null;
-//        String fromEmail = getEmailAdressFromFirstUser;
-        String fromEmail = null;
-//        String toEmail = user.getEmailAdress();
-        String toEmail = null;
+    @Autowired
+    private MyUserDetailsService myUserDetailsService;
+
+    public SendEmail() {
+    }
+
+    @Transactional
+    public void sendEmail(User toUser, String messageType) {
+        Email email = emailData.findByMessageType(messageType);
+        String fromEmail = "webshopmnager@gmail.com";
+        final User fromUser = (User) myUserDetailsService.loadUserByUsername(fromEmail);
+        String fromPassword = fromUser.getPassword();
+        String toEmail = toUser.getUsername();
 
         Properties props = new Properties();
         props.setProperty("mail.transport.protocol", "smtp");
@@ -58,13 +70,13 @@ public class SendEmail {
             MimeBodyPart textBodyPart = new MimeBodyPart();
             User user = null;
             textBodyPart.setText("Hello " +
-//                    user.getUsername +
+                    user.getFirstName() +
                     ",\n" +
                     messageText +
                     "\n For more info visit our website.");
 
             MimeBodyPart imageAttachment = new MimeBodyPart();
-            if (!(email.getAttachedFile().equals(null))) {
+            if (email.getAttachedFile() != null) {
                 imageAttachment.attachFile(email.getAttachedFile());
             }
             emailcontect.addBodyPart(textBodyPart);
