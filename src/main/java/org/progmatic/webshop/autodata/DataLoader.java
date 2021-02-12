@@ -64,7 +64,10 @@ public class DataLoader implements ApplicationRunner {
             admin.setLastName("Admin");
             admin.setPassword("MRirdatlan007");
             admin.setEmail("webshopmnager@gmail.com");
-            admin.setAddress("1234 Bp., Pf. 666.");
+            admin.setCountry("Hungary");
+            admin.setZipcode(1234);
+            admin.setCity("Budapest");
+            admin.setAddress("Pf. 666.");
             admin.setPhoneNumber("06 1 234 5678");
             admin.setUserRole(UserDataHelper.ROLE_ADMIN);
             userData.save(admin);

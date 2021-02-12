@@ -36,7 +36,19 @@ public class User extends BaseEntity implements UserDetails {
 
     @NotBlank
     @NotNull
+    private String country;
+
+    @NotNull
+    private int zipcode;
+
+    @NotBlank
+    @NotNull
+    private String city;
+
+    @NotBlank
+    @NotNull
     private String address;
+
     @NotBlank
     @NotNull
     private String phoneNumber;
@@ -115,6 +127,30 @@ public class User extends BaseEntity implements UserDetails {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public int getZipcode() {
+        return zipcode;
+    }
+
+    public void setZipcode(int zipcode) {
+        this.zipcode = zipcode;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     @Override
