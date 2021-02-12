@@ -6,6 +6,7 @@ import org.progmatic.webshop.model.OnlineOrder;
 import org.progmatic.webshop.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -34,6 +35,15 @@ public class OrderService {
         order.setPurchasedClothesList(new ArrayList<>());
 
         return dozer.map(order, OrderDto.class);
+    }
+
+    @Transactional
+    public OrderDto getOneOrder(long id) {
+        OnlineOrder order = em.find(OnlineOrder.class, id);
+        if (order != null) {
+            return dozer.map(order, OrderDto.class);
+        }
+        return new OrderDto();
     }
 
 }

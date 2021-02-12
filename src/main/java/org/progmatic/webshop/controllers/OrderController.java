@@ -40,10 +40,15 @@ public class OrderController {
         return null;
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    /**
+     * BEWARE!!! FAILED TEST!!!
+     * @param id id
+     * @return OrderDto
+     */
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/orders/{id}")
     public OrderDto getOneOrder(@PathVariable("id") long id) {
-        return null;
+        return service.getOneOrder(id);
     }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")

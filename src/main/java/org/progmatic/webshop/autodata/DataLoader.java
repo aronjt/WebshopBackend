@@ -13,6 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -28,10 +30,13 @@ public class DataLoader implements ApplicationRunner {
     private ClothesData clothesData;
     private StockData stockData;
     private EmailData emailData;
+    private OnlineOrderData onlineOrderData;
+    private PurchasedClothData pcData;
 
     @Autowired
     public DataLoader(PasswordEncoder encoder, UserData userData, TypeData typeData, GenderData genderData,
-                      ClothesData clothesData, StockData stockData, EmailData emailData) {
+                      ClothesData clothesData, StockData stockData, EmailData emailData, OnlineOrderData onlineOrderData,
+                      PurchasedClothData pcData) {
         this.encoder = encoder;
         this.userData = userData;
         this.typeData = typeData;
@@ -39,41 +44,69 @@ public class DataLoader implements ApplicationRunner {
         this.clothesData = clothesData;
         this.stockData = stockData;
         this.emailData = emailData;
+        this.onlineOrderData = onlineOrderData;
+        this.pcData = pcData;
     }
 
     @Override
     @Transactional
     public void run(ApplicationArguments args) throws Exception {
-        createAdmin();
+        createUsers();
         createTypes();
         createGenders();
         createClothes();
         putSomeClothesIntoTheStock();
         createEmail();
+        createOrder();
     }
 
-    public void createAdmin() {
+    public void createUsers() {
         long usersNum = userData.count();
 
         /* TODO
             password should be encoded
          */
         if (usersNum == 0) {
-            User admin = new User();
-            admin.setFirstName("Admin");
-            admin.setLastName("Admin");
-            admin.setPassword("MRirdatlan007");
-            admin.setEmail("webshopmnager@gmail.com");
-            admin.setCountry("Hungary");
-            admin.setZipcode(1234);
-            admin.setCity("Budapest");
-            admin.setAddress("Pf. 666.");
-            admin.setPhoneNumber("06 1 234 5678");
-            admin.setUserRole(UserDataHelper.ROLE_ADMIN);
+            User admin = createAdmin();
             userData.save(admin);
 
-            LOG.info("admin created with email {}, and added to database", admin.getUsername());
+            LOG.info("admin added to database with email {}", admin.getUsername());
+
+            User user = createUser();
+            userData.save(user);
+
+            LOG.info("user added to database with email {}", user.getUsername());
         }
+    }
+
+    private User createAdmin() {
+        User admin = new User();
+        admin.setFirstName("Admin");
+        admin.setLastName("Admin");
+        admin.setPassword("MRirdatlan007");
+        admin.setEmail("webshopmnager@gmail.com");
+        admin.setCountry("Hungary");
+        admin.setZipcode(1234);
+        admin.setCity("Budapest");
+        admin.setAddress("Pf. 666.");
+        admin.setPhoneNumber("06 1 234 5678");
+        admin.setUserRole(UserDataHelper.ROLE_ADMIN);
+        return admin;
+    }
+
+    private User createUser() {
+        User user = new User();
+        user.setFirstName("Elek");
+        user.setLastName("Érték");
+        user.setPassword(encoder.encode("jelszó"));
+        user.setEmail("ertekelek@ertek.el");
+        user.setCountry("Óperencia");
+        user.setZipcode(9999);
+        user.setCity("Túlnan");
+        user.setAddress("Felis út 42.");
+        user.setPhoneNumber("1111111");
+        user.setUserRole(UserDataHelper.ROLE_USER);
+        return user;
     }
 
     public void createTypes() {
@@ -297,6 +330,50 @@ public class DataLoader implements ApplicationRunner {
             LOG.info("added new email with type {}, subject {}, text {}",
                     email.getMessageType(), email.getSubject(), email.getMessageText());
         }
+    }
+
+    public void createOrder() {
+        long orderNum = onlineOrderData.count();
+
+        if (orderNum == 0) {
+            User user = userData.findByEmail("ertekelek@ertek.el");
+
+            OnlineOrder order = new OnlineOrder();
+            order.setUser(user);
+            order.setFinish(false);
+            order.setTotalPrice(0f);
+            onlineOrderData.save(order);
+            List<PurchasedClothes> toBuy = putClothesToCart(order);
+
+            LOG.info("online order added to database to user {}, purchased clothes' names are: {}, {}",
+                    user.getUsername(), toBuy.get(0).getClothes().getName(), toBuy.get(1).getClothes().getName());
+        }
+    }
+
+    private List<PurchasedClothes> putClothesToCart(OnlineOrder order) {
+        Clothes cloth1 = clothesData.findByName("Lansketon T-Shirt");
+        Clothes cloth2 = clothesData.findByName("Jack's Pants");
+
+        List<PurchasedClothes> toBuy = new ArrayList<>();
+
+        PurchasedClothes buy1 = new PurchasedClothes();
+        buy1.setClothes(cloth1);
+        buy1.setQuantity(1);
+        buy1.setSize(ClothDataHelper.SIZE_M);
+        buy1.setOnlineOrder(order);
+
+        PurchasedClothes buy2 = new PurchasedClothes();
+        buy2.setClothes(cloth2);
+        buy2.setQuantity(2);
+        buy2.setSize(ClothDataHelper.SIZE_XL);
+        buy2.setOnlineOrder(order);
+
+        toBuy.add(buy1);
+        toBuy.add(buy2);
+        pcData.save(buy1);
+        pcData.save(buy2);
+
+        return toBuy;
     }
 
 }
