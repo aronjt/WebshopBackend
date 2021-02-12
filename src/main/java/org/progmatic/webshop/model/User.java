@@ -58,6 +58,8 @@ public class User extends BaseEntity implements UserDetails {
     @OneToMany(mappedBy = "user")
     private Set<OnlineOrder> orders;
 
+    private boolean enabled;
+
     public User() {
     }
 
@@ -153,6 +155,10 @@ public class User extends BaseEntity implements UserDetails {
         this.city = city;
     }
 
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public String getPassword() {
         return password;
@@ -185,7 +191,7 @@ public class User extends BaseEntity implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 
     @Override
