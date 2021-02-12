@@ -1,4 +1,4 @@
 package org.progmatic.webshop.services;
 
-public class CartService {
+public class OrderService {
 }
