@@ -8,9 +8,7 @@ import java.util.List;
 @Entity
 public class OnlineOrder extends BaseEntity {
 
-    //TODO if price is float than totalPrice should be float as well. Is it a hungarian webshop or not?
-    //TODO same in OrderDTO
-    private int totalPrice;
+    private float totalPrice;
     private boolean isFinish;
 
     @ManyToOne
@@ -22,11 +20,11 @@ public class OnlineOrder extends BaseEntity {
     public OnlineOrder() {
     }
 
-    public int getTotalPrice() {
+    public float getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(int totalPrice) {
+    public void setTotalPrice(float totalPrice) {
         this.totalPrice = totalPrice;
     }
 

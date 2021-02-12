@@ -8,8 +8,7 @@ import java.util.List;
 public class OrderDto {
 
     private int id;
-    //TODO if price is float than totalPrice should be float as well. Is it a hungarian webshop or not?
-    private int totalPrice;
+    private float totalPrice;
     private boolean isFinish;
     private User user;
     private List<PurchasedClothes> purchasedClothesList;
@@ -23,11 +22,11 @@ public class OrderDto {
         this.id = id;
     }
 
-    public int getTotalPrice() {
+    public float getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(int totalPrice) {
+    public void setTotalPrice(float totalPrice) {
         this.totalPrice = totalPrice;
     }
 
