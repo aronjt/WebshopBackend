@@ -1,5 +1,6 @@
 package org.progmatic.webshop.autodata;
 
+import org.progmatic.webshop.emails.Email;
 import org.progmatic.webshop.helpers.ClothDataHelper;
 import org.progmatic.webshop.helpers.UserDataHelper;
 import org.progmatic.webshop.model.*;
@@ -26,16 +27,18 @@ public class DataLoader implements ApplicationRunner {
     private GenderData genderData;
     private ClothesData clothesData;
     private StockData stockData;
+    private EmailData emailData;
 
     @Autowired
     public DataLoader(PasswordEncoder encoder, UserData userData, TypeData typeData, GenderData genderData,
-                      ClothesData clothesData, StockData stockData) {
+                      ClothesData clothesData, StockData stockData, EmailData emailData) {
         this.encoder = encoder;
         this.userData = userData;
         this.typeData = typeData;
         this.genderData = genderData;
         this.clothesData = clothesData;
         this.stockData = stockData;
+        this.emailData = emailData;
     }
 
     @Override
@@ -46,6 +49,7 @@ public class DataLoader implements ApplicationRunner {
         createGenders();
         createClothes();
         putSomeClothesIntoTheStock();
+        createEmail();
     }
 
     public void createAdmin() {
@@ -274,6 +278,21 @@ public class DataLoader implements ApplicationRunner {
                 LOG.info("added clothes to the stock (in database), clothId {}, size {}, quantity {}",
                         c.getId(), stock.getSize(), stock.getQuantity());
             }
+        }
+    }
+
+    public void createEmail() {
+        long emailNum = emailData.count();
+
+        if (emailNum == 0) {
+            Email email = new Email();
+            email.setMessageType("registration");
+            email.setSubject("Registration success");
+            email.setMessageText("Thank you for your registration! Have a nice day!");
+            emailData.save(email);
+
+            LOG.info("added new email with type {}, subject {}, text {}",
+                    email.getMessageType(), email.getSubject(), email.getMessageText());
         }
     }
 
