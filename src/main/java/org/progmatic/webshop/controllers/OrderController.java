@@ -41,11 +41,6 @@ public class OrderController {
         return null;
     }
 
-    /**
-     * BEWARE!!! FAILED TEST!!!
-     * @param id id
-     * @return OrderDto
-     */
     //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/orders/{id}")
     public OrderDto getOneOrder(@PathVariable("id") long id) {
@@ -61,11 +56,6 @@ public class OrderController {
     @PostMapping("/orders")
     public OrderDto sendOrder(@RequestBody OnlineOrder order) {
         return null;
-    }
-
-    @GetMapping("/users/{id}")
-    public UserDto getOneUser(@PathVariable("id") long id) {
-        return service.getOneUser(id);
     }
 
 }

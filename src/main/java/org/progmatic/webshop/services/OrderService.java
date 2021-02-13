@@ -24,44 +24,16 @@ public class OrderService {
     @PersistenceContext
     EntityManager em;
 
-    DozerBeanMapper dozer;
-
-    @Autowired
-    public OrderService(DozerBeanMapper dozer) {
-        this.dozer = dozer;
-    }
-
-    public OrderDto onlyForTesting() {
-        OnlineOrder order = new OnlineOrder();
-        order.setTotalPrice(10.99f);
-        order.setFinish(true);
-        order.setUser(new User());
-        order.setId(1);
-        order.setPurchasedClothesList(new ArrayList<>());
-
-        return dozer.map(order, OrderDto.class);
-    }
-
     @Transactional
     public OrderDto getOneOrder(long id) {
         OnlineOrder order = em.find(OnlineOrder.class, id);
         if (order != null) {
+            LOG.debug("order with id {} found, for user {} with {} purchased cloth(es)",
+                    id, order.getUser().getEmail(), order.getPurchasedClothesList().size());
             return new OrderDto(order);
         }
         return new OrderDto();
     }
 
-    @Transactional
-    public UserDto getOneUser(long id) {
-        User user = em.find(User.class, id);
-
-        if (user != null) {
-            LOG.info("user found: {}, {}",
-                    user.getUsername(), user.getCreationTime());
-            return new UserDto(user);
-        }
-
-        return new UserDto();
-    }
 
 }
