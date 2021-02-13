@@ -35,10 +35,10 @@ public class OrderController {
             edit one order (admin)
      */
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/orders")
     public List<OrderDto> getAllOrders() {
-        return null;
+        return service.getAllOrders();
     }
 
     //@PreAuthorize("hasAuthority('ROLE_ADMIN')")

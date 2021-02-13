@@ -15,6 +15,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class OrderService {
@@ -33,6 +34,23 @@ public class OrderService {
             return new OrderDto(order);
         }
         return new OrderDto();
+    }
+
+    @Transactional
+    public List<OrderDto> getAllOrders() {
+        List<OnlineOrder> orders = em.createQuery(
+                "SELECT o FROM OnlineOrder o", OnlineOrder.class
+        ).getResultList();
+
+        List<OrderDto> orderDtos = new ArrayList<>();
+        for (OnlineOrder o : orders) {
+            orderDtos.add(new OrderDto(o));
+        }
+
+        LOG.info("all orders founded: {} orders in list",
+                orders.size());
+
+        return orderDtos;
     }
 
 
