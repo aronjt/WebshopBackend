@@ -47,10 +47,13 @@ public class OrderController {
         return service.getOneOrder(id);
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PutMapping("/orders/{id}")
-    public OrderDto changeOrder(@PathVariable("id") long id) {
-        return null;
+    public OrderDto changeOrder(
+            @PathVariable("id") long id,
+            @RequestBody OnlineOrder newOrder
+    ) {
+        return service.changeOrder(id, newOrder);
     }
 
     @PostMapping("/orders")

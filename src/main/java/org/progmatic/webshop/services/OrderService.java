@@ -4,6 +4,7 @@ import org.dozer.DozerBeanMapper;
 import org.progmatic.webshop.dto.OrderDto;
 import org.progmatic.webshop.dto.UserDto;
 import org.progmatic.webshop.model.OnlineOrder;
+import org.progmatic.webshop.model.PurchasedClothes;
 import org.progmatic.webshop.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,6 +52,30 @@ public class OrderService {
                 orders.size());
 
         return orderDtos;
+    }
+
+    /* TODO
+        how to do dis? only change field "isFinish" from false to true?
+     */
+    @Transactional
+    public OrderDto changeOrder(long id, OnlineOrder newOrder) {
+        OnlineOrder oldOlder = em.find(OnlineOrder.class, id);
+        LOG.info("old older with id {} was: {}, {}, {}",
+                id, oldOlder.getPurchasedClothesList().size(), oldOlder.getTotalPrice(), oldOlder.isFinish());
+        oldOlder.setPurchasedClothesList(newOrder.getPurchasedClothesList());
+        oldOlder.setTotalPrice(sumTotalPrice(oldOlder.getPurchasedClothesList()));
+        oldOlder.setFinish(newOrder.isFinish());
+        LOG.info("new older with id {} is now: {}, {}, {}",
+                id, oldOlder.getPurchasedClothesList().size(), oldOlder.getTotalPrice(), oldOlder.isFinish());
+        return new OrderDto(oldOlder);
+    }
+
+    private float sumTotalPrice(List<PurchasedClothes> clothes) {
+        float sum = 0;
+        for (PurchasedClothes c : clothes) {
+            sum += c.getClothes().getPrice();
+        }
+        return sum;
     }
 
 
