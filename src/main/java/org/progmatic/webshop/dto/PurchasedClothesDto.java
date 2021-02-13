@@ -1,26 +1,25 @@
 package org.progmatic.webshop.dto;
 
-import org.progmatic.webshop.model.Clothes;
-import org.progmatic.webshop.model.Gender;
-import org.progmatic.webshop.model.Image;
-import org.progmatic.webshop.model.Type;
+import org.progmatic.webshop.model.PurchasedClothes;
 
-public class ClothDto {
+public class PurchasedClothesDto {
 
     private long id;
     private String name;
     private String details;
     private float price;
     private String color;
+    private int quantity;
+    private String size;
 
-
-
-    public ClothDto(Clothes clothes) {
+    public PurchasedClothesDto(PurchasedClothes clothes) {
         id = clothes.getId();
-        name = clothes.getName();
-        details = clothes.getDetails();
-        price = clothes.getPrice();
-        color = clothes.getColor();
+        name = clothes.getClothes().getName();
+        details = clothes.getClothes().getDetails();
+        price = clothes.getClothes().getPrice();
+        color = clothes.getClothes().getColor();
+        quantity = clothes.getQuantity();
+        size = clothes.getSize();
     }
 
     public long getId() {
@@ -63,5 +62,19 @@ public class ClothDto {
         this.color = color;
     }
 
+    public String getSize() {
+        return size;
+    }
 
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 }

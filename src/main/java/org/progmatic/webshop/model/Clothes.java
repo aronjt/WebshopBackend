@@ -1,5 +1,7 @@
 package org.progmatic.webshop.model;
 
+import org.progmatic.webshop.dto.ClothDto;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -32,6 +34,13 @@ public class Clothes extends BaseEntity{
     private Image image;
 
     public Clothes() {
+    }
+
+    public Clothes(ClothDto c) {
+        name = c.getName();
+        details = c.getDetails();
+        price = c.getPrice();
+        color = c.getColor();
     }
 
     public String getName() {
