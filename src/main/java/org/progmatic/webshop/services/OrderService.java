@@ -2,9 +2,7 @@ package org.progmatic.webshop.services;
 
 import org.progmatic.webshop.dto.OrderDto;
 import org.progmatic.webshop.dto.PurchasedClothDto;
-import org.progmatic.webshop.model.OnlineOrder;
-import org.progmatic.webshop.model.PurchasedClothes;
-import org.progmatic.webshop.model.User;
+import org.progmatic.webshop.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -13,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
@@ -76,8 +75,8 @@ public class OrderService {
             OnlineOrder order = createNewOrder(user);
 
             addPurchasedClothesToDBAndToOrder(clothes, order);
-
             order.setTotalPrice(sumTotalPrice(order.getPurchasedClothesList()));
+            changeQuantitiesInStock(order.getPurchasedClothesList());
 
             LOG.info("new order created, list size {}, username {}, total price {}",
                     order.getPurchasedClothesList().size(), order.getUser().getUsername(), order.getCreationTime());
@@ -93,7 +92,7 @@ public class OrderService {
     private float sumTotalPrice(List<PurchasedClothes> clothes) {
         float sum = 0;
         for (PurchasedClothes c : clothes) {
-            sum += c.getClothes().getPrice();
+            sum += (c.getQuantity() * c.getClothes().getPrice());
         }
         return sum;
     }
@@ -124,6 +123,21 @@ public class OrderService {
             newC.setOnlineOrder(order);
             order.getPurchasedClothesList().add(newC);
             em.persist(newC);
+        }
+    }
+
+    @Transactional
+    public void changeQuantitiesInStock(List<PurchasedClothes> clothes) {
+        for (PurchasedClothes c : clothes) {
+            try {
+                Stock stock = em.createQuery("SELECT s FROM Stock s WHERE s.clothes = :cloth", Stock.class)
+                        .setParameter("cloth", c)
+                        .getSingleResult();
+                stock.setQuantity(stock.getQuantity() - c.getQuantity());
+            } catch (NoResultException e) {
+                LOG.warn("cloth with id {} not found in stock",
+                        c.getId());
+            }
         }
     }
 
