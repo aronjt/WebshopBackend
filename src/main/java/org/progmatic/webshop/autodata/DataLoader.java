@@ -70,12 +70,14 @@ public class DataLoader implements ApplicationRunner {
             User admin = createAdmin();
             userData.save(admin);
 
-            LOG.info("admin added to database with email {}", admin.getUsername());
+            LOG.info("admin added to database with email {} (creation time: {})",
+                    admin.getUsername(), admin.getCreationTime());
 
             User user = createUser();
             userData.save(user);
 
-            LOG.info("user added to database with email {}", user.getUsername());
+            LOG.info("user added to database with email {} (creation time: {})",
+                    user.getUsername(), user.getCreationTime());
         }
     }
 
@@ -341,9 +343,16 @@ public class DataLoader implements ApplicationRunner {
             OnlineOrder order = new OnlineOrder();
             order.setUser(user);
             order.setFinish(false);
-            order.setTotalPrice(0f);
-            onlineOrderData.save(order);
             List<PurchasedClothes> toBuy = putClothesToCart(order);
+
+            float sum = 0;
+            for (PurchasedClothes c : toBuy) {
+                sum += c.getClothes().getPrice();
+            }
+            order.setTotalPrice(sum);
+
+            order.setPurchasedClothesList(toBuy);
+            onlineOrderData.save(order);
 
             LOG.info("online order added to database to user {}, purchased clothes' names are: {}, {}",
                     user.getUsername(), toBuy.get(0).getClothes().getName(), toBuy.get(1).getClothes().getName());

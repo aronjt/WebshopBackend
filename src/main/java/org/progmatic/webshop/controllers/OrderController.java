@@ -1,6 +1,7 @@
 package org.progmatic.webshop.controllers;
 
 import org.progmatic.webshop.dto.OrderDto;
+import org.progmatic.webshop.dto.UserDto;
 import org.progmatic.webshop.model.OnlineOrder;
 import org.progmatic.webshop.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,11 @@ public class OrderController {
     @PostMapping("/orders")
     public OrderDto sendOrder(@RequestBody OnlineOrder order) {
         return null;
+    }
+
+    @GetMapping("/users/{id}")
+    public UserDto getOneUser(@PathVariable("id") long id) {
+        return service.getOneUser(id);
     }
 
 }

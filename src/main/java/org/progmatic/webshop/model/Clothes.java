@@ -3,7 +3,6 @@ package org.progmatic.webshop.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 @Entity
 public class Clothes extends BaseEntity{
@@ -31,9 +30,6 @@ public class Clothes extends BaseEntity{
 
     @OneToOne
     private Image image;
-
-    @OneToMany
-    private List<PurchasedClothes> purchasedClothesList;
 
     public Clothes() {
     }
@@ -93,14 +89,5 @@ public class Clothes extends BaseEntity{
     public void setImage(Image image) {
         this.image = image;
     }
-
-    public List<PurchasedClothes> getPurchasedClothesList() {
-        return purchasedClothesList;
-    }
-
-    public void setPurchasedClothesList(List<PurchasedClothes> purchasedClothesList) {
-        this.purchasedClothesList = purchasedClothesList;
-    }
-
 
 }

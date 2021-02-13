@@ -1,20 +1,33 @@
 package org.progmatic.webshop.dto;
 
+import org.progmatic.webshop.model.OnlineOrder;
 import org.progmatic.webshop.model.PurchasedClothes;
-import org.progmatic.webshop.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OrderDto {
 
-    private int id;
+    private long id;
     private float totalPrice;
     private boolean isFinish;
-    private User user;
-    private List<PurchasedClothes> purchasedClothesList;
+    private long userId;
+    private List<Long> purchasedClothesList;
 
+    public OrderDto() {}
 
-    public int getId() {
+    public OrderDto(OnlineOrder order) {
+        id = order.getId();
+        totalPrice = order.getTotalPrice();
+        isFinish = order.isFinish();
+        userId = order.getUser().getId();
+
+        setPurchasedClothesList(order.getPurchasedClothesList());
+    }
+
+    public long getId() {
         return id;
     }
 
@@ -26,31 +39,23 @@ public class OrderDto {
         return totalPrice;
     }
 
-    public void setTotalPrice(float totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
     public boolean isFinish() {
         return isFinish;
     }
 
-    public void setFinish(boolean finish) {
-        isFinish = finish;
+    public long getUserId() {
+        return userId;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public List<PurchasedClothes> getPurchasedClothesList() {
+    public List<Long> getPurchasedClothesList() {
         return purchasedClothesList;
     }
 
     public void setPurchasedClothesList(List<PurchasedClothes> purchasedClothesList) {
-        this.purchasedClothesList = purchasedClothesList;
+        this.purchasedClothesList = new ArrayList<>();
+        for (PurchasedClothes c : purchasedClothesList) {
+            this.purchasedClothesList.add(c.getId());
+        }
     }
+
 }
