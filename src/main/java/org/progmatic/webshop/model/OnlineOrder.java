@@ -1,5 +1,7 @@
 package org.progmatic.webshop.model;
 
+import org.progmatic.webshop.dto.OrderDto;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -18,6 +20,13 @@ public class OnlineOrder extends BaseEntity {
     private List<PurchasedClothes> purchasedClothesList;
 
     public OnlineOrder() {
+    }
+
+    public OnlineOrder(OrderDto orderDto, User user, List<PurchasedClothes> purchasedClothesList) {
+        totalPrice = orderDto.getTotalPrice();
+        isFinish = orderDto.isFinish();
+        this.user = user;
+        this.purchasedClothesList = purchasedClothesList;
     }
 
     public float getTotalPrice() {

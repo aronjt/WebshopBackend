@@ -57,7 +57,7 @@ public class OrderController {
     }
 
     @PostMapping("/orders")
-    public OrderDto sendOrder(@RequestBody OnlineOrder order) {
+    public OrderDto sendOrder(@RequestBody OrderDto order) {
         return null;
     }
 

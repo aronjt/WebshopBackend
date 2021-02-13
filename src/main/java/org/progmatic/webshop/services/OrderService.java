@@ -70,6 +70,16 @@ public class OrderService {
         return new OrderDto(oldOlder);
     }
 
+    @Transactional
+    public OrderDto sendOrder(OrderDto order) {
+        User user = em.find(User.class, order.getUserId());
+        /* TODO
+            write it...
+         */
+        return null;
+    }
+
+
     private float sumTotalPrice(List<PurchasedClothes> clothes) {
         float sum = 0;
         for (PurchasedClothes c : clothes) {
