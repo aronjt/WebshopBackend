@@ -1,27 +1,26 @@
 package org.progmatic.webshop.services;
 
-import org.dozer.DozerBeanMapper;
 import org.progmatic.webshop.dto.OrderDto;
-import org.progmatic.webshop.dto.UserDto;
+import org.progmatic.webshop.dto.PurchasedClothDto;
 import org.progmatic.webshop.model.OnlineOrder;
 import org.progmatic.webshop.model.PurchasedClothes;
 import org.progmatic.webshop.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class OrderService {
 
-    private static Logger LOG = LoggerFactory.getLogger(OrderService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(OrderService.class);
 
     @PersistenceContext
     EntityManager em;
@@ -71,14 +70,25 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderDto sendOrder(OrderDto order) {
-        User user = em.find(User.class, order.getUserId());
-        /* TODO
-            write it...
-         */
+    public OrderDto sendOrder(List<PurchasedClothDto> clothes) {
+        User user = getLoggedInUser();
+        if (user != null) {
+            OnlineOrder order = createNewOrder(user);
+
+            addPurchasedClothesToDBAndToOrder(clothes, order);
+
+            order.setTotalPrice(sumTotalPrice(order.getPurchasedClothesList()));
+
+            LOG.info("new order created, list size {}, username {}, total price {}",
+                    order.getPurchasedClothesList().size(), order.getUser().getUsername(), order.getCreationTime());
+
+            em.persist(order);
+
+            return new OrderDto(order);
+        }
+
         return null;
     }
-
 
     private float sumTotalPrice(List<PurchasedClothes> clothes) {
         float sum = 0;
@@ -88,5 +98,33 @@ public class OrderService {
         return sum;
     }
 
+    private User getLoggedInUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            Object principal = auth.getPrincipal();
+            if (principal instanceof User) {
+                return (User) principal;
+            }
+        }
+        return null;
+    }
+
+    private OnlineOrder createNewOrder(User user) {
+        OnlineOrder order = new OnlineOrder();
+        order.setUser(user);
+        order.setFinish(false);
+        order.setPurchasedClothesList(new ArrayList<>());
+        return order;
+    }
+
+    @Transactional
+    public void addPurchasedClothesToDBAndToOrder(List<PurchasedClothDto> clothes, OnlineOrder order) {
+        for (PurchasedClothDto c : clothes) {
+            PurchasedClothes newC = new PurchasedClothes(c);
+            newC.setOnlineOrder(order);
+            order.getPurchasedClothesList().add(newC);
+            em.persist(newC);
+        }
+    }
 
 }

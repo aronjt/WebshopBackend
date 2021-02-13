@@ -1,5 +1,7 @@
 package org.progmatic.webshop.model;
 
+import org.progmatic.webshop.dto.PurchasedClothDto;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -23,6 +25,12 @@ public class PurchasedClothes {
     private String size;
 
     public PurchasedClothes() {
+    }
+
+    public PurchasedClothes(PurchasedClothDto cloth) {
+        clothes = cloth.getClothes();
+        quantity = cloth.getQuantity();
+        size = cloth.getSize();
     }
 
     public long getId() {
