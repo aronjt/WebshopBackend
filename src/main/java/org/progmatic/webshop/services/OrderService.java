@@ -1,5 +1,6 @@
 package org.progmatic.webshop.services;
 
+import org.progmatic.webshop.dto.FeedbackDto;
 import org.progmatic.webshop.dto.OrderDto;
 import org.progmatic.webshop.dto.PurchasedClothDto;
 import org.progmatic.webshop.model.*;
@@ -55,7 +56,7 @@ public class OrderService {
     /* TODO
         how to do dis? only change field "isFinish" from false to true?
      */
-    @Transactional
+    /*@Transactional
     public OrderDto changeOrder(long id, OnlineOrder newOrder) {
         OnlineOrder oldOlder = em.find(OnlineOrder.class, id);
         LOG.info("old older with id {} was: {}, {}, {}",
@@ -66,6 +67,22 @@ public class OrderService {
         LOG.info("new older with id {} is now: {}, {}, {}",
                 id, oldOlder.getPurchasedClothesList().size(), oldOlder.getTotalPrice(), oldOlder.isFinish());
         return new OrderDto(oldOlder);
+    }*/
+
+    @Transactional
+    public FeedbackDto finishOrder(long id) {
+        OnlineOrder order = em.find(OnlineOrder.class, id);
+
+        if (order.isFinish()) {
+            LOG.info("order with id {} is already finished", id);
+            return new FeedbackDto(id, "Order is already finished.");
+        }
+
+        order.setFinish(true);
+
+        LOG.info("order with id {} is now finished", id);
+
+        return new FeedbackDto(id, "Successfully finished the order.");
     }
 
     @Transactional

@@ -1,5 +1,6 @@
 package org.progmatic.webshop.controllers;
 
+import org.progmatic.webshop.dto.FeedbackDto;
 import org.progmatic.webshop.dto.OrderDto;
 import org.progmatic.webshop.dto.PurchasedClothDto;
 import org.progmatic.webshop.dto.UserDto;
@@ -50,12 +51,18 @@ public class OrderController {
     }
 
     //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    @PutMapping("/orders/{id}")
+    /*@PutMapping("/orders/{id}")
     public OrderDto changeOrder(
             @PathVariable("id") long id,
             @RequestBody OnlineOrder newOrder
     ) {
         return service.changeOrder(id, newOrder);
+    }*/
+
+    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PutMapping("/orders/{id}")
+    public FeedbackDto changeOrder(@PathVariable("id") long id) {
+        return service.finishOrder(id);
     }
 
     //@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_USER')")
