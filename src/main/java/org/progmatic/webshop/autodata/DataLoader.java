@@ -1,6 +1,5 @@
 package org.progmatic.webshop.autodata;
 
-import org.progmatic.webshop.dto.FeedbackDto;
 import org.progmatic.webshop.emails.Email;
 import org.progmatic.webshop.helpers.ClothDataHelper;
 import org.progmatic.webshop.helpers.UserDataHelper;
@@ -27,17 +26,17 @@ public class DataLoader implements ApplicationRunner {
 
     private static final Logger LOG = LoggerFactory.getLogger(DataLoader.class);
 
-    private PasswordEncoder encoder;
+    private final PasswordEncoder encoder;
 
-    private UserData userData;
-    private TypeData typeData;
-    private GenderData genderData;
-    private ClothesData clothesData;
-    private StockData stockData;
-    private EmailData emailData;
-    private OnlineOrderData onlineOrderData;
-    private PurchasedClothData pcData;
-    private ImageData imageData;
+    private final UserData userData;
+    private final TypeData typeData;
+    private final GenderData genderData;
+    private final ClothesData clothesData;
+    private final StockData stockData;
+    private final EmailData emailData;
+    private final OnlineOrderData onlineOrderData;
+    private final PurchasedClothData pcData;
+    private final ImageData imageData;
 
     @Autowired
     public DataLoader(PasswordEncoder encoder, UserData userData, TypeData typeData, GenderData genderData,
@@ -57,7 +56,7 @@ public class DataLoader implements ApplicationRunner {
 
     @Override
     @Transactional
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) {
         createUsers();
         createTypes();
         createGenders();
