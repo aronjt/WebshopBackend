@@ -7,6 +7,7 @@ import org.progmatic.webshop.services.ImageService;
 import org.progmatic.webshop.services.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,12 +40,12 @@ public class ImageController {
         return feedbackDto;
     }
 
-    @GetMapping(path = {"/get/{id}"})
-    public Image getImagebyId(@PathVariable("id") Long imageId) throws IOException {
+    @GetMapping(path = {"/get/{id}"}, produces = MediaType.IMAGE_PNG_VALUE)
+    public byte[] getImageById(@PathVariable("id") Long imageId) throws IOException {
         final Optional<Image> retrievedImage = imageData.findById(imageId);
         Image img = new Image(retrievedImage.get().getName(),
                 imageService.decompressBytes(retrievedImage.get().getData()));
-        return img;
+        return img.getData();
     }
 }
 
