@@ -24,7 +24,8 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
             have to clear endpoints...
             and have to clear who has access to what...
          */
-        http.formLogin()
+        //csrf token disabled
+        http.csrf().disable().formLogin()
                 .loginPage("/login")
                 .permitAll()
                 .defaultSuccessUrl("/home", true)
