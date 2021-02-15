@@ -41,5 +41,9 @@ public class Image {
     public void setData(byte[] data) {
         Data = data;
     }
+
+    public long getId() {
+        return id;
+    }
 }
 

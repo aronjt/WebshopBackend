@@ -74,7 +74,7 @@ public class OrderController {
     @GetMapping("/test")
     public String testImageGet() {
         byte[] img =
-                service.getImage("/home/progmatic/github/WebshopBackend/src/main/java/org/progmatic/webshop/services/pacman.png");
+                service.getImage("src/main/resources/images/pacman.png");
         if (img != null) {
             return "ok";
         } else {
