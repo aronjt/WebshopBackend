@@ -92,6 +92,10 @@ public class OrderService {
 
     @Transactional
     public OrderDto sendOrder(List<PurchasedClothDto> clothes) {
+        /* TODO
+            now only registered users can send an order
+            should solve this problem (cause it's a problem)
+         */
         User user = getLoggedInUser();
         if (user != null) {
             OnlineOrder order = createNewOrder(user);
