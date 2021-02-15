@@ -71,4 +71,15 @@ public class OrderController {
         return service.sendOrder(clothes);
     }
 
+    @GetMapping("/test")
+    public String testImageGet() {
+        byte[] img =
+                service.getImage("/home/progmatic/github/WebshopBackend/src/main/java/org/progmatic/webshop/services/pacman.png");
+        if (img != null) {
+            return "ok";
+        } else {
+            return "not ok";
+        }
+    }
+
 }
