@@ -1,5 +1,6 @@
 package org.progmatic.webshop.autodata;
 
+import org.progmatic.webshop.dto.FeedbackDto;
 import org.progmatic.webshop.emails.Email;
 import org.progmatic.webshop.helpers.ClothDataHelper;
 import org.progmatic.webshop.helpers.UserDataHelper;
@@ -13,7 +14,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.awt.image.WritableRaster;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,11 +37,12 @@ public class DataLoader implements ApplicationRunner {
     private EmailData emailData;
     private OnlineOrderData onlineOrderData;
     private PurchasedClothData pcData;
+    private ImageData imageData;
 
     @Autowired
     public DataLoader(PasswordEncoder encoder, UserData userData, TypeData typeData, GenderData genderData,
                       ClothesData clothesData, StockData stockData, EmailData emailData, OnlineOrderData onlineOrderData,
-                      PurchasedClothData pcData) {
+                      PurchasedClothData pcData, ImageData imageData) {
         this.encoder = encoder;
         this.userData = userData;
         this.typeData = typeData;
@@ -46,6 +52,7 @@ public class DataLoader implements ApplicationRunner {
         this.emailData = emailData;
         this.onlineOrderData = onlineOrderData;
         this.pcData = pcData;
+        this.imageData = imageData;
     }
 
     @Override
@@ -58,6 +65,7 @@ public class DataLoader implements ApplicationRunner {
         putSomeClothesIntoTheStock();
         createEmail();
         createOrder();
+        createImages();
     }
 
     public void createUsers() {
@@ -386,6 +394,42 @@ public class DataLoader implements ApplicationRunner {
         pcData.save(buy2);
 
         return toBuy;
+    }
+
+    public void createImages() {
+        long imgNum = imageData.count();
+
+        if (imgNum == 0) {
+            if (addImageToDatabase("src/main/resources/images/child_dress.jpg", "child_cloth")) {
+                LOG.info("added image to database with name child_cloth");
+            }
+            if (addImageToDatabase("src/main/resources/images/man_dress.jpg", "man_cloth")) {
+                LOG.info("added image to database with name man_cloth");
+            }
+            if (addImageToDatabase("src/main/resources/images/woman_dress.jpg", "woman_cloth")) {
+                LOG.info("added image to database with name woman_cloth");
+            }
+        }
+    }
+
+    private boolean addImageToDatabase(String filepath, String name) {
+        try {
+            BufferedImage img = ImageIO.read(new File(filepath));
+            WritableRaster raster = img.getRaster();
+            DataBufferByte data = (DataBufferByte) raster.getDataBuffer();
+
+            Image toSave = new Image();
+            toSave.setData(data.getData());
+            toSave.setName(name);
+
+            imageData.save(toSave);
+
+            return true;
+        } catch (Exception e) {
+            LOG.warn("an error happened during adding image to database: {}",
+                    e.getMessage());
+            return false;
+        }
     }
 
 }

@@ -167,23 +167,4 @@ public class OrderService {
         }
     }
 
-    @Transactional
-    public byte[] getImage(String filepath) {
-        try {
-            BufferedImage img = ImageIO.read(new File(filepath));
-            WritableRaster raster = img.getRaster();
-            DataBufferByte data = (DataBufferByte) raster.getDataBuffer();
-            LOG.info("image is now a byte array, its length: {}", data.getData().length);
-            Image toSave = new Image();
-            toSave.setData(data.getData());
-            toSave.setName("test_img");
-            em.persist(toSave);
-            LOG.info("image is now in the database with id {}", toSave.getId());
-            return data.getData();
-        } catch (Exception e) {
-            LOG.info("cannot get image because of an exception: {}", e.getMessage());
-            return null;
-        }
-    }
-
 }

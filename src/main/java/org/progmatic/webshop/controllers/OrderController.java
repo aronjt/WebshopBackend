@@ -71,15 +71,4 @@ public class OrderController {
         return service.sendOrder(clothes);
     }
 
-    @GetMapping("/test")
-    public String testImageGet() {
-        byte[] img =
-                service.getImage("src/main/resources/images/pacman.png");
-        if (img != null) {
-            return "ok";
-        } else {
-            return "not ok";
-        }
-    }
-
 }
