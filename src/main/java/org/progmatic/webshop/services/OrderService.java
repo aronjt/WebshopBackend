@@ -11,9 +11,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.imageio.ImageIO;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.awt.image.WritableRaster;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -155,6 +160,25 @@ public class OrderService {
                 LOG.warn("cloth with id {} not found in stock",
                         c.getId());
             }
+        }
+    }
+
+    @Transactional
+    public byte[] getImage(String filepath) {
+        try {
+            BufferedImage img = ImageIO.read(new File(filepath));
+            WritableRaster raster = img.getRaster();
+            DataBufferByte data = (DataBufferByte) raster.getDataBuffer();
+            LOG.info("image is now a byte array, its length: {}", data.getData().length);
+            Image toSave = new Image();
+            toSave.setData(data.getData());
+            toSave.setName("test_img");
+            em.persist(toSave);
+            LOG.info("image is now in the database with id {}", toSave.getId());
+            return data.getData();
+        } catch (Exception e) {
+            LOG.info("cannot get image because of an exception: {}", e.getMessage());
+            return null;
         }
     }
 
