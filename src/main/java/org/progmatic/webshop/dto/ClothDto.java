@@ -23,6 +23,9 @@ public class ClothDto {
         color = clothes.getColor();
     }
 
+    public ClothDto() {
+    }
+
     public long getId() {
         return id;
     }
