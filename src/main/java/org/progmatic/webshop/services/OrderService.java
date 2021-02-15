@@ -174,6 +174,7 @@ public class OrderService {
             toSave.setData(data.getData());
             toSave.setName("test_img");
             em.persist(toSave);
+            LOG.info("image is now in the database with id {}", toSave.getId());
             return data.getData();
         } catch (Exception e) {
             LOG.info("cannot get image because of an exception: {}", e.getMessage());
