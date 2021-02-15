@@ -1,5 +1,8 @@
 package org.progmatic.webshop.model;
 
+import org.apache.commons.io.filefilter.RegexFileFilter;
+import org.progmatic.webshop.dto.RegisterUserDto;
+import org.progmatic.webshop.helpers.UserDataHelper;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -62,6 +65,19 @@ public class User extends BaseEntity implements UserDetails {
     private boolean isEnabled;
 
     public User() {
+    }
+    public User(RegisterUserDto registerUserDto) {
+ firstName=registerUserDto.getFirstName();
+ lastName= registerUserDto.getLastName();
+ country=registerUserDto.getCountry();
+ zipcode=registerUserDto.getZipcode();
+ address=registerUserDto.getAddress();
+ city=registerUserDto.getCity();
+ email=registerUserDto.getEmail();
+ password=registerUserDto.getPassword();
+ phoneNumber=registerUserDto.getPhoneNumber();
+ UserRole= UserDataHelper.ROLE_USER;
+
     }
 
     public String getEmail() {
