@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import java.util.UUID;
 
 @Service
 public class MyUserDetailsService implements UserDetailsService {
@@ -48,6 +49,14 @@ public class MyUserDetailsService implements UserDetailsService {
     @Transactional
     public void createUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        em.persist(user);
+    }
+
+    @Transactional
+    public void createFakeUser(User user) {
+        String randomString = UUID.randomUUID().toString();
+        int index = randomString.indexOf('-');
+        user.setPassword(randomString.substring(0, index));
         em.persist(user);
     }
 

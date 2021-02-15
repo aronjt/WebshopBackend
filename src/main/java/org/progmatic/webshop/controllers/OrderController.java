@@ -3,14 +3,10 @@ package org.progmatic.webshop.controllers;
 import org.progmatic.webshop.dto.FeedbackDto;
 import org.progmatic.webshop.dto.OrderDto;
 import org.progmatic.webshop.dto.PurchasedClothDto;
-import org.progmatic.webshop.dto.UserDto;
-import org.progmatic.webshop.model.OnlineOrder;
 import org.progmatic.webshop.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,21 +18,6 @@ public class OrderController {
     public OrderController(OrderService service) {
         this.service = service;
     }
-
-    /* endpoints
-        /order
-            post
-            add new order
-        /orders
-            get
-            list all orders (admin)
-        /orders/{id}
-            get
-            list one order (admin)
-        /orders/{id}
-            put
-            edit one order (admin)
-     */
 
     //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/orders")
@@ -66,6 +47,7 @@ public class OrderController {
     }
 
     //@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_USER')")
+    // maybe no need the annotation above?
     @PostMapping("/orders")
     public OrderDto sendOrder(@RequestBody List<PurchasedClothDto> clothes) {
         return service.sendOrder(clothes);
