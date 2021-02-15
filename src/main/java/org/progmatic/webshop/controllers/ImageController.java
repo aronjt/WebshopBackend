@@ -10,6 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -28,8 +32,7 @@ public class ImageController {
 
 
     @PostMapping("/image")
-    public ResponseEntity.BodyBuilder uploadImage(@RequestBody MultipartFile file) throws IOException {
-
+    public ResponseEntity.BodyBuilder uploadImage(@RequestParam("image") MultipartFile file) throws IOException {
         System.out.println("Original Image Byte Size - " + file.getBytes().length);
         Image img = new Image(file.getOriginalFilename(),
                 imageService.compressBytes(file.getBytes()));
@@ -37,7 +40,7 @@ public class ImageController {
         return ResponseEntity.status(HttpStatus.OK);
     }
 
-//    @GetMapping(path = {"/get/{name}"})
+    //    @GetMapping(path = {"/get/{name}"})
 //    public Image getImage(@PathVariable("name") String imageName) throws IOException {
 //
 //        final Optional<Image> retrievedImage = imageData.findByName(imageName);
@@ -53,5 +56,6 @@ public class ImageController {
                 imageService.decompressBytes(retrievedImage.get().getData()));
         return img;
     }
+
 }
 

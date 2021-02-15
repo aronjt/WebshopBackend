@@ -22,6 +22,7 @@ public class User extends BaseEntity implements UserDetails {
     @Column(unique = true)
     private String email;
 
+
     @NotBlank
     @NotNull
     private String password;
@@ -58,7 +59,7 @@ public class User extends BaseEntity implements UserDetails {
     @OneToMany(mappedBy = "user")
     private Set<OnlineOrder> orders;
 
-    private boolean enabled;
+    private boolean isEnabled;
 
     public User() {
     }
@@ -156,7 +157,7 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
+        this.isEnabled = enabled;
     }
 
     @Override
@@ -191,7 +192,7 @@ public class User extends BaseEntity implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return enabled;
+        return isEnabled;
     }
 
     @Override

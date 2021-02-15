@@ -340,22 +340,25 @@ public class DataLoader implements ApplicationRunner {
         if (orderNum == 0) {
             User user = userData.findByEmail("ertekelek@ertek.el");
 
-            OnlineOrder order = new OnlineOrder();
-            order.setUser(user);
-            order.setFinish(false);
-            List<PurchasedClothes> toBuy = putClothesToCart(order);
+            if (user != null) {
+                OnlineOrder order = new OnlineOrder();
+                order.setUser(user);
+                order.setFinish(false);
+                List<PurchasedClothes> toBuy = putClothesToCart(order);
 
-            float sum = 0;
-            for (PurchasedClothes c : toBuy) {
-                sum += c.getClothes().getPrice();
+                float sum = 0;
+                for (PurchasedClothes c : toBuy) {
+                    sum += c.getClothes().getPrice();
+                }
+                order.setTotalPrice(sum);
+
+                order.setPurchasedClothesList(toBuy);
+                onlineOrderData.save(order);
+
+                LOG.info("online order added to database to user {}, purchased clothes' names are: {}, {}",
+                        user.getUsername(), toBuy.get(0).getClothes().getName(), toBuy.get(1).getClothes().getName());
             }
-            order.setTotalPrice(sum);
 
-            order.setPurchasedClothesList(toBuy);
-            onlineOrderData.save(order);
-
-            LOG.info("online order added to database to user {}, purchased clothes' names are: {}, {}",
-                    user.getUsername(), toBuy.get(0).getClothes().getName(), toBuy.get(1).getClothes().getName());
         }
     }
 
