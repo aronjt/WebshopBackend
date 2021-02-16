@@ -331,17 +331,14 @@ public class DataLoader implements ApplicationRunner {
     }
 
     public void createEmail() {
-        List<Email> emails = emailData.findAll();
+      long emailNum = emailData.count();
 
-        Email reg = registrationEmail();
-        Email shop = shoppingEmail();
-
-        if (!emails.contains(reg)) {
+        if (emailNum==0) {
+            Email reg= registrationEmail();
             emailData.save(reg);
             LOG.info("added new email with type {}, subject {}",
                     reg.getMessageType(), reg.getSubject());
-        }
-        if (!emails.contains(shop)) {
+        Email shop = shoppingEmail();
             emailData.save(shop);
             LOG.info("added new email with type {}, subject {}",
                     shop.getMessageType(), shop.getSubject());
