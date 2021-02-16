@@ -3,9 +3,11 @@ package org.progmatic.webshop.services;
 import org.progmatic.webshop.dto.FeedbackDto;
 import org.progmatic.webshop.dto.OrderDto;
 import org.progmatic.webshop.dto.PurchasedClothDto;
+import org.progmatic.webshop.dto.RegisterUserDto;
 import org.progmatic.webshop.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,13 @@ public class OrderService {
 
     @PersistenceContext
     EntityManager em;
+
+    private final MyUserDetailsService uds;
+
+    @Autowired
+    public OrderService(MyUserDetailsService uds) {
+        this.uds = uds;
+    }
 
     @Transactional
     public OrderDto getOneOrder(long id) {
@@ -85,13 +94,13 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderDto sendOrder(List<PurchasedClothDto> clothes) {
-        /* TODO
-            now only registered users can send an order
-            should solve this problem (cause it's a problem)
-            overwrite...
-         */
-       /* User user = getLoggedInUser();
+    public OrderDto sendOrder(List<PurchasedClothDto> clothes, RegisterUserDto userDto) {
+        if (!uds.userExists(userDto.getEmail())) {
+            uds.createFakeUser(userDto);
+        }
+
+        User user = (User) uds.loadUserByUsername(userDto.getEmail());
+
         if (user != null) {
             OnlineOrder order = createNewOrder(user);
 
@@ -105,9 +114,12 @@ public class OrderService {
             em.persist(order);
 
             return new OrderDto(order);
-        }*/
+        }
+
+        LOG.warn("cannot create order for user {}", userDto.getEmail());
 
         return null;
+
     }
 
     private float sumTotalPrice(List<PurchasedClothes> clothes) {

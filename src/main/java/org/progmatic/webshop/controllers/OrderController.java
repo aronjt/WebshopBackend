@@ -1,6 +1,7 @@
 package org.progmatic.webshop.controllers;
 
 import org.progmatic.webshop.dto.*;
+import org.progmatic.webshop.model.OnlineOrder;
 import org.progmatic.webshop.model.User;
 import org.progmatic.webshop.services.MyUserDetailsService;
 import org.progmatic.webshop.services.OrderService;
@@ -48,13 +49,6 @@ public class OrderController {
         return service.finishOrder(id);
     }
 
-    //@PreAuthorize("hasAuthority('ROLE_ADMIN') or hasAuthority('ROLE_USER')")
-    // maybe no need the annotation above?
-    @PostMapping("/orders")
-    public OrderDto sendOrder(@RequestBody List<PurchasedClothDto> clothes) {
-        return service.sendOrder(clothes);
-    }
-
     /* TODO
         what URL??
      */
@@ -67,10 +61,10 @@ public class OrderController {
         return new RegisterUserDto();
     }
 
-    @PostMapping("/valami")
-    public FeedbackDto sendUserData(@RequestBody List<PurchasedClothDto> clothes, @RequestBody RegisterUserDto user) {
-
-        return new FeedbackDto();
+    @PostMapping("/orders")
+    public FeedbackDto sendOrder(@RequestBody List<PurchasedClothDto> clothes, @RequestBody RegisterUserDto user) {
+        OrderDto order = service.sendOrder(clothes, user);
+        return new FeedbackDto(order.getId(), "order successfully sent");
     }
 
 }

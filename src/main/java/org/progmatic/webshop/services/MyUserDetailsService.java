@@ -1,5 +1,6 @@
 package org.progmatic.webshop.services;
 
+import org.progmatic.webshop.dto.RegisterUserDto;
 import org.progmatic.webshop.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -55,7 +56,7 @@ public class MyUserDetailsService implements UserDetailsService {
     }
 
     @Transactional
-    public void createFakeUser(User user) {
+    public void createFakeUser(RegisterUserDto user) {
         String randomString = UUID.randomUUID().toString();
         int index = randomString.indexOf('-');
         user.setPassword(randomString.substring(0, index));
