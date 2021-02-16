@@ -441,8 +441,8 @@ public class DataLoader implements ApplicationRunner {
     public void setImagesToGenders() {
         Gender man = genderData.findByGender(ClothDataHelper.GENDER_MALE);
         Image manImg = imageData.findByName(ClothDataHelper.GENDER_MALE);
-        if (man != null && manImg == null) {
-            if (man.getImage() != null) {
+        if (man != null && manImg != null) {
+            if (man.getImage() == null) {
                 man.setImage(manImg);
                 genderData.save(man);
                 LOG.info("added image to gender {}", man.getGender());
