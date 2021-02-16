@@ -89,8 +89,9 @@ public class OrderService {
         /* TODO
             now only registered users can send an order
             should solve this problem (cause it's a problem)
+            overwrite...
          */
-        User user = getLoggedInUser();
+       /* User user = getLoggedInUser();
         if (user != null) {
             OnlineOrder order = createNewOrder(user);
 
@@ -104,7 +105,7 @@ public class OrderService {
             em.persist(order);
 
             return new OrderDto(order);
-        }
+        }*/
 
         return null;
     }
@@ -115,17 +116,6 @@ public class OrderService {
             sum += (c.getQuantity() * c.getClothes().getPrice());
         }
         return sum;
-    }
-
-    private User getLoggedInUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null) {
-            Object principal = auth.getPrincipal();
-            if (principal instanceof User) {
-                return (User) principal;
-            }
-        }
-        return null;
     }
 
     private OnlineOrder createNewOrder(User user) {
@@ -162,3 +152,34 @@ public class OrderService {
     }
 
 }
+
+
+
+
+/*
+rendelés
+ruha 1
+ruha 2
+ruha 3
+
+ok, tovább -> sendUserData
+
+szállítási adatok
+    - űrlap megjelenik
+        - user regisztrált?
+            - kitöltött adatokkal jelenik meg
+        - nem regisztrált?
+            - üres űrlap, amit ki kell töltenie
+név
+cím
+tel.
+stb.
+
+ok, tovább -> sendOrder()
+
+megerősítés
+szupi!
+(kap emailt róla)
+
+kösz!
+ */

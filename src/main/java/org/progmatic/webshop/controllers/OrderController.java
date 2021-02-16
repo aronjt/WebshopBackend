@@ -1,8 +1,8 @@
 package org.progmatic.webshop.controllers;
 
-import org.progmatic.webshop.dto.FeedbackDto;
-import org.progmatic.webshop.dto.OrderDto;
-import org.progmatic.webshop.dto.PurchasedClothDto;
+import org.progmatic.webshop.dto.*;
+import org.progmatic.webshop.model.User;
+import org.progmatic.webshop.services.MyUserDetailsService;
 import org.progmatic.webshop.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,10 +13,12 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService service;
+    private final MyUserDetailsService uds;
 
     @Autowired
-    public OrderController(OrderService service) {
+    public OrderController(OrderService service, MyUserDetailsService uds) {
         this.service = service;
+        this.uds = uds;
     }
 
     //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
@@ -51,6 +53,26 @@ public class OrderController {
     @PostMapping("/orders")
     public OrderDto sendOrder(@RequestBody List<PurchasedClothDto> clothes) {
         return service.sendOrder(clothes);
+    }
+
+    @GetMapping("/valami")
+    public RegisterUserDto getUserData() {
+        RegisterUserDto userDto = new RegisterUserDto();
+        User user = uds.getLoggedInUser();
+        if (user != null) {
+            // adatbázis lekérdezés a user adatairól
+            // userDto = ezzel...
+        }
+        return userDto;
+    }
+
+    @PostMapping("/valami")
+    public FeedbackDto sendUserData(@RequestBody List<PurchasedClothDto> clothes, @RequestBody RegisterUserDto user) {
+        // user regisztrált-e?
+        // ha igen, akkor őt kötjük össze a rendeléssel, és rögzítjük az adatbázisban
+        // ha nincs, akkor előbb regisztráljuk, és aztán...
+        // végén megerősítés, hogy ok, jó lett a rendelés
+        return null;
     }
 
 }

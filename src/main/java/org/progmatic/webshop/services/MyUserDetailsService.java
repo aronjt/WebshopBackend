@@ -2,6 +2,8 @@ package org.progmatic.webshop.services;
 
 import org.progmatic.webshop.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -58,6 +60,17 @@ public class MyUserDetailsService implements UserDetailsService {
         int index = randomString.indexOf('-');
         user.setPassword(randomString.substring(0, index));
         em.persist(user);
+    }
+
+    public User getLoggedInUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null) {
+            Object principal = auth.getPrincipal();
+            if (principal instanceof User) {
+                return (User) principal;
+            }
+        }
+        return null;
     }
 
 }
