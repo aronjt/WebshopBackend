@@ -399,14 +399,17 @@ public class DataLoader implements ApplicationRunner {
         long imgNum = imageData.count();
 
         if (imgNum == 0) {
-            if (addImageToDatabase("src/main/resources/images/child_dress.jpg", "child_cloth")) {
-                LOG.info("added image to database with name child_cloth");
+            if (addImageToDatabase("src/main/resources/images/child_dress.jpg", "child")) {
+                LOG.info("added image to database with name child");
             }
-            if (addImageToDatabase("src/main/resources/images/man_dress.jpg", "man_cloth")) {
-                LOG.info("added image to database with name man_cloth");
+            if (addImageToDatabase("src/main/resources/images/man_dress.jpg", "man")) {
+                LOG.info("added image to database with name man");
             }
-            if (addImageToDatabase("src/main/resources/images/woman_dress.jpg", "woman_cloth")) {
-                LOG.info("added image to database with name woman_cloth");
+            if (addImageToDatabase("src/main/resources/images/woman_dress.jpg", "woman")) {
+                LOG.info("added image to database with name woman");
+            }
+            if (addImageToDatabase("src/main/resources/images/unisex.png", "unisex")) {
+                LOG.info("added image to database with name unisex");
             }
         }
     }
