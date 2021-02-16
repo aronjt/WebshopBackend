@@ -333,8 +333,10 @@ public class DataLoader implements ApplicationRunner {
         if (emailNum == 0) {
             Email email = new Email();
             email.setMessageType("registration");
-            email.setSubject("Registration success");
-            email.setMessageText("Thank you for your registration! Have a nice day!");
+            email.setSubject("Registration verification");
+            email.setMessageText(
+                    "Thank you for your registration! Have a nice day!\n" +
+                            "To confirm your account, please click here:");
             emailData.save(email);
 
             LOG.info("added new email with type {}, subject {}, text {}",
