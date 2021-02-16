@@ -42,6 +42,19 @@ public class ClothesService {
     }
 
     @Transactional
+    public List<ClothDto> getClothesFromGender(String gender) {
+        List<Clothes> clothesList = em.createQuery("SELECT c FROM Clothes c JOIN FETCH c.gender WHERE c.gender.gender = :gender", Clothes.class)
+                .setParameter("gender", gender)
+                .getResultList();
+        List<ClothDto> clothDtoList = new ArrayList<>();
+        for (Clothes clothes : clothesList) {
+            clothDtoList.add(new ClothDto(clothes));
+        }
+        LOG.info("all orders founded: {} orders in list", clothDtoList.size());
+        return clothDtoList;
+    }
+
+    @Transactional
     public long addNewCloth(ClothDto clothDto) {
         Clothes c = new Clothes(clothDto);
         em.persist(c);

@@ -22,7 +22,6 @@ public class ClothesController {
         return clothesService.getAllClothes();
     }
 
-    //403 error (Forbidden)
     @PostMapping("/clothes")
     public FeedbackDto addNewCloth(@RequestBody ClothDto cloth) {
         try {
@@ -37,6 +36,13 @@ public class ClothesController {
     public ClothDto getOneCloth(@PathVariable("id") long id) {
         return clothesService.getOneCloth(id);
     }
+
+    @GetMapping(value = "/clothes", params = "gender")
+    public List<ClothDto> getClothesFromGender(@RequestParam("gender") String gender) {
+        return clothesService.getClothesFromGender(gender);
+    }
+
+    @GetMapping(value = "/clothes", params = "")
 
     @PutMapping("/clothes/{id}")
     public FeedbackDto editCloth(@PathVariable("id") long id) {
