@@ -399,18 +399,34 @@ public class DataLoader implements ApplicationRunner {
         long imgNum = imageData.count();
 
         if (imgNum == 0) {
-            if (addImageToDatabase("src/main/resources/images/child_dress.jpg", "child")) {
-                LOG.info("added image to database with name child");
+            if (addImageToDatabase("src/main/resources/images/child_dress.jpg", ClothDataHelper.GENDER_CHILD)) {
+                LOG.info("added image to database with name {}", ClothDataHelper.GENDER_CHILD);
             }
-            if (addImageToDatabase("src/main/resources/images/man_dress.jpg", "man")) {
-                LOG.info("added image to database with name man");
+            if (addImageToDatabase("src/main/resources/images/man_dress.jpg", ClothDataHelper.GENDER_MALE)) {
+                LOG.info("added image to database with name {}", ClothDataHelper.GENDER_MALE);
             }
-            if (addImageToDatabase("src/main/resources/images/woman_dress.jpg", "woman")) {
-                LOG.info("added image to database with name woman");
+            if (addImageToDatabase("src/main/resources/images/woman_dress.jpg", ClothDataHelper.GENDER_FEMALE)) {
+                LOG.info("added image to database with name {}", ClothDataHelper.GENDER_FEMALE);
             }
-            if (addImageToDatabase("src/main/resources/images/unisex.png", "unisex")) {
-                LOG.info("added image to database with name unisex");
+            if (addImageToDatabase("src/main/resources/images/unisex.png", ClothDataHelper.GENDER_UNISEX)) {
+                LOG.info("added image to database with name {}", ClothDataHelper.GENDER_UNISEX);
             }
+        }
+    }
+
+    public void setImagesToGenders() {
+        Gender man = genderData.findByGender(ClothDataHelper.GENDER_MALE);
+        Image manImg = imageData.findByName(ClothDataHelper.GENDER_MALE);
+        if (man != null && manImg != null) {
+            man.setImage(manImg);
+            genderData.save(man);
+        }
+
+        Gender woman = genderData.findByGender(ClothDataHelper.GENDER_FEMALE);
+        Image womanImg = imageData.findByName(ClothDataHelper.GENDER_FEMALE);
+        if (woman != null && womanImg != null) {
+            woman.setImage(womanImg);
+            genderData.save(woman);
         }
     }
 
