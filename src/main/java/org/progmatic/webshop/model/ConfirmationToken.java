@@ -1,4 +1,4 @@
-package org.progmatic.webshop.verification;
+package org.progmatic.webshop.model;
 
 import org.progmatic.webshop.model.User;
 

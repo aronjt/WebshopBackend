@@ -1,6 +1,5 @@
 package org.progmatic.webshop.autodata;
 
-import org.progmatic.webshop.emails.Email;
 import org.progmatic.webshop.helpers.ClothDataHelper;
 import org.progmatic.webshop.helpers.UserDataHelper;
 import org.progmatic.webshop.model.*;
@@ -65,7 +64,6 @@ public class DataLoader implements ApplicationRunner {
         createEmail();
         createOrder();
         createImages();
-        setImagesToGenders();
     }
 
     public void createUsers() {
@@ -328,40 +326,18 @@ public class DataLoader implements ApplicationRunner {
     }
 
     public void createEmail() {
-        List<Email> emails = emailData.findAll();
+        long emailNum = emailData.count();
 
-        Email reg = registrationEmail();
-        Email shop = shoppingEmail();
+        if (emailNum == 0) {
+            Email email = new Email();
+            email.setMessageType("registration");
+            email.setSubject("Registration success");
+            email.setMessageText("Thank you for your registration! Have a nice day!");
+            emailData.save(email);
 
-        if (!emails.contains(reg)) {
-            emailData.save(reg);
-            LOG.info("added new email with type {}, subject {}",
-                    reg.getMessageType(), reg.getSubject());
+            LOG.info("added new email with type {}, subject {}, text {}",
+                    email.getMessageType(), email.getSubject(), email.getMessageText());
         }
-        if (!emails.contains(shop)) {
-            emailData.save(shop);
-            LOG.info("added new email with type {}, subject {}",
-                    shop.getMessageType(), shop.getSubject());
-        }
-    }
-
-    private Email registrationEmail() {
-        Email email = new Email();
-        email.setMessageType("registration");
-        email.setSubject("Registration verification");
-        email.setMessageText(
-                "Thank you for your registration! Have a nice day!\n" +
-                        "To confirm your account, please click here:");
-        return email;
-    }
-
-    private Email shoppingEmail() {
-        Email email = new Email();
-        email.setMessageType("shopping");
-        email.setSubject("Shopping confirmation");
-        email.setMessageText(
-                "Thank you for your shopping! Have a nice day!");
-        return email;
     }
 
     public void createOrder() {
@@ -443,7 +419,6 @@ public class DataLoader implements ApplicationRunner {
         if (man != null && manImg != null) {
             man.setImage(manImg);
             genderData.save(man);
-            LOG.info("added image to gender {}", man.getGender());
         }
 
         Gender woman = genderData.findByGender(ClothDataHelper.GENDER_FEMALE);
@@ -451,23 +426,6 @@ public class DataLoader implements ApplicationRunner {
         if (woman != null && womanImg != null) {
             woman.setImage(womanImg);
             genderData.save(woman);
-            LOG.info("added image to gender {}", woman.getGender());
-        }
-
-        Gender child = genderData.findByGender(ClothDataHelper.GENDER_CHILD);
-        Image childImg = imageData.findByName(ClothDataHelper.GENDER_CHILD);
-        if (child != null && childImg != null) {
-            child.setImage(childImg);
-            genderData.save(child);
-            LOG.info("added image to gender {}", child.getGender());
-        }
-
-        Gender uni = genderData.findByGender(ClothDataHelper.GENDER_UNISEX);
-        Image unImg = imageData.findByName(ClothDataHelper.GENDER_UNISEX);
-        if (uni != null && unImg != null) {
-            uni.setImage(unImg);
-            genderData.save(uni);
-            LOG.info("added image to gender {}", uni.getGender());
         }
     }
 
