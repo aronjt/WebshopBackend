@@ -40,7 +40,7 @@ public class ImageController {
         return feedbackDto;
     }
 
-    @GetMapping(path = {"/get/{id}"}, produces = MediaType.IMAGE_PNG_VALUE)
+    @GetMapping(path = {"/images/{id}"}, produces = MediaType.IMAGE_PNG_VALUE)
     public byte[] getImageById(@PathVariable("id") Long imageId) throws IOException {
         final Optional<Image> retrievedImage = imageData.findById(imageId);
         Image img = new Image(retrievedImage.get().getName(),

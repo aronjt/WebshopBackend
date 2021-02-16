@@ -4,6 +4,7 @@ import org.progmatic.webshop.helpers.ClothDataHelper;
 import org.progmatic.webshop.helpers.EmailSenderHelper;
 import org.progmatic.webshop.helpers.UserDataHelper;
 import org.progmatic.webshop.model.*;
+import org.progmatic.webshop.services.ImageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import java.util.List;
 @Component
 public class DataLoader implements ApplicationRunner {
 
+    private final ImageService imageService;
     private static final Logger LOG = LoggerFactory.getLogger(DataLoader.class);
 
     private final PasswordEncoder encoder;
@@ -41,7 +43,7 @@ public class DataLoader implements ApplicationRunner {
     @Autowired
     public DataLoader(PasswordEncoder encoder, UserData userData, TypeData typeData, GenderData genderData,
                       ClothesData clothesData, StockData stockData, EmailData emailData, OnlineOrderData onlineOrderData,
-                      PurchasedClothData pcData, ImageData imageData) {
+                      PurchasedClothData pcData, ImageData imageData,ImageService imageservice) {
         this.encoder = encoder;
         this.userData = userData;
         this.typeData = typeData;
@@ -52,6 +54,7 @@ public class DataLoader implements ApplicationRunner {
         this.onlineOrderData = onlineOrderData;
         this.pcData = pcData;
         this.imageData = imageData;
+        this.imageService = imageservice;
     }
 
     @Override
@@ -479,7 +482,7 @@ public class DataLoader implements ApplicationRunner {
             DataBufferByte data = (DataBufferByte) raster.getDataBuffer();
 
             Image toSave = new Image();
-            toSave.setData(data.getData());
+            toSave.setData(imageService.compressBytes(data.getData()));
             toSave.setName(name);
 
             imageData.save(toSave);
