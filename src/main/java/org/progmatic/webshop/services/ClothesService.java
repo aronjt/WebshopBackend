@@ -31,7 +31,7 @@ public class ClothesService {
         for (Clothes clothe : clothes) {
             clothDtoList.add(new ClothDto(clothe));
         }
-        LOG.info("all orders founded: {} orders in list", clothDtoList.size());
+        LOG.info("all clothes founded: {} orders in list", clothDtoList.size());
         return clothDtoList;
     }
 
@@ -50,7 +50,7 @@ public class ClothesService {
         for (Clothes clothes : clothesList) {
             clothDtoList.add(new ClothDto(clothes));
         }
-        LOG.info("all orders founded: {} orders in list", clothDtoList.size());
+        LOG.info("all clothes founded: {} orders in list", clothDtoList.size());
         return clothDtoList;
     }
 
