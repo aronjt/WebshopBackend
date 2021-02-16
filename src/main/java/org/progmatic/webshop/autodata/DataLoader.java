@@ -65,6 +65,7 @@ public class DataLoader implements ApplicationRunner {
         createEmail();
         createOrder();
         createImages();
+        setImagesToGenders();
     }
 
     public void createUsers() {
@@ -420,6 +421,7 @@ public class DataLoader implements ApplicationRunner {
         if (man != null && manImg != null) {
             man.setImage(manImg);
             genderData.save(man);
+            LOG.info("added image to gender {}", man.getGender());
         }
 
         Gender woman = genderData.findByGender(ClothDataHelper.GENDER_FEMALE);
@@ -427,6 +429,23 @@ public class DataLoader implements ApplicationRunner {
         if (woman != null && womanImg != null) {
             woman.setImage(womanImg);
             genderData.save(woman);
+            LOG.info("added image to gender {}", woman.getGender());
+        }
+
+        Gender child = genderData.findByGender(ClothDataHelper.GENDER_CHILD);
+        Image childImg = imageData.findByName(ClothDataHelper.GENDER_CHILD);
+        if (child != null && childImg != null) {
+            child.setImage(childImg);
+            genderData.save(child);
+            LOG.info("added image to gender {}", child.getGender());
+        }
+
+        Gender uni = genderData.findByGender(ClothDataHelper.GENDER_UNISEX);
+        Image unImg = imageData.findByName(ClothDataHelper.GENDER_UNISEX);
+        if (uni != null && unImg != null) {
+            uni.setImage(unImg);
+            genderData.save(uni);
+            LOG.info("added image to gender {}", uni.getGender());
         }
     }
 
