@@ -345,6 +345,7 @@ public class DataLoader implements ApplicationRunner {
         }
     }
 
+
     private Email registrationEmail() {
         Email email = new Email();
         email.setMessageType("registration");
