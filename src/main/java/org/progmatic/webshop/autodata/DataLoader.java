@@ -441,34 +441,42 @@ public class DataLoader implements ApplicationRunner {
     public void setImagesToGenders() {
         Gender man = genderData.findByGender(ClothDataHelper.GENDER_MALE);
         Image manImg = imageData.findByName(ClothDataHelper.GENDER_MALE);
-        if (man != null && manImg != null) {
-            man.setImage(manImg);
-            genderData.save(man);
-            LOG.info("added image to gender {}", man.getGender());
+        if (man != null && manImg == null) {
+            if (man.getImage() != null) {
+                man.setImage(manImg);
+                genderData.save(man);
+                LOG.info("added image to gender {}", man.getGender());
+            }
         }
 
         Gender woman = genderData.findByGender(ClothDataHelper.GENDER_FEMALE);
         Image womanImg = imageData.findByName(ClothDataHelper.GENDER_FEMALE);
         if (woman != null && womanImg != null) {
-            woman.setImage(womanImg);
-            genderData.save(woman);
-            LOG.info("added image to gender {}", woman.getGender());
+            if (woman.getImage() == null) {
+                woman.setImage(womanImg);
+                genderData.save(woman);
+                LOG.info("added image to gender {}", woman.getGender());
+            }
         }
 
         Gender child = genderData.findByGender(ClothDataHelper.GENDER_CHILD);
         Image childImg = imageData.findByName(ClothDataHelper.GENDER_CHILD);
         if (child != null && childImg != null) {
-            child.setImage(childImg);
-            genderData.save(child);
-            LOG.info("added image to gender {}", child.getGender());
+            if (child.getImage() == null) {
+                child.setImage(childImg);
+                genderData.save(child);
+                LOG.info("added image to gender {}", child.getGender());
+            }
         }
 
         Gender uni = genderData.findByGender(ClothDataHelper.GENDER_UNISEX);
         Image unImg = imageData.findByName(ClothDataHelper.GENDER_UNISEX);
         if (uni != null && unImg != null) {
-            uni.setImage(unImg);
-            genderData.save(uni);
-            LOG.info("added image to gender {}", uni.getGender());
+            if (uni.getImage() == null) {
+                uni.setImage(unImg);
+                genderData.save(uni);
+                LOG.info("added image to gender {}", uni.getGender());
+            }
         }
     }
 
