@@ -1,4 +1,4 @@
-package org.progmatic.webshop.emails;
+package org.progmatic.webshop.model;
 
 import javax.persistence.*;
 import java.util.ArrayList;
