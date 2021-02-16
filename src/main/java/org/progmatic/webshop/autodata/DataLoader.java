@@ -1,6 +1,5 @@
 package org.progmatic.webshop.autodata;
 
-import org.progmatic.webshop.emails.Email;
 import org.progmatic.webshop.helpers.ClothDataHelper;
 import org.progmatic.webshop.helpers.UserDataHelper;
 import org.progmatic.webshop.model.*;
