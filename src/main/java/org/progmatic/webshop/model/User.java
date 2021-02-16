@@ -66,18 +66,18 @@ public class User extends BaseEntity implements UserDetails {
 
     public User() {
     }
-    public User(RegisterUserDto registerUserDto) {
- firstName=registerUserDto.getFirstName();
- lastName= registerUserDto.getLastName();
- country=registerUserDto.getCountry();
- zipcode=registerUserDto.getZipcode();
- address=registerUserDto.getAddress();
- city=registerUserDto.getCity();
- email=registerUserDto.getEmail();
- password=registerUserDto.getPassword();
- phoneNumber=registerUserDto.getPhoneNumber();
- UserRole= UserDataHelper.ROLE_USER;
 
+    public User(RegisterUserDto registerUserDto) {
+        firstName=registerUserDto.getFirstName();
+        lastName= registerUserDto.getLastName();
+        country=registerUserDto.getCountry();
+        zipcode=registerUserDto.getZipcode();
+        address=registerUserDto.getAddress();
+        city=registerUserDto.getCity();
+        email=registerUserDto.getEmail();
+        password=registerUserDto.getPassword();
+        phoneNumber=registerUserDto.getPhoneNumber();
+        UserRole= UserDataHelper.ROLE_USER;
     }
 
     public String getEmail() {
