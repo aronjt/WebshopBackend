@@ -332,7 +332,7 @@ public class DataLoader implements ApplicationRunner {
             Email email = new Email();
             email.setMessageType("registration");
             email.setSubject("Registration success");
-            email.setMessageText("Thank you for your registration! Have a nice day!");
+            email.setMessageText("Thank you for your registration!To confirm your account, please click here :");
             emailData.save(email);
 
             LOG.info("added new email with type {}, subject {}, text {}",
