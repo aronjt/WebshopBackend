@@ -328,20 +328,40 @@ public class DataLoader implements ApplicationRunner {
     }
 
     public void createEmail() {
-        long emailNum = emailData.count();
+        List<Email> emails = emailData.findAll();
 
-        if (emailNum == 0) {
-            Email email = new Email();
-            email.setMessageType("registration");
-            email.setSubject("Registration verification");
-            email.setMessageText(
-                    "Thank you for your registration! Have a nice day!\n" +
-                            "To confirm your account, please click here:");
-            emailData.save(email);
+        Email reg = registrationEmail();
+        Email shop = shoppingEmail();
 
-            LOG.info("added new email with type {}, subject {}, text {}",
-                    email.getMessageType(), email.getSubject(), email.getMessageText());
+        if (!emails.contains(reg)) {
+            emailData.save(reg);
+            LOG.info("added new email with type {}, subject {}",
+                    reg.getMessageType(), reg.getSubject());
         }
+        if (!emails.contains(shop)) {
+            emailData.save(shop);
+            LOG.info("added new email with type {}, subject {}",
+                    shop.getMessageType(), shop.getSubject());
+        }
+    }
+
+    private Email registrationEmail() {
+        Email email = new Email();
+        email.setMessageType("registration");
+        email.setSubject("Registration verification");
+        email.setMessageText(
+                "Thank you for your registration! Have a nice day!\n" +
+                        "To confirm your account, please click here:");
+        return email;
+    }
+
+    private Email shoppingEmail() {
+        Email email = new Email();
+        email.setMessageType("shopping");
+        email.setSubject("Shopping confirmation");
+        email.setMessageText(
+                "Thank you for your shopping! Have a nice day!");
+        return email;
     }
 
     public void createOrder() {
