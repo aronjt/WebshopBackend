@@ -25,7 +25,8 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
             and have to clear who has access to what...
          */
         //csrf token disabled
-        http.csrf().disable().formLogin()
+        http.cors().and()
+                .csrf().disable().formLogin()
                 .loginPage("/login")
                 .permitAll()
                 .defaultSuccessUrl("/home", true)
