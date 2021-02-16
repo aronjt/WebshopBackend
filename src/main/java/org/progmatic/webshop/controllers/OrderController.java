@@ -55,24 +55,22 @@ public class OrderController {
         return service.sendOrder(clothes);
     }
 
+    /* TODO
+        what URL??
+     */
     @GetMapping("/valami")
     public RegisterUserDto getUserData() {
-        RegisterUserDto userDto = new RegisterUserDto();
         User user = uds.getLoggedInUser();
         if (user != null) {
-            // adatbázis lekérdezés a user adatairól
-            // userDto = ezzel...
+            return new RegisterUserDto(user);
         }
-        return userDto;
+        return new RegisterUserDto();
     }
 
     @PostMapping("/valami")
     public FeedbackDto sendUserData(@RequestBody List<PurchasedClothDto> clothes, @RequestBody RegisterUserDto user) {
-        // user regisztrált-e?
-        // ha igen, akkor őt kötjük össze a rendeléssel, és rögzítjük az adatbázisban
-        // ha nincs, akkor előbb regisztráljuk, és aztán...
-        // végén megerősítés, hogy ok, jó lett a rendelés
-        return null;
+
+        return new FeedbackDto();
     }
 
 }

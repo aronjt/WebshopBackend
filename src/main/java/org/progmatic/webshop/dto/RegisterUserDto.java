@@ -1,5 +1,7 @@
 package org.progmatic.webshop.dto;
 
+import org.progmatic.webshop.model.User;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -15,6 +17,18 @@ public class RegisterUserDto {
     private String phoneNumber;
 
     public RegisterUserDto() {
+    }
+
+    public RegisterUserDto(User user) {
+        firstName = user.getFirstName();
+        lastName = user.getLastName();
+        email = user.getEmail();
+        country = user.getCountry();
+        zipcode = user.getZipcode();
+        city = user.getCity();
+        address = user.getAddress();
+        phoneNumber = user.getPhoneNumber();
+        password = "";
     }
 
     public void setFirstName(String firstName) {
