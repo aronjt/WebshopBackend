@@ -1,6 +1,7 @@
 package org.progmatic.webshop.autodata;
 
 import org.progmatic.webshop.helpers.ClothDataHelper;
+import org.progmatic.webshop.helpers.EmailSenderHelper;
 import org.progmatic.webshop.helpers.UserDataHelper;
 import org.progmatic.webshop.model.*;
 import org.slf4j.Logger;
@@ -93,7 +94,7 @@ public class DataLoader implements ApplicationRunner {
         admin.setFirstName("Admin");
         admin.setLastName("Admin");
         admin.setPassword("MRirdatlan007");
-        admin.setEmail("webshopmnager@gmail.com");
+        admin.setEmail(EmailSenderHelper.ADMIN_EMAIL_ADDRESS);
         admin.setCountry("Hungary");
         admin.setZipcode(1234);
         admin.setCity("Budapest");
@@ -347,7 +348,7 @@ public class DataLoader implements ApplicationRunner {
 
     private Email registrationEmail() {
         Email email = new Email();
-        email.setMessageType("registration");
+        email.setMessageType(EmailSenderHelper.REGISTRATION);
         email.setSubject("Registration verification");
         email.setMessageText(
                 "Thank you for your registration! Have a nice day!\n" +
@@ -357,7 +358,7 @@ public class DataLoader implements ApplicationRunner {
 
     private Email shoppingEmail() {
         Email email = new Email();
-        email.setMessageType("shopping");
+        email.setMessageType(EmailSenderHelper.SHOPPING);
         email.setSubject("Shopping confirmation");
         email.setMessageText(
                 "Thank you for your shopping! Have a nice day!");
