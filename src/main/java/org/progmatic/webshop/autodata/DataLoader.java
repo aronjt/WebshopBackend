@@ -1,7 +1,9 @@
 package org.progmatic.webshop.autodata;
 
+import org.apache.commons.io.IOUtils;
 import org.progmatic.webshop.helpers.ClothDataHelper;
 import org.progmatic.webshop.helpers.EmailSenderHelper;
+import org.progmatic.webshop.helpers.ImageHelper;
 import org.progmatic.webshop.helpers.UserDataHelper;
 import org.progmatic.webshop.model.*;
 import org.progmatic.webshop.services.ImageService;
@@ -10,15 +12,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -423,16 +428,18 @@ public class DataLoader implements ApplicationRunner {
         long imgNum = imageData.count();
 
         if (imgNum == 0) {
-            if (addImageToDatabase("src/main/resources/images/child_dress.jpg", ClothDataHelper.GENDER_CHILD)) {
+            String pngImg = ImageHelper.PNG;
+            String jpgImg = ImageHelper.JPG;
+            if (addImageToDatabase("src/main/resources/images/child_dress.jpg", ClothDataHelper.GENDER_CHILD, jpgImg)) {
                 LOG.info("added image to database with name {}", ClothDataHelper.GENDER_CHILD);
             }
-            if (addImageToDatabase("src/main/resources/images/man_dress.jpg", ClothDataHelper.GENDER_MALE)) {
+            if (addImageToDatabase("src/main/resources/images/man_dress.jpg", ClothDataHelper.GENDER_MALE, jpgImg)) {
                 LOG.info("added image to database with name {}", ClothDataHelper.GENDER_MALE);
             }
-            if (addImageToDatabase("src/main/resources/images/woman_dress.jpg", ClothDataHelper.GENDER_FEMALE)) {
+            if (addImageToDatabase("src/main/resources/images/woman_dress.jpg", ClothDataHelper.GENDER_FEMALE, jpgImg)) {
                 LOG.info("added image to database with name {}", ClothDataHelper.GENDER_FEMALE);
             }
-            if (addImageToDatabase("src/main/resources/images/unisex.png", ClothDataHelper.GENDER_UNISEX)) {
+            if (addImageToDatabase("src/main/resources/images/unisex.png", ClothDataHelper.GENDER_UNISEX, pngImg)) {
                 LOG.info("added image to database with name {}", ClothDataHelper.GENDER_UNISEX);
             }
         }
@@ -480,21 +487,17 @@ public class DataLoader implements ApplicationRunner {
         }
     }
 
-    private boolean addImageToDatabase(String filepath, String name) {
+    private boolean addImageToDatabase(String filepath, String name, String contentType) {
         try {
-            BufferedImage img = ImageIO.read(new File(filepath));
-            WritableRaster raster = img.getRaster();
-            DataBufferByte data = (DataBufferByte) raster.getDataBuffer();
-
-            Image toSave = new Image();
-            toSave.setData(imageService.compressBytes(data.getData()));
-            toSave.setName(name);
-
-            imageData.save(toSave);
-
+            File file = new File(filepath);
+            FileInputStream input = new FileInputStream(file);
+            MultipartFile multipartFile = new MockMultipartFile("file",
+                    name, contentType, IOUtils.toByteArray(input));
+            Image img = new Image(multipartFile.getOriginalFilename(), imageService.compressBytes(multipartFile.getBytes()));
+            imageData.save(img);
             return true;
         } catch (Exception e) {
-            LOG.warn("an error happened during adding image to database: {}",
+            LOG.warn("oops, an error happened during adding image to database: {}",
                     e.getMessage());
             return false;
         }
