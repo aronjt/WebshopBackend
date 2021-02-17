@@ -18,10 +18,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
@@ -109,6 +105,7 @@ public class DataLoader implements ApplicationRunner {
         admin.setAddress("Pf. 666.");
         admin.setPhoneNumber("06 1 234 5678");
         admin.setUserRole(UserDataHelper.ROLE_ADMIN);
+        admin.setEnabled(true);
         return admin;
     }
 
@@ -124,6 +121,7 @@ public class DataLoader implements ApplicationRunner {
         user.setAddress("Felis út 42.");
         user.setPhoneNumber("1111111");
         user.setUserRole(UserDataHelper.ROLE_USER);
+        user.setEnabled(true);
         return user;
     }
 
