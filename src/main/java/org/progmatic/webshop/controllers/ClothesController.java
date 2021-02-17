@@ -38,16 +38,16 @@ public class ClothesController {
     }
 
     @GetMapping("/clothes/{id}")
-    public ClothDto getOneCloth(@PathVariable("id") long id) {
-        return clothesService.getOneCloth(id);
+    public ListDto<ClothDto> getOneCloth(@PathVariable("id") long id) {
+        ListDto<ClothDto> clothDtoListDto = new ListDto<>();
+        clothDtoListDto.getList().add(clothesService.getOneCloth(id));
+        return clothDtoListDto;
     }
 
     @GetMapping(value = "/clothes", params = "gender")
     public List<ClothDto> getClothesFromGender(@RequestParam("gender") String gender) {
         return clothesService.getClothesFromGender(gender);
     }
-
-    @GetMapping(value = "/clothes", params = "")
 
     @PutMapping("/clothes/{id}")
     public FeedbackDto editCloth(@PathVariable("id") long id) {
@@ -57,10 +57,5 @@ public class ClothesController {
     @GetMapping("/stock/{id}")
     public StockDto getStockLevel(@PathVariable("id") long id) {
         return clothesService.getStockLevel(id);
-    }
-
-    @GetMapping("/purchased/{id}")
-    public PurchasedClothesDto getPurchasedClothes(@PathVariable("id") long id) {
-        return clothesService.getPurchasedClothes(id);
     }
 }

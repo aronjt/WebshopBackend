@@ -85,10 +85,4 @@ public class ClothesService {
         LOG.info("Stock level given back");
         return stockDto;
     }
-
-    @Transactional
-    public PurchasedClothesDto getPurchasedClothes(long id) {
-        PurchasedClothes pc = em.find(PurchasedClothes.class, id);
-        return new PurchasedClothesDto(pc);
-    }
 }

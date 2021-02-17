@@ -6,6 +6,8 @@ public class ListDto<T> {
 
     private List<T> list;
 
+    public ListDto() {
+    }
     public ListDto(List<T> list) {
         this.list = list;
     }
