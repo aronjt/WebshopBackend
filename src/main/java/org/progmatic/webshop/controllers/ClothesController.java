@@ -45,8 +45,9 @@ public class ClothesController {
     }
 
     @GetMapping(value = "/clothes", params = "gender")
-    public List<ClothDto> getClothesFromGender(@RequestParam("gender") String gender) {
-        return clothesService.getClothesFromGender(gender);
+    public ListDto<ClothDto> getClothesFromGender(@RequestParam("gender") String gender) {
+        List<ClothDto> clothDtoList = clothesService.getClothesFromGender(gender);
+        return new ListDto<>(clothDtoList);
     }
 
     @PutMapping("/clothes/{id}")
@@ -55,7 +56,9 @@ public class ClothesController {
     }
 
     @GetMapping("/stock/{id}")
-    public StockDto getStockLevel(@PathVariable("id") long id) {
-        return clothesService.getStockLevel(id);
+    public ListDto<StockDto> getStockLevel(@PathVariable("id") long id) {
+        ListDto<StockDto> stockDtoListDto = new ListDto<>();
+        stockDtoListDto.getList().add(clothesService.getStockLevel(id));
+        return stockDtoListDto;
     }
 }
