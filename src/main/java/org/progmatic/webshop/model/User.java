@@ -20,41 +20,41 @@ import java.util.Set;
 public class User extends BaseEntity implements UserDetails {
 
     @Email
-    @NotBlank
-    @NotNull
+  //  @NotBlank
+  //  @NotNull
     @Column(unique = true)
     private String email;
 
 
-    @NotBlank
-    @NotNull
+  //  @NotBlank
+  //  @NotNull
     private String password;
 
-    @NotBlank
-    @NotNull
+  //  @NotBlank
+ //   @NotNull
     private String firstName;
 
-    @NotBlank
-    @NotNull
+  //  @NotBlank
+  //  @NotNull
     private String lastName;
 
-    @NotBlank
-    @NotNull
+  //  @NotBlank
+ //   @NotNull
     private String country;
 
-    @NotNull
+  //  @NotNull
     private int zipcode;
 
-    @NotBlank
-    @NotNull
+ //   @NotBlank
+  //  @NotNull
     private String city;
 
-    @NotBlank
-    @NotNull
+  //  @NotBlank
+ //   @NotNull
     private String address;
 
-    @NotBlank
-    @NotNull
+ //   @NotBlank
+ //   @NotNull
     private String phoneNumber;
     private int points;
     private String UserRole;
