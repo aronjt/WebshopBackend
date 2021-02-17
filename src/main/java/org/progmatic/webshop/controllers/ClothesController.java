@@ -3,19 +3,22 @@ package org.progmatic.webshop.controllers;
 import org.progmatic.webshop.dto.*;
 import org.progmatic.webshop.services.ClothesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 import java.util.List;
 
 @RestController
-//@CrossOrigin(origins = "http://localhost:4200")
 public class ClothesController {
 
-    ClothesService clothesService;
+    private ClothesService clothesService;
+    private CorsConfigurationSource corsConfigurationSource;
 
     @Autowired
-    public ClothesController(ClothesService clothesService) {
+    public ClothesController(ClothesService clothesService, @Qualifier("corsConfigurationSource") CorsConfigurationSource corsConfigurationSource) {
         this.clothesService = clothesService;
+        this.corsConfigurationSource = corsConfigurationSource;
     }
 
     @GetMapping("/clothes")

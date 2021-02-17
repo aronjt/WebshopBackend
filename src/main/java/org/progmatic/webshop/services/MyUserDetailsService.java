@@ -3,6 +3,7 @@ package org.progmatic.webshop.services;
 import org.progmatic.webshop.dto.RegisterUserDto;
 import org.progmatic.webshop.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,7 +27,7 @@ public class MyUserDetailsService implements UserDetailsService {
     PasswordEncoder passwordEncoder;
 
     @Autowired
-    public MyUserDetailsService(PasswordEncoder passwordEncoder) {
+    public MyUserDetailsService(@Qualifier("passwordEncoder") PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
 

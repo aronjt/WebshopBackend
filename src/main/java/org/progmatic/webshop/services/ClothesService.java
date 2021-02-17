@@ -38,6 +38,7 @@ public class ClothesService {
     @Transactional
     public ClothDto getOneCloth(long id) {
         Clothes clothes = em.find(Clothes.class, id);
+        LOG.info("one cloth given back");
         return new ClothDto(clothes);
     }
 
@@ -50,7 +51,7 @@ public class ClothesService {
         for (Clothes clothes : clothesList) {
             clothDtoList.add(new ClothDto(clothes));
         }
-        LOG.info("all clothes founded: {} orders in list", clothDtoList.size());
+        LOG.info("all clothes founded by gender: {} orders in list", clothDtoList.size());
         return clothDtoList;
     }
 
@@ -58,6 +59,7 @@ public class ClothesService {
     public long addNewCloth(ClothDto clothDto) {
         Clothes c = new Clothes(clothDto);
         em.persist(c);
+        LOG.info("one cloth added to database");
         return c.getId();
     }
 
@@ -80,6 +82,7 @@ public class ClothesService {
                 case "XL" -> stockDto.setSizeXl(stock1.getQuantity());
             }
         }
+        LOG.info("Stock level given back");
         return stockDto;
     }
 
