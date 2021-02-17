@@ -1,6 +1,7 @@
 package org.progmatic.webshop.services;
 
 import org.progmatic.webshop.dto.RegisterUserDto;
+import org.progmatic.webshop.dto.UserDto;
 import org.progmatic.webshop.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,6 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -48,6 +52,16 @@ public class MyUserDetailsService implements UserDetailsService {
         catch (NoResultException ex){
             return false;
         }
+    }
+
+    @Transactional
+    public List<UserDto> listAllUsers() {
+        List<User> users = em.createQuery("SELECT u FROM User u", User.class).getResultList();
+        List<UserDto> usersDto = new ArrayList<>();
+        for (User user : users) {
+            usersDto.add(new UserDto(user));
+        }
+        return usersDto;
     }
 
     @Transactional

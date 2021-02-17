@@ -1,5 +1,6 @@
 package org.progmatic.webshop.controllers;
 
+import org.progmatic.webshop.dto.ListDto;
 import org.progmatic.webshop.dto.UserDto;
 import org.progmatic.webshop.services.MyUserDetailsService;
 import org.slf4j.Logger;
@@ -32,8 +33,9 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping
-    public List<UserDto> listAllUser(){
-        return null;
+    @GetMapping("/users")
+    public ListDto<UserDto> listAllUser(){
+        ListDto<UserDto> users = new ListDto<>(userService.listAllUsers());
+        return users;
     }
 }
