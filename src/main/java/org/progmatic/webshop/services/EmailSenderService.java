@@ -6,6 +6,7 @@ import org.progmatic.webshop.helpers.EmailSenderHelper;
 import org.progmatic.webshop.model.User;
 import org.progmatic.webshop.model.ConfirmationToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.mail.*;
@@ -13,10 +14,11 @@ import javax.mail.internet.*;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.Properties;
+
 @Service
 public class EmailSenderService {
-//    @Autowired
-//    private ConfirmationTokenRepository confirmationTokenRepository;
+    @Value("${value.of.url}")
+    private String valueOfUrl;
 
     @Autowired
     private EmailData emailData;
@@ -26,16 +28,15 @@ public class EmailSenderService {
 
     public EmailSenderService() {
     }
-public void preparationForSending(){
 
-}
-public Email setEmail (String messageType){
-    Email emailDataByMessageType = emailData.findByMessageType(messageType);
-    return emailDataByMessageType;
-}
+    public Email setEmail(String messageType) {
+        Email emailDataByMessageType = emailData.findByMessageType(messageType);
+        return emailDataByMessageType;
+    }
+
     @Transactional
     public void sendEmail(User toUser, String messageType, ConfirmationToken confirmationToken) {
-      Email emailDataByMessageType = setEmail(messageType);
+        Email emailDataByMessageType = setEmail(messageType);
 
         String toEmail = toUser.getUsername();
         Properties props = new Properties();
@@ -48,7 +49,7 @@ public Email setEmail (String messageType){
         props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         props.put("mail.smtp.socketFactory.fallback", "false");
 
-        String fromEmail =EmailSenderHelper.ADMIN_EMAIL_ADDRESS;
+        String fromEmail = EmailSenderHelper.ADMIN_EMAIL_ADDRESS;
         final User fromUser = (User) myUserDetailsService.loadUserByUsername(fromEmail);
         String fromPassword = fromUser.getPassword();
         Session session = Session.getDefaultInstance(props,
@@ -69,18 +70,16 @@ public Email setEmail (String messageType){
         MimeMessage message = new MimeMessage(session);
 
 
-
         String subject = emailDataByMessageType.getSubject();
         try {
             message.setSender(addressFrom);
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
             message.setSubject(subject);
             Multipart emailcontect = new MimeMultipart();
-            MimeBodyPart textBodyPart =new MimeBodyPart();
+            MimeBodyPart textBodyPart = new MimeBodyPart();
             if (messageType.equals(EmailSenderHelper.REGISTRATION)) {
-                textBodyPart.setText(getMessageTextWithConfirmationToken(toUser,emailDataByMessageType,confirmationToken));
-            }
-            else {
+                textBodyPart.setText(getMessageTextWithConfirmationToken(toUser, emailDataByMessageType, confirmationToken));
+            } else {
                 textBodyPart.setText(getMessageText(toUser, emailDataByMessageType));
             }
             MimeBodyPart imageAttachment = new MimeBodyPart();
@@ -99,23 +98,26 @@ public Email setEmail (String messageType){
             e.printStackTrace();
         }
     }
-    public String getMessageText (User toUser, Email email) throws MessagingException {
-        String text ="Hello " +
+
+    public String getMessageText(User toUser, Email email) throws MessagingException {
+        String text = "Hello " +
                 toUser.getFirstName() +
                 ",\n" +
                 email.getMessageText() +
                 "\n For more info visit our website.";
         return text;
     }
+
     public String getMessageTextWithConfirmationToken(User toUser, Email email, ConfirmationToken confirmationToken) throws MessagingException {
 //        ConfirmationToken confirmationToken = new ConfirmationToken(toUser);
 
 //        confirmationTokenRepository.save(confirmationToken);
-        String text ="Hello " +
+        String text = "Hello " +
                 toUser.getFirstName() +
                 ",\n" +
                 email.getMessageText()
-                + EmailSenderHelper.CONFIRM_URL + confirmationToken.getConfirmationToken()+
+//                + EmailSenderHelper.CONFIRM_URL
+                + valueOfUrl+ confirmationToken.getConfirmationToken() +
                 "\n For more info visit our website.";
         return text;
     }
