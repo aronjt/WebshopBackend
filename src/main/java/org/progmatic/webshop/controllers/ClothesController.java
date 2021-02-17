@@ -23,7 +23,8 @@ public class ClothesController {
 
     @GetMapping("/clothes")
     public List<ClothDto> getAllClothes() {
-        return clothesService.getAllClothes();
+        List<ClothDto> clothDtoList = clothesService.getAllClothes();
+        return clothDtoList;
     }
 
     @PostMapping("/clothes")
