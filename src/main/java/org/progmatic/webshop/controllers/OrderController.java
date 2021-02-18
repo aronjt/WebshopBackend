@@ -52,7 +52,7 @@ public class OrderController {
     /* TODO
         what URL??
      */
-    @GetMapping("/valami")
+    @GetMapping("/valami_aminek_rohadtul_nem_tudok_rendes_cimet_adni_de_visszaadja_a_belogolt_user_adatait")
     public RegisterUserDto getUserData() {
         User user = uds.getLoggedInUser();
         if (user != null) {
