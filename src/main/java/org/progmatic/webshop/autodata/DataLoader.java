@@ -64,11 +64,11 @@ public class DataLoader implements ApplicationRunner {
         createUsers();
         createTypes();
         createGenders();
+        createImages();
         createClothes();
         putSomeClothesIntoTheStock();
         createEmail();
         createOrder();
-        createImages();
         setImagesToGenders();
     }
 
@@ -193,13 +193,18 @@ public class DataLoader implements ApplicationRunner {
             Gender unisex = genderData.findByGender(ClothDataHelper.GENDER_UNISEX);
             Gender child = genderData.findByGender(ClothDataHelper.GENDER_CHILD);
 
-            createShirts(shirt, male, female, unisex);
-            createPullovers(pullover, male, female, child);
-            createPants(pants, male, female, unisex);
+            Image maleImg = imageData.findByName(ClothDataHelper.GENDER_MALE);
+            Image femaleImg = imageData.findByName(ClothDataHelper.GENDER_FEMALE);
+            Image unImg = imageData.findByName(ClothDataHelper.GENDER_UNISEX);
+            Image childImg = imageData.findByName(ClothDataHelper.GENDER_CHILD);
+
+            createShirts(shirt, male, female, unisex, maleImg, femaleImg, unImg);
+            createPullovers(pullover, male, female, child, maleImg, femaleImg, childImg);
+            createPants(pants, male, female, unisex, maleImg, femaleImg, unImg);
         }
     }
 
-    private void createShirts(Type type, Gender male, Gender female, Gender unisex) {
+    private void createShirts(Type type, Gender male, Gender female, Gender unisex, Image maleImg, Image femaleImg, Image unImg) {
         Clothes shirt1 = new Clothes();
         shirt1.setName("Lansketon T-Shirt");
         shirt1.setDetails("The best shirt for fans!");
@@ -207,6 +212,7 @@ public class DataLoader implements ApplicationRunner {
         shirt1.setColor(ClothDataHelper.COLOR_BLACK);
         shirt1.setType(type);
         shirt1.setGender(male);
+        shirt1.setImage(maleImg);
         clothesData.save(shirt1);
 
         LOG.info("added new {} to the database with name and price: {}, {}",
@@ -219,6 +225,7 @@ public class DataLoader implements ApplicationRunner {
         shirt2.setColor(ClothDataHelper.COLOR_PINK);
         shirt2.setType(type);
         shirt2.setGender(female);
+        shirt2.setImage(femaleImg);
         clothesData.save(shirt2);
 
         LOG.info("added new {} to the database with name and price: {}, {}",
@@ -231,13 +238,14 @@ public class DataLoader implements ApplicationRunner {
         shirt3.setColor(ClothDataHelper.COLOR_WHITE);
         shirt3.setType(type);
         shirt3.setGender(unisex);
+        shirt3.setImage(unImg);
         clothesData.save(shirt3);
 
         LOG.info("added new {} to the database with name and price: {}, {}",
                 type.getType(), shirt3.getName(), shirt3.getPrice());
     }
 
-    private void createPullovers(Type type, Gender male, Gender female, Gender child) {
+    private void createPullovers(Type type, Gender male, Gender female, Gender child, Image maleImg, Image femaleImg, Image childImg) {
         Clothes pullover1 = new Clothes();
         pullover1.setName("Jackie");
         pullover1.setDetails("Very comfy.");
@@ -245,6 +253,7 @@ public class DataLoader implements ApplicationRunner {
         pullover1.setColor(ClothDataHelper.COLOR_BLUE);
         pullover1.setType(type);
         pullover1.setGender(male);
+        pullover1.setImage(maleImg);
         clothesData.save(pullover1);
 
         LOG.info("added new {} to the database with name and price: {}, {}",
@@ -257,6 +266,7 @@ public class DataLoader implements ApplicationRunner {
         pullover2.setColor(ClothDataHelper.COLOR_PINK);
         pullover2.setType(type);
         pullover2.setGender(female);
+        pullover2.setImage(femaleImg);
         clothesData.save(pullover2);
 
         LOG.info("added new {} to the database with name and price: {}, {}",
@@ -269,13 +279,14 @@ public class DataLoader implements ApplicationRunner {
         pullover3.setColor(ClothDataHelper.COLOR_WHITE);
         pullover3.setType(type);
         pullover3.setGender(child);
+        pullover3.setImage(childImg);
         clothesData.save(pullover3);
 
         LOG.info("added new {} to the database with name and price: {}, {}",
                 type.getType(), pullover3.getName(), pullover3.getPrice());
     }
 
-    private void createPants(Type type, Gender male, Gender female, Gender unisex) {
+    private void createPants(Type type, Gender male, Gender female, Gender unisex, Image maleImg, Image femaleImg, Image unImg) {
         Clothes pants1 = new Clothes();
         pants1.setName("Jack's Pants");
         pants1.setDetails("You cannot wear anything better.");
@@ -283,6 +294,7 @@ public class DataLoader implements ApplicationRunner {
         pants1.setColor(ClothDataHelper.COLOR_BLACK);
         pants1.setType(type);
         pants1.setGender(male);
+        pants1.setImage(maleImg);
         clothesData.save(pants1);
 
         LOG.info("added new {} to the database with name and price: {}, {}",
@@ -295,6 +307,7 @@ public class DataLoader implements ApplicationRunner {
         pants2.setColor(ClothDataHelper.COLOR_PINK);
         pants2.setType(type);
         pants2.setGender(female);
+        pants2.setImage(femaleImg);
         clothesData.save(pants2);
 
         LOG.info("added new {} to the database with name and price: {}, {}",
@@ -307,6 +320,7 @@ public class DataLoader implements ApplicationRunner {
         pants3.setColor(ClothDataHelper.COLOR_GRAY);
         pants3.setType(type);
         pants3.setGender(unisex);
+        pants3.setImage(unImg);
         clothesData.save(pants3);
 
         LOG.info("added new {} to the database with name and price: {}, {}",
