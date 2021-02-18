@@ -1,5 +1,6 @@
 package org.progmatic.webshop.services;
 
+import org.progmatic.webshop.dto.GenderDto;
 import org.progmatic.webshop.dto.ListDto;
 import org.progmatic.webshop.model.Gender;
 import org.progmatic.webshop.model.Type;
@@ -17,8 +18,13 @@ public class SearchService {
     EntityManager em;
 
     @Transactional
-    public ListDto<Gender> getGenders() {
-        return new ListDto<>(em.createQuery("SELECT g FROM Gender g", Gender.class).getResultList());
+    public ListDto<GenderDto> getGenders() {
+        List<Gender> genders = em.createQuery("SELECT g FROM Gender g", Gender.class).getResultList();
+        ListDto<GenderDto> toReturn = new ListDto<>();
+        for (Gender g : genders) {
+            toReturn.getList().add(new GenderDto(g));
+        }
+        return toReturn;
     }
 
     @Transactional
