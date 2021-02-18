@@ -1,6 +1,5 @@
 package org.progmatic.webshop.model;
 
-import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.progmatic.webshop.dto.RegisterUserDto;
 import org.progmatic.webshop.helpers.UserDataHelper;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,7 +23,7 @@ public class User extends BaseEntity implements UserDetails {
     @NotBlank
     @NotNull
     @Column(unique = true)
-    private String email;
+    private String username;
 
 
     @NotBlank
@@ -75,18 +74,14 @@ public class User extends BaseEntity implements UserDetails {
         zipcode=registerUserDto.getZipcode();
         address=registerUserDto.getAddress();
         city=registerUserDto.getCity();
-        email=registerUserDto.getEmail();
+        username =registerUserDto.getEmail();
         password=registerUserDto.getPassword();
         phoneNumber=registerUserDto.getPhoneNumber();
         UserRole= UserDataHelper.ROLE_USER;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
     public void setUsername(String email) {
-        this.email = email;
+        this.username = email;
     }
 
     public void setPassword(String password) {
@@ -189,7 +184,7 @@ public class User extends BaseEntity implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return username;
     }
 
     @Override
@@ -217,11 +212,11 @@ public class User extends BaseEntity implements UserDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return email.equals(user.email);
+        return username.equals(user.username);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(email);
+        return Objects.hash(username);
     }
 }

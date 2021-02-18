@@ -14,7 +14,7 @@ public class UserDto {
         id = user.getId();
         firstName = user.getFirstName();
         lastName = user.getLastName();
-        email = user.getEmail();
+        email = user.getUsername();
         userRole = user.getUserRole();
     }
 

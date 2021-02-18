@@ -2,9 +2,6 @@ package org.progmatic.webshop.dto;
 
 import org.progmatic.webshop.model.User;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
 public class RegisterUserDto {
     private String firstName;
     private String lastName;
@@ -22,7 +19,7 @@ public class RegisterUserDto {
     public RegisterUserDto(User user) {
         firstName = user.getFirstName();
         lastName = user.getLastName();
-        email = user.getEmail();
+        email = user.getUsername();
         country = user.getCountry();
         zipcode = user.getZipcode();
         city = user.getCity();

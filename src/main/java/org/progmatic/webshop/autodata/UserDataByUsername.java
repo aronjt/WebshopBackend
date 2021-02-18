@@ -6,6 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 //@Repository("userRepository")
-public interface UserDataByEmail extends JpaRepository<User, String> {
-    User findByEmailIgnoreCase(String email);
+public interface UserDataByUsername extends JpaRepository<User, String> {
+    User findByUsernameIgnoreCase(String username);
 }

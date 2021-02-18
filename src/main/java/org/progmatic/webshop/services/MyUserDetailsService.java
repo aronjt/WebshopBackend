@@ -36,16 +36,16 @@ public class MyUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return em.createQuery("select u from User u where u.email = :email", User.class)
-                .setParameter("email", email)
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return em.createQuery("select u from User u where u.username = :username", User.class)
+                .setParameter("username", username)
                 .getSingleResult();
     }
 
-    public boolean userExists(String email) {
+    public boolean userExists(String username) {
         try {
-            User user = em.createQuery("select u from User u where u.email = :email", User.class)
-                    .setParameter("email", email)
+            User user = em.createQuery("select u from User u where u.username = :username", User.class)
+                    .setParameter("username", username)
                     .getSingleResult();
             return true;
         }

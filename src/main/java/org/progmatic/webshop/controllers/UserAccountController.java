@@ -30,7 +30,7 @@ private LocalDate localdate;
 
     @PostMapping(value = "/register")
     public FeedbackDto registerUser(@RequestBody RegisterUserDto registerUserDto) {
-        User existingUser = userRepository.findByEmail(registerUserDto.getEmail());
+        User existingUser = userRepository.findByUsername(registerUserDto.getEmail());
         FeedbackDto feedbackDto = new FeedbackDto();
 
         ConfirmationToken confirmationToken=null;
@@ -106,7 +106,7 @@ private LocalDate localdate;
         ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
         FeedbackDto feedbackDto = new FeedbackDto();
         if (token != null) {
-            User user = userRepository.findByEmail(token.getUser().getEmail());
+            User user = userRepository.findByUsername(token.getUser().getUsername());
             user.setEnabled(true);
 //           T O D O letesztelni hogy save nélkül működik -e
 //            válasz nem
