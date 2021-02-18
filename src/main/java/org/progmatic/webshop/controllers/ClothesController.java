@@ -61,4 +61,6 @@ public class ClothesController {
         stockDtoListDto.getList().add(clothesService.getStockLevel(id));
         return stockDtoListDto;
     }
+
+
 }
