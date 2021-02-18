@@ -8,8 +8,6 @@ import org.progmatic.webshop.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
@@ -38,7 +36,7 @@ public class OrderService {
         OnlineOrder order = em.find(OnlineOrder.class, id);
         if (order != null) {
             LOG.debug("order with id {} found, for user {} with {} purchased cloth(es)",
-                    id, order.getUser().getEmail(), order.getPurchasedClothesList().size());
+                    id, order.getUser().getUsername(), order.getPurchasedClothesList().size());
             return new OrderDto(order);
         }
         return new OrderDto();

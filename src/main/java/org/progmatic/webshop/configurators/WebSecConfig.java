@@ -28,7 +28,7 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true);
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "https://progmatic-webshop-project.herokuapp.com"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST","DELETE","PUT","PATCH","HEAD","OPTIONS"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
@@ -47,7 +47,7 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable().formLogin()
                // .loginPage("/login")
                 .permitAll()
-                .defaultSuccessUrl("/home", true)
+                .defaultSuccessUrl("/clothes", true)
                 .and()
                 .logout()
                 .logoutSuccessUrl("/login")

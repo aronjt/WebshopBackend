@@ -372,7 +372,7 @@ public class DataLoader implements ApplicationRunner {
         long orderNum = onlineOrderData.count();
 
         if (orderNum == 0) {
-            User user = userData.findByEmail("ertekelek@ertek.el");
+            User user = userData.findByUsername("ertekelek@ertek.el");
 
             if (user != null) {
                 OnlineOrder order = new OnlineOrder();
