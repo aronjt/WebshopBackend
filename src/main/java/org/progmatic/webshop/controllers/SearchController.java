@@ -1,5 +1,6 @@
 package org.progmatic.webshop.controllers;
 
+import org.progmatic.webshop.dto.GenderDto;
 import org.progmatic.webshop.dto.ListDto;
 import org.progmatic.webshop.model.Gender;
 import org.progmatic.webshop.model.Type;
@@ -19,7 +20,7 @@ public class SearchController {
     }
 
     @GetMapping("/genders")
-    public ListDto<Gender> getGenders() {
+    public ListDto<GenderDto> getGenders() {
         return service.getGenders();
     }
 
