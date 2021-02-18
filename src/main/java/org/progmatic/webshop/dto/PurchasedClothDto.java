@@ -5,6 +5,7 @@ import org.progmatic.webshop.model.PurchasedClothes;
 
 public class PurchasedClothDto {
 
+    // should change: long clothesId
     private Clothes clothes;
     private int quantity;
     private String size;
@@ -30,3 +31,9 @@ public class PurchasedClothDto {
     }
 
 }
+
+/*
+    User user;
+    List<PurchasedClothes> list;
+    float totalPrice;
+ */
