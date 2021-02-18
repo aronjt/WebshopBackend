@@ -15,11 +15,10 @@ public class ConfirmationToken {
     @Column
     private String confirmationToken;
 
-    @Column
-    private boolean enable =true;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
+    private Date enableDate;
     @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false)
     private User user;
@@ -34,12 +33,12 @@ public class ConfirmationToken {
 
     }
 
-    public boolean isEnable() {
-        return enable;
+    public Date getEnableDate() {
+        return enableDate;
     }
 
-    public void setEnable(boolean enable) {
-        this.enable = enable;
+    public void setEnableDate(Date enableDate) {
+        this.enableDate = enableDate;
     }
 
     public long getTokenid() {
