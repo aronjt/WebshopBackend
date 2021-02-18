@@ -72,13 +72,13 @@ public class ClothesService {
             whereCondition.and(QClothes.clothes.name.like("%" + filter.getName() + "%"));
         }
         if (!StringUtils.isEmpty(filter.getGender())) {
-            whereCondition.and(QClothes.clothes.name.eq(filter.getGender()));
+            whereCondition.and(QClothes.clothes.gender.gender.eq(filter.getGender()));
         }
         if (!StringUtils.isEmpty(filter.getType())) {
-            whereCondition.and(QClothes.clothes.name.eq(filter.getType()));
+            whereCondition.and(QClothes.clothes.type.type.eq(filter.getType()));
         }
         if (!StringUtils.isEmpty(filter.getColor())) {
-            whereCondition.and(QClothes.clothes.name.eq(filter.getColor()));
+            whereCondition.and(QClothes.clothes.color.eq(filter.getColor()));
         }
         List<Clothes> clothesList = queryFactory.selectFrom(QClothes.clothes).where(whereCondition).fetch();
         List<ClothDto> clothDtoList = new ArrayList<>();
