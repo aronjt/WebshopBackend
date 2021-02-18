@@ -47,7 +47,7 @@ private LocalDate localdate;
             confirmationToken = new ConfirmationToken(existingUser);
             confirmationTokenRepository.save(confirmationToken);
             sendEmail.sendEmail(existingUser, EmailSenderHelper.REGISTRATION, confirmationToken);
-            feedbackDto.setMessage("successfulRegisteration");
+            feedbackDto.setMessage("Confirmation token sent to Old User");
         }
         }
          else {
@@ -58,24 +58,16 @@ private LocalDate localdate;
 
             confirmationTokenRepository.save(confirmationToken);
 
-//            SimpleMailMessage mailMessage = new SimpleMailMessage();
-//            mailMessage.setTo(user.getEmail());
-//            mailMessage.setSubject("Complete Registration!");
-//            mailMessage.setFrom("chand312902@gmail.com");
-//            mailMessage.setText("To confirm your account, please click here : "
-//                    + "http://localhost:8080/confirm-account?token=" + confirmationToken.getConfirmationToken());
-
-//            emailSenderService.sendEmail(mailMessage);
             sendEmail.sendEmail(user, EmailSenderHelper.REGISTRATION, confirmationToken);
-            feedbackDto.setMessage("successfulRegisteration");
+            feedbackDto.setMessage("Confirmation token sent to New User");
         }
 
         return feedbackDto;
     }
     public boolean checkTheDate(Date createdDate, LocalDate now){
 //        ez amúgy localdate.now
-//        String sourceDate = String.valueOf(now);
-        String sourceDate = "2021-02-19";
+        String sourceDate = String.valueOf(now);
+//        String sourceDate = "2021-02-19";
 
 //        String sourceDate = String.valueOf(LocalDate.now());
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
