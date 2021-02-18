@@ -1,16 +1,18 @@
 package org.progmatic.webshop.services;
 
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.apache.commons.lang3.StringUtils;
 import org.progmatic.webshop.dto.ClothDto;
-import org.progmatic.webshop.dto.PurchasedClothesDto;
+import org.progmatic.webshop.dto.FilterClothesDto;
 import org.progmatic.webshop.dto.StockDto;
 import org.progmatic.webshop.model.Clothes;
-import org.progmatic.webshop.model.PurchasedClothes;
+import org.progmatic.webshop.model.QClothes;
 import org.progmatic.webshop.model.Stock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
@@ -63,6 +65,31 @@ public class ClothesService {
         return c.getId();
     }
 
+    public List<ClothDto> filterClothes(FilterClothesDto filter) {
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+        BooleanBuilder whereCondition = new BooleanBuilder();
+        if (!StringUtils.isEmpty(filter.getName())) {
+            whereCondition.and(QClothes.clothes.name.like("%" + filter.getName() + "%"));
+        }
+        if (!StringUtils.isEmpty(filter.getGender())) {
+            whereCondition.and(QClothes.clothes.name.eq(filter.getGender()));
+        }
+        if (!StringUtils.isEmpty(filter.getType())) {
+            whereCondition.and(QClothes.clothes.name.eq(filter.getType()));
+        }
+        if (!StringUtils.isEmpty(filter.getColor())) {
+            whereCondition.and(QClothes.clothes.name.eq(filter.getColor()));
+        }
+        List<Clothes> clothesList = queryFactory.selectFrom(QClothes.clothes).where(whereCondition).fetch();
+        List<ClothDto> clothDtoList = new ArrayList<>();
+        if (filter.getPriceMin() > 0 && filter.getPriceMax() > 0 && filter.getPriceMin() < filter.getPriceMax()) {
+            for (Clothes clothes : clothesList) {
+                clothDtoList.add(new ClothDto(clothes));
+            }
+        }
+        return clothDtoList;
+    }
+
     //TODO
     @Transactional
     public long editCloth(long id) {
@@ -85,4 +112,6 @@ public class ClothesService {
         LOG.info("Stock level given back");
         return stockDto;
     }
+
+
 }

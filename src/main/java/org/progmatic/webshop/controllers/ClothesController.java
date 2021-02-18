@@ -50,6 +50,12 @@ public class ClothesController {
         return new ListDto<>(clothDtoList);
     }
 
+    @PostMapping(value = "/clothes/filter")
+    public ListDto<ClothDto> filterClothes(@RequestBody FilterClothesDto filter) {
+        List<ClothDto> clothDtoList = clothesService.filterClothes(filter);
+        return new ListDto<>(clothDtoList);
+    }
+
     @PutMapping("/clothes/{id}")
     public FeedbackDto editCloth(@PathVariable("id") long id) {
         return null;
