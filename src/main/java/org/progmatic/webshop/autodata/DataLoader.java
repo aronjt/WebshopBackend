@@ -98,7 +98,7 @@ public class DataLoader implements ApplicationRunner {
         admin.setFirstName("Admin");
         admin.setLastName("Admin");
         admin.setPassword("MRirdatlan007");
-        admin.setEmail(EmailSenderHelper.ADMIN_EMAIL_ADDRESS);
+        admin.setUsername(EmailSenderHelper.ADMIN_EMAIL_ADDRESS);
         admin.setCountry("Hungary");
         admin.setZipcode(1234);
         admin.setCity("Budapest");
@@ -114,7 +114,7 @@ public class DataLoader implements ApplicationRunner {
         user.setFirstName("Elek");
         user.setLastName("Érték");
         user.setPassword(encoder.encode("jelszó"));
-        user.setEmail("ertekelek@ertek.el");
+        user.setUsername("ertekelek@ertek.el");
         user.setCountry("Óperencia");
         user.setZipcode(9999);
         user.setCity("Túlnan");

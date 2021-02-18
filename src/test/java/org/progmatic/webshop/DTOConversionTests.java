@@ -2,15 +2,8 @@ package org.progmatic.webshop;
 
 
 import org.dozer.DozerBeanMapper;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.progmatic.webshop.dto.ClothDto;
-import org.progmatic.webshop.dto.OrderDto;
-import org.progmatic.webshop.dto.UserDto;
 import org.progmatic.webshop.model.*;
-
-import java.time.LocalDateTime;
 
 
 public class DTOConversionTests {
@@ -26,7 +19,7 @@ public class DTOConversionTests {
         testUser.setId(3);
         testUser.setFirstName("testFName");
         testUser.setLastName("testLName");
-        testUser.setEmail("test@test.hu");
+        testUser.setUsername("test@test.hu");
         testUser.setUserRole("ROLE_USER");
         //testUser.setCreationTime(LocalDateTime.now());
 
