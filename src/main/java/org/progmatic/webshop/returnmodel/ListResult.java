@@ -1,4 +1,4 @@
-package org.progmatic.webshop.somethingNew;
+package org.progmatic.webshop.returnmodel;
 
 import java.util.ArrayList;
 import java.util.List;

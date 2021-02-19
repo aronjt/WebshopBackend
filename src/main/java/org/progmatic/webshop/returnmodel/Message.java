@@ -1,4 +1,4 @@
-package org.progmatic.webshop.somethingNew;
+package org.progmatic.webshop.returnmodel;
 
 public class Message extends Feedback {
 
