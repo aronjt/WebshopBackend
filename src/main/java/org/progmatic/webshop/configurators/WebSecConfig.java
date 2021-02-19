@@ -44,7 +44,7 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
          */
         //csrf token disabled
         http.cors().and()
-                .csrf().disable().formLogin()
+                /*.csrf().disable()*/.formLogin()
                // .loginPage("/login")
                 .permitAll()
                 .defaultSuccessUrl("/clothes", true)
