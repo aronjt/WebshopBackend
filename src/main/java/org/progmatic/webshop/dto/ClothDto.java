@@ -12,6 +12,7 @@ public class ClothDto {
     private String details;
     private float price;
     private String color;
+    private long imageId;
 
 
 
@@ -21,6 +22,7 @@ public class ClothDto {
         details = clothes.getDetails();
         price = clothes.getPrice();
         color = clothes.getColor();
+        imageId = clothes.getImage().getId();
     }
 
     public ClothDto() {
@@ -66,5 +68,11 @@ public class ClothDto {
         this.color = color;
     }
 
+    public long getImageId() {
+        return imageId;
+    }
 
+    public void setImageId(long imageId) {
+        this.imageId = imageId;
+    }
 }
