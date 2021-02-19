@@ -62,8 +62,8 @@ public class OrderController {
     }
 
     @PostMapping("/orders")
-    public FeedbackDto sendOrder(@RequestBody List<PurchasedClothDto> clothes, @RequestBody RegisterUserDto user) {
-        OrderDto order = service.sendOrder(clothes, user);
+    public FeedbackDto sendOrder(@RequestBody OrderDto order) {
+       // OrderDto order = service.sendOrder(clothes, user);
         return new FeedbackDto(order.getId(), "order successfully sent");
     }
 
