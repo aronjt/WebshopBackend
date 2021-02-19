@@ -12,22 +12,18 @@ import org.springframework.stereotype.Service;
 import javax.mail.*;
 import javax.mail.internet.*;
 import javax.transaction.Transactional;
-import java.io.IOException;
 import java.util.Properties;
 
 @Service
 public class EmailSenderService {
-    @Value("${value.of.url}")
-    private String valueOfUrl;
 
+private String valueOfUrl;
     @Value("${value.of.password}")
     private String fromPassword;
 
     @Autowired
     private EmailData emailData;
 
-    @Autowired
-    private MyUserDetailsService myUserDetailsService;
 
     public EmailSenderService() {
     }
@@ -38,7 +34,8 @@ public class EmailSenderService {
     }
 
     @Transactional
-    public void sendEmail(User toUser, String messageType, ConfirmationToken confirmationToken) {
+    public void sendEmail(User toUser, String messageType, ConfirmationToken confirmationToken, String valueOfUrl) {
+     this.valueOfUrl=valueOfUrl;
         Email emailDataByMessageType = setEmail(messageType);
 
         String toEmail = toUser.getUsername();
@@ -53,8 +50,6 @@ public class EmailSenderService {
         props.put("mail.smtp.socketFactory.fallback", "false");
 
         String fromEmail = EmailSenderHelper.ADMIN_EMAIL_ADDRESS;
-        final User fromUser = (User) myUserDetailsService.loadUserByUsername(fromEmail);
-//        String fromPassword = fromUser.getPassword();
         Session session = Session.getDefaultInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
@@ -78,24 +73,9 @@ public class EmailSenderService {
             message.setSender(addressFrom);
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
             message.setSubject(subject);
-            Multipart emailcontect = new MimeMultipart();
-            MimeBodyPart textBodyPart = new MimeBodyPart();
-            if (messageType.equals(EmailSenderHelper.REGISTRATION)) {
-                textBodyPart.setText(getMessageTextWithConfirmationToken(toUser, emailDataByMessageType, confirmationToken));
-            } else {
-                textBodyPart.setText(getMessageText(toUser, emailDataByMessageType));
-            }
-            MimeBodyPart imageAttachment = new MimeBodyPart();
-            if (emailDataByMessageType.getAttachedFile() != null) {
-                imageAttachment.attachFile(emailDataByMessageType.getAttachedFile());
-            }
-            MimeBodyPart html = new MimeBodyPart();
-            emailcontect.addBodyPart(textBodyPart);
-//            emailcontect.addBodyPart(imageAttachment);
 
 
 
-            message.setContent(emailcontect);
             message.setContent(
                     "<h1>Verification message</h1>"
                             +getMessageTextWithConfirmationToken(toUser, emailDataByMessageType, confirmationToken),
@@ -103,7 +83,7 @@ public class EmailSenderService {
             transport.connect();
             Transport.send(message);
             transport.close();
-        } catch (MessagingException | IOException e) {
+        } catch (MessagingException e) {
             e.printStackTrace();
         }
     }
@@ -118,14 +98,10 @@ public class EmailSenderService {
     }
 
     public String getMessageTextWithConfirmationToken(User toUser, Email email, ConfirmationToken confirmationToken) throws MessagingException {
-//        ConfirmationToken confirmationToken = new ConfirmationToken(toUser);
-
-//        confirmationTokenRepository.save(confirmationToken);
         String text = "Hello " +
                 toUser.getFirstName() +
                 ",\n" +
                 email.getMessageText()
-//                + EmailSenderHelper.CONFIRM_URL
                 + valueOfUrl+ confirmationToken.getConfirmationToken() +
                 "\n For more info visit our website.";
         return text;

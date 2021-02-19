@@ -10,6 +10,7 @@ import org.progmatic.webshop.model.User;
 import org.progmatic.webshop.services.EmailSenderService;
 import org.progmatic.webshop.services.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
@@ -24,6 +25,8 @@ public class RegistrationController {
     @PersistenceContext
     EntityManager entityManager;
     EmailSenderService sendEmail;
+    @Value("${value.of.url}")
+    private String valueOfUrl;
 
     @Autowired
     public RegistrationController(EmailSenderService sendEmail, EntityManager entityManager, UserData userRepository,
@@ -54,7 +57,7 @@ public class RegistrationController {
                 Date tomorrow = registrationService.addDays(confirmationToken.getCreatedDate(), 1);
                 confirmationToken.setEnableDate(tomorrow);
                 confirmationTokenRepository.save(confirmationToken);
-                sendEmail.sendEmail(existingUser, EmailSenderHelper.REGISTRATION, confirmationToken);
+                sendEmail.sendEmail(existingUser, EmailSenderHelper.REGISTRATION, confirmationToken,valueOfUrl);
                 feedbackDto.setMessage("Confirmation token sent to Old User");
 //            }
         } else {
@@ -65,7 +68,7 @@ public class RegistrationController {
 
             confirmationTokenRepository.save(confirmationToken);
 
-            sendEmail.sendEmail(user, EmailSenderHelper.REGISTRATION, confirmationToken);
+            sendEmail.sendEmail(user, EmailSenderHelper.REGISTRATION, confirmationToken, valueOfUrl);
             feedbackDto.setMessage("Confirmation token sent to New User");
         }
 
