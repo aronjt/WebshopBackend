@@ -75,9 +75,6 @@ public class DataLoader implements ApplicationRunner {
     public void createUsers() {
         long usersNum = userData.count();
 
-        /* TODO
-            password should be encoded
-         */
         if (usersNum == 0) {
             User admin = createAdmin();
             userData.save(admin);
@@ -97,7 +94,7 @@ public class DataLoader implements ApplicationRunner {
         User admin = new User();
         admin.setFirstName("Admin");
         admin.setLastName("Admin");
-        admin.setPassword("MRirdatlan007");
+        admin.setPassword(encoder.encode("admin"));
         admin.setUsername(EmailSenderHelper.ADMIN_EMAIL_ADDRESS);
         admin.setCountry("Hungary");
         admin.setZipcode(1234);
