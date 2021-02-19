@@ -22,7 +22,7 @@ public class OrderController {
         this.uds = uds;
     }
 
-    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/orders")
     public Feedback getAllOrders() {
         return service.getAllOrders();
