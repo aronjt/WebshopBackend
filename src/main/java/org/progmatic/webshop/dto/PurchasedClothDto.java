@@ -5,21 +5,20 @@ import org.progmatic.webshop.model.PurchasedClothes;
 
 public class PurchasedClothDto {
 
-    // should change: long clothesId
-    private Clothes clothes;
+    private long clothesId;
     private int quantity;
     private String size;
 
     public PurchasedClothDto() {}
 
     public PurchasedClothDto(PurchasedClothes cloth) {
-        clothes = cloth.getClothes();
+        clothesId = cloth.getClothes().getId();
         quantity = cloth.getQuantity();
         size = cloth.getSize();
     }
 
-    public Clothes getClothes() {
-        return clothes;
+    public long getClothesId() {
+        return clothesId;
     }
 
     public int getQuantity() {

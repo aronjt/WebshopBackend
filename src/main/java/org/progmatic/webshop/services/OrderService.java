@@ -94,9 +94,9 @@ public class OrderService {
 
     @Transactional
     public Feedback sendOrder(OrderDto orderDto) {
-        //User user = uds.getLoggedInUser();
+        User user = uds.getLoggedInUser();
 
-        User user = em.find(User.class, orderDto.getUserId());
+        //User user = em.find(User.class, orderDto.getUserId());
 
         if (user != null) {
             OnlineOrder order = createNewOrder(user);
@@ -138,6 +138,7 @@ public class OrderService {
     public void addPurchasedClothesToDBAndToOrder(List<PurchasedClothDto> clothes, OnlineOrder order) {
         for (PurchasedClothDto c : clothes) {
             PurchasedClothes newC = new PurchasedClothes(c);
+            newC.setClothes(em.find(Clothes.class, c.getClothesId()));
             newC.setOnlineOrder(order);
             order.getPurchasedClothesList().add(newC);
             em.persist(newC);

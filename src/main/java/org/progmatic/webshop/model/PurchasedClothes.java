@@ -28,7 +28,6 @@ public class PurchasedClothes {
     }
 
     public PurchasedClothes(PurchasedClothDto cloth) {
-        clothes = cloth.getClothes();
         quantity = cloth.getQuantity();
         size = cloth.getSize();
     }
