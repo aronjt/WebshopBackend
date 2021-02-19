@@ -12,7 +12,7 @@ public class OrderDto {
     private float totalPrice;
     private boolean isFinish;
     private long userId;
-    private List<Long> purchasedClothesList;
+    private List<PurchasedClothDto> purchasedClothesList;
 
     public OrderDto() {}
 
@@ -28,7 +28,7 @@ public class OrderDto {
     private void setPurchasedClothesList(List<PurchasedClothes> purchasedClothesList) {
         this.purchasedClothesList = new ArrayList<>();
         for (PurchasedClothes c : purchasedClothesList) {
-            this.purchasedClothesList.add(c.getId());
+            this.purchasedClothesList.add(new PurchasedClothDto(c));
         }
     }
 
@@ -52,7 +52,7 @@ public class OrderDto {
         return userId;
     }
 
-    public List<Long> getPurchasedClothesList() {
+    public List<PurchasedClothDto> getPurchasedClothesList() {
         return purchasedClothesList;
     }
 
