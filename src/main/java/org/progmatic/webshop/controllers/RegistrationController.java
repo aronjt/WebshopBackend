@@ -7,6 +7,8 @@ import org.progmatic.webshop.dto.RegisterUserDto;
 import org.progmatic.webshop.helpers.EmailSenderHelper;
 import org.progmatic.webshop.model.ConfirmationToken;
 import org.progmatic.webshop.model.User;
+import org.progmatic.webshop.returnmodel.Feedback;
+import org.progmatic.webshop.returnmodel.Message;
 import org.progmatic.webshop.services.EmailSenderService;
 import org.progmatic.webshop.services.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,11 @@ public class RegistrationController {
     @PersistenceContext
     EntityManager entityManager;
     EmailSenderService sendEmail;
+
+    /* TODO
+        try this (because in application.properties, there is this link):
+        @Value("${value.of.url}")
+     */
     @Value("${value.of.url}")
     private String valueOfUrl;
 
@@ -39,9 +46,9 @@ public class RegistrationController {
     }
 
     @PostMapping(value = "/register")
-    public FeedbackDto registerUser(@RequestBody RegisterUserDto registerUserDto) {
+    public Feedback registerUser(@RequestBody RegisterUserDto registerUserDto) {
         User existingUser = userRepository.findByUsername(registerUserDto.getEmail());
-        FeedbackDto feedbackDto = new FeedbackDto();
+        Message message;
 
         ConfirmationToken confirmationToken = null;
         if (existingUser != null) {
@@ -58,7 +65,7 @@ public class RegistrationController {
                 confirmationToken.setEnableDate(tomorrow);
                 confirmationTokenRepository.save(confirmationToken);
                 sendEmail.sendEmail(existingUser, EmailSenderHelper.REGISTRATION, confirmationToken,valueOfUrl);
-                feedbackDto.setMessage("Confirmation token sent to Old User");
+                message =  new Message(true, "Confirmation token sent to Old User");
 //            }
         } else {
             User user = new User(registerUserDto);
@@ -69,28 +76,29 @@ public class RegistrationController {
             confirmationTokenRepository.save(confirmationToken);
 
             sendEmail.sendEmail(user, EmailSenderHelper.REGISTRATION, confirmationToken, valueOfUrl);
-            feedbackDto.setMessage("Confirmation token sent to New User");
+            message =  new Message(true, "Confirmation token sent to New User");
         }
 
-        return feedbackDto;
+        return message;
     }
 
 
     @GetMapping(value = "/confirm-account")
-    public FeedbackDto confirmUserAccount(@RequestParam("token") String confirmationToken) {
+    public Feedback confirmUserAccount(@RequestParam("token") String confirmationToken) {
         ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
-        FeedbackDto feedbackDto = new FeedbackDto();
+        Message message;
         if (token != null) {
             User user = userRepository.findByUsername(token.getUser().getUsername());
             user.setEnabled(true);
 //           T O D O letesztelni hogy save nélkül működik -e
 //            válasz nem
+//            köszi, Máté, hogy benne hagytad!!! ^^ ~Ria
             userRepository.save(user);
-            feedbackDto.setMessage("accountVerified");
+            message = new Message(true, "account verified");
         } else {
-            feedbackDto.setMessage("The link is invalid or broken!");
+            message = new Message("The link is invalid or broken!");
         }
 
-        return feedbackDto;
+        return message;
     }
 }

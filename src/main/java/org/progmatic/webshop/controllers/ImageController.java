@@ -3,6 +3,8 @@ package org.progmatic.webshop.controllers;
 import org.progmatic.webshop.autodata.ImageData;
 import org.progmatic.webshop.dto.FeedbackDto;
 import org.progmatic.webshop.model.Image;
+import org.progmatic.webshop.returnmodel.Feedback;
+import org.progmatic.webshop.returnmodel.Message;
 import org.progmatic.webshop.services.ImageService;
 import org.progmatic.webshop.services.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +31,11 @@ public class ImageController {
 
 
     @PostMapping("/image")
-    public FeedbackDto uploadImage(@RequestParam("image") MultipartFile file) throws IOException {
+    public Feedback uploadImage(@RequestParam("image") MultipartFile file) throws IOException {
         Image img = new Image(file.getOriginalFilename(),
                 imageService.compressBytes(file.getBytes()));
         imageData.save(img);
-        FeedbackDto feedbackDto = new FeedbackDto();
-        feedbackDto.setMessage("Successful image upload");
-        return feedbackDto;
+        return new Message(true, "successful image upload");
     }
 
     @GetMapping(path = {"/images/{id}"}, produces = MediaType.IMAGE_PNG_VALUE)

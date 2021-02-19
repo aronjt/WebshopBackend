@@ -3,6 +3,7 @@ package org.progmatic.webshop.services;
 import org.progmatic.webshop.dto.RegisterUserDto;
 import org.progmatic.webshop.dto.UserDto;
 import org.progmatic.webshop.model.User;
+import org.progmatic.webshop.returnmodel.ListResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
@@ -55,11 +56,11 @@ public class MyUserDetailsService implements UserDetailsService {
     }
 
     @Transactional
-    public List<UserDto> listAllUsers() {
+    public ListResult<UserDto> listAllUsers() {
         List<User> users = em.createQuery("SELECT u FROM User u", User.class).getResultList();
-        List<UserDto> usersDto = new ArrayList<>();
+        ListResult<UserDto> usersDto = new ListResult<>();
         for (User user : users) {
-            usersDto.add(new UserDto(user));
+            usersDto.getList().add(new UserDto(user));
         }
         return usersDto;
     }

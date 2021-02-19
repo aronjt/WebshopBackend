@@ -3,6 +3,8 @@ package org.progmatic.webshop.controllers;
 import org.progmatic.webshop.dto.GenderDto;
 import org.progmatic.webshop.dto.ListDto;
 import org.progmatic.webshop.model.Type;
+import org.progmatic.webshop.returnmodel.Feedback;
+import org.progmatic.webshop.returnmodel.ListResult;
 import org.progmatic.webshop.services.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,12 +21,12 @@ public class SearchController {
     }
 
     @GetMapping("/genders")
-    public ListDto<GenderDto> getGenders() {
+    public Feedback getGenders() {
         return service.getGenders();
     }
 
     @GetMapping("/types")
-    public ListDto<Type> getTypes() {
+    public Feedback getTypes() {
         return service.getTypes();
     }
 

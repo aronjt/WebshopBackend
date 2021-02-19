@@ -4,6 +4,7 @@ import org.progmatic.webshop.dto.GenderDto;
 import org.progmatic.webshop.dto.ListDto;
 import org.progmatic.webshop.model.Gender;
 import org.progmatic.webshop.model.Type;
+import org.progmatic.webshop.returnmodel.ListResult;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,9 +19,9 @@ public class SearchService {
     EntityManager em;
 
     @Transactional
-    public ListDto<GenderDto> getGenders() {
+    public ListResult<GenderDto> getGenders() {
         List<Gender> genders = em.createQuery("SELECT g FROM Gender g", Gender.class).getResultList();
-        ListDto<GenderDto> toReturn = new ListDto<>();
+        ListResult<GenderDto> toReturn = new ListResult<>();
         for (Gender g : genders) {
             toReturn.getList().add(new GenderDto(g));
         }
@@ -28,8 +29,8 @@ public class SearchService {
     }
 
     @Transactional
-    public ListDto<Type> getTypes() {
-        return new ListDto<>(em.createQuery("SELECT t FROM Type t", Type.class).getResultList());
+    public ListResult<Type> getTypes() {
+        return new ListResult<>(em.createQuery("SELECT t FROM Type t", Type.class).getResultList());
     }
 
 }
