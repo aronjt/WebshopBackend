@@ -20,6 +20,9 @@ public class EmailSenderService {
     @Value("${value.of.url}")
     private String valueOfUrl;
 
+    @Value("${value.of.password}")
+    private String fromPassword;
+
     @Autowired
     private EmailData emailData;
 
@@ -51,7 +54,7 @@ public class EmailSenderService {
 
         String fromEmail = EmailSenderHelper.ADMIN_EMAIL_ADDRESS;
         final User fromUser = (User) myUserDetailsService.loadUserByUsername(fromEmail);
-        String fromPassword = fromUser.getPassword();
+//        String fromPassword = fromUser.getPassword();
         Session session = Session.getDefaultInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
@@ -86,11 +89,17 @@ public class EmailSenderService {
             if (emailDataByMessageType.getAttachedFile() != null) {
                 imageAttachment.attachFile(emailDataByMessageType.getAttachedFile());
             }
+            MimeBodyPart html = new MimeBodyPart();
             emailcontect.addBodyPart(textBodyPart);
 //            emailcontect.addBodyPart(imageAttachment);
 
-            message.setContent(emailcontect);
 
+
+            message.setContent(emailcontect);
+            message.setContent(
+                    "<h1>Verification message</h1>"
+                            +getMessageTextWithConfirmationToken(toUser, emailDataByMessageType, confirmationToken),
+                    "text/html");
             transport.connect();
             Transport.send(message);
             transport.close();

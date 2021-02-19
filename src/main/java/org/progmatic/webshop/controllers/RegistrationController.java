@@ -8,31 +8,31 @@ import org.progmatic.webshop.helpers.EmailSenderHelper;
 import org.progmatic.webshop.model.ConfirmationToken;
 import org.progmatic.webshop.model.User;
 import org.progmatic.webshop.services.EmailSenderService;
+import org.progmatic.webshop.services.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.Calendar;
 import java.util.Date;
 
 @RestController
-public class UserAccountController {
+public class RegistrationController {
     private final UserData userRepository;
+    private final ConfirmationTokenData confirmationTokenRepository;
+    private final RegistrationService registrationService;
     @PersistenceContext
     EntityManager entityManager;
     EmailSenderService sendEmail;
-    private final ConfirmationTokenData confirmationTokenRepository;
 
     @Autowired
-    public UserAccountController(EmailSenderService sendEmail, EntityManager entityManager, UserData userRepository, ConfirmationTokenData confirmationTokenRepository) {
+    public RegistrationController(EmailSenderService sendEmail, EntityManager entityManager, UserData userRepository,
+                                  ConfirmationTokenData confirmationTokenRepository, RegistrationService registrationService) {
         this.sendEmail = sendEmail;
         this.entityManager = entityManager;
         this.userRepository = userRepository;
         this.confirmationTokenRepository = confirmationTokenRepository;
+        this.registrationService = registrationService;
     }
 
     @PostMapping(value = "/register")
@@ -42,21 +42,21 @@ public class UserAccountController {
 
         ConfirmationToken confirmationToken = null;
         if (existingUser != null) {
-            confirmationToken = entityManager.createQuery("SELECT t FROM ConfirmationToken t" +
-                    " WHERE t.user.id = :id order by t.enableDate DESC  ", ConfirmationToken.class)
-                    .setParameter("id", existingUser.getId()).getResultList().get(0);
-            if (checkTheDate(confirmationToken.getCreatedDate())) {
-                feedbackDto.setMessage("This email already exists!");
-                return feedbackDto;
-            } else {
+//            confirmationToken = entityManager.createQuery("SELECT t FROM ConfirmationToken t" +
+//                    " WHERE t.user.id = :id order by t.enableDate DESC  ", ConfirmationToken.class)
+//                    .setParameter("id", existingUser.getId()).getResultList().get(0);
+//            if (registrationService.checkTheDate(confirmationToken.getCreatedDate())) {
+//                feedbackDto.setMessage("Please try again later(2 days after previous confirmation.)");
+//                return feedbackDto;
+//            } else {
 
                 confirmationToken = new ConfirmationToken(existingUser);
-                Date tomorrow = addDays(confirmationToken.getCreatedDate(), 1);
+                Date tomorrow = registrationService.addDays(confirmationToken.getCreatedDate(), 1);
                 confirmationToken.setEnableDate(tomorrow);
                 confirmationTokenRepository.save(confirmationToken);
                 sendEmail.sendEmail(existingUser, EmailSenderHelper.REGISTRATION, confirmationToken);
                 feedbackDto.setMessage("Confirmation token sent to Old User");
-            }
+//            }
         } else {
             User user = new User(registerUserDto);
             userRepository.save(user);
@@ -70,30 +70,6 @@ public class UserAccountController {
         }
 
         return feedbackDto;
-    }
-
-    public boolean checkTheDate(Date createdDate) {
-//        ez amúgy localdate.now
-        String sourceDate = String.valueOf(LocalDate.now());
-//        String sourceDate = "2021-02-20";
-
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        java.util.Date myDate = null;
-        try {
-            myDate = format.parse(sourceDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        java.util.Date tomorrow = addDays(createdDate, 1);
-        return tomorrow.after(myDate);
-    }
-
-    public java.util.Date addDays(java.util.Date date, int days) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        cal.add(Calendar.DATE, days); //minus number would decrement the days
-        return cal.getTime();
     }
 
 
