@@ -5,6 +5,7 @@ import org.progmatic.webshop.dto.OrderDto;
 import org.progmatic.webshop.dto.PurchasedClothDto;
 import org.progmatic.webshop.model.*;
 import org.progmatic.webshop.returnmodel.Feedback;
+import org.progmatic.webshop.returnmodel.ListResult;
 import org.progmatic.webshop.returnmodel.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,18 +34,20 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderDto getOneOrder(long id) {
+    public Feedback getOneOrder(long id) {
         OnlineOrder order = em.find(OnlineOrder.class, id);
         if (order != null) {
             LOG.debug("order with id {} found, for user {} with {} purchased cloth(es)",
                     id, order.getUser().getUsername(), order.getPurchasedClothesList().size());
-            return new OrderDto(order);
+            ListResult<OrderDto> toReturn = new ListResult<>();
+            toReturn.getList().add(new OrderDto(order));
+            return toReturn;
         }
-        return new OrderDto();
+        return new Message("order cannot be found");
     }
 
     @Transactional
-    public List<OrderDto> getAllOrders() {
+    public Feedback getAllOrders() {
         List<OnlineOrder> orders = em.createQuery(
                 "SELECT o FROM OnlineOrder o", OnlineOrder.class
         ).getResultList();
@@ -54,10 +57,10 @@ public class OrderService {
             orderDtos.add(new OrderDto(o));
         }
 
-        LOG.info("all orders founded: {} orders in list",
+        LOG.info("all orders found: {} orders in list",
                 orders.size());
 
-        return orderDtos;
+        return new ListResult<>(orderDtos);
     }
 
     /* TODO
@@ -77,19 +80,19 @@ public class OrderService {
     }*/
 
     @Transactional
-    public FeedbackDto finishOrder(long id) {
+    public Feedback finishOrder(long id) {
         OnlineOrder order = em.find(OnlineOrder.class, id);
 
         if (order.isFinish()) {
             LOG.info("order with id {} is already finished", id);
-            return new FeedbackDto(id, "Order is already finished.");
+            return new Message("order is already finished");
         }
 
         order.setFinish(true);
 
         LOG.info("order with id {} is now finished", id);
 
-        return new FeedbackDto(id, "Successfully finished the order.");
+        return new Message(true, "order is finished now");
     }
 
     @Transactional

@@ -1,7 +1,6 @@
 package org.progmatic.webshop.controllers;
 
 import org.progmatic.webshop.dto.*;
-import org.progmatic.webshop.model.OnlineOrder;
 import org.progmatic.webshop.model.User;
 import org.progmatic.webshop.returnmodel.Feedback;
 import org.progmatic.webshop.services.MyUserDetailsService;
@@ -25,13 +24,13 @@ public class OrderController {
 
     //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/orders")
-    public List<OrderDto> getAllOrders() {
+    public Feedback getAllOrders() {
         return service.getAllOrders();
     }
 
     //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/orders/{id}")
-    public OrderDto getOneOrder(@PathVariable("id") long id) {
+    public Feedback getOneOrder(@PathVariable("id") long id) {
         return service.getOneOrder(id);
     }
 
@@ -46,7 +45,7 @@ public class OrderController {
 
     //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PutMapping("/orders/{id}")
-    public FeedbackDto changeOrder(@PathVariable("id") long id) {
+    public Feedback changeOrder(@PathVariable("id") long id) {
         return service.finishOrder(id);
     }
 
