@@ -1,7 +1,6 @@
 package org.progmatic.webshop.controllers;
 
 import org.progmatic.webshop.autodata.ImageData;
-import org.progmatic.webshop.dto.FeedbackDto;
 import org.progmatic.webshop.model.Image;
 import org.progmatic.webshop.returnmodel.Feedback;
 import org.progmatic.webshop.returnmodel.Message;

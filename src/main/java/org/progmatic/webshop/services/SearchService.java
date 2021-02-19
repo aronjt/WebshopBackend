@@ -1,7 +1,6 @@
 package org.progmatic.webshop.services;
 
 import org.progmatic.webshop.dto.GenderDto;
-import org.progmatic.webshop.dto.ListDto;
 import org.progmatic.webshop.model.Gender;
 import org.progmatic.webshop.model.Type;
 import org.progmatic.webshop.returnmodel.ListResult;

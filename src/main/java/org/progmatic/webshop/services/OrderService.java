@@ -1,6 +1,5 @@
 package org.progmatic.webshop.services;
 
-import org.progmatic.webshop.dto.FeedbackDto;
 import org.progmatic.webshop.dto.OrderDto;
 import org.progmatic.webshop.dto.PurchasedClothDto;
 import org.progmatic.webshop.model.*;
