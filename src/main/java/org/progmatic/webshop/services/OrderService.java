@@ -3,8 +3,9 @@ package org.progmatic.webshop.services;
 import org.progmatic.webshop.dto.FeedbackDto;
 import org.progmatic.webshop.dto.OrderDto;
 import org.progmatic.webshop.dto.PurchasedClothDto;
-import org.progmatic.webshop.dto.RegisterUserDto;
 import org.progmatic.webshop.model.*;
+import org.progmatic.webshop.returnmodel.Feedback;
+import org.progmatic.webshop.returnmodel.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,18 +93,16 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderDto sendOrder(List<PurchasedClothDto> clothes, RegisterUserDto userDto) {
-        if (!uds.userExists(userDto.getEmail())) {
-            uds.createFakeUser(userDto);
-        }
+    public Feedback sendOrder(OrderDto orderDto) {
+        //User user = uds.getLoggedInUser();
 
-        User user = (User) uds.loadUserByUsername(userDto.getEmail());
+        User user = em.find(User.class, orderDto.getUserId());
 
         if (user != null) {
             OnlineOrder order = createNewOrder(user);
 
-            addPurchasedClothesToDBAndToOrder(clothes, order);
-            order.setTotalPrice(sumTotalPrice(order.getPurchasedClothesList()));
+            addPurchasedClothesToDBAndToOrder(orderDto.getPurchasedClothesList(), order);
+            order.setTotalPrice(orderDto.getTotalPrice());
             changeQuantitiesInStock(order.getPurchasedClothesList());
 
             LOG.info("new order created, list size {}, username {}, total price {}",
@@ -111,21 +110,20 @@ public class OrderService {
 
             em.persist(order);
 
-            return new OrderDto(order);
+            return createFeedbackMessage(true, "order success");
         }
 
-        LOG.warn("cannot create order for user {}", userDto.getEmail());
+        LOG.warn("cannot create order, because user is null");
 
-        return null;
+        return createFeedbackMessage(false, "cannot create order, because user is null");
 
     }
 
-    private float sumTotalPrice(List<PurchasedClothes> clothes) {
-        float sum = 0;
-        for (PurchasedClothes c : clothes) {
-            sum += (c.getQuantity() * c.getClothes().getPrice());
-        }
-        return sum;
+    private Feedback createFeedbackMessage(boolean success, String message) {
+        Message m = new Message();
+        m.setSuccess(success);
+        m.setMessage(message);
+        return m;
     }
 
     private OnlineOrder createNewOrder(User user) {

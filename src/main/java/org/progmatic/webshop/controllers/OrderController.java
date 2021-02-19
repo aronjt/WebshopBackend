@@ -3,6 +3,7 @@ package org.progmatic.webshop.controllers;
 import org.progmatic.webshop.dto.*;
 import org.progmatic.webshop.model.OnlineOrder;
 import org.progmatic.webshop.model.User;
+import org.progmatic.webshop.returnmodel.Feedback;
 import org.progmatic.webshop.services.MyUserDetailsService;
 import org.progmatic.webshop.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,9 +63,8 @@ public class OrderController {
     }
 
     @PostMapping("/orders")
-    public FeedbackDto sendOrder(@RequestBody OrderDto order) {
-       // OrderDto order = service.sendOrder(clothes, user);
-        return new FeedbackDto(order.getId(), "order successfully sent");
+    public Feedback sendOrder(@RequestBody OrderDto order) {
+        return service.sendOrder(order);
     }
 
 }
