@@ -28,7 +28,7 @@ public class OrderController {
         return service.getAllOrders();
     }
 
-    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/orders/{id}")
     public Feedback getOneOrder(@PathVariable("id") long id) {
         return service.getOneOrder(id);
@@ -43,7 +43,7 @@ public class OrderController {
         return service.changeOrder(id, newOrder);
     }*/
 
-    //@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PutMapping("/orders/{id}")
     public Feedback changeOrder(@PathVariable("id") long id) {
         return service.finishOrder(id);
@@ -61,6 +61,7 @@ public class OrderController {
         return new RegisterUserDto();
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/orders")
     public Feedback sendOrder(@RequestBody OrderDto order) {
         return service.sendOrder(order);
