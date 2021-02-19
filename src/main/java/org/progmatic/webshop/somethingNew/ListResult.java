@@ -3,13 +3,13 @@ package org.progmatic.webshop.somethingNew;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListDto<T> extends Feedback {
+public class ListResult<T> extends Feedback {
 
     private List<T> list = new ArrayList<>();
 
-    public ListDto() {}
+    public ListResult() {}
 
-    public ListDto(boolean success, List<T> list) {
+    public ListResult(boolean success, List<T> list) {
         setSuccess(success);
         this.list = list;
     }
