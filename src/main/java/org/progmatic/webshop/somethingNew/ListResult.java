@@ -9,8 +9,8 @@ public class ListResult<T> extends Feedback {
 
     public ListResult() {}
 
-    public ListResult(boolean success, List<T> list) {
-        setSuccess(success);
+    public ListResult(List<T> list) {
+        setSuccess(true);
         this.list = list;
     }
 
