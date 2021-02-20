@@ -3,7 +3,6 @@ package org.progmatic.webshop.controllers;
 import org.progmatic.webshop.dto.UserDto;
 import org.progmatic.webshop.returnmodel.Feedback;
 import org.progmatic.webshop.returnmodel.ListResult;
-import org.progmatic.webshop.returnmodel.Message;
 import org.progmatic.webshop.services.MyUserDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
