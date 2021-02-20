@@ -42,6 +42,7 @@ public class UserController {
     public Feedback getLoggedInUser() {
         ListResult<UserDto> loggedInUser = new ListResult<>();
         loggedInUser.getList().add(new UserDto(userService.getLoggedInUser()));
+        loggedInUser.setSuccess(true);
         return loggedInUser;
     }
 }
