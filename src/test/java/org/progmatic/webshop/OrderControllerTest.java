@@ -2,6 +2,7 @@ package org.progmatic.webshop;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.progmatic.webshop.helpers.JsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,11 +27,15 @@ class OrderControllerTest {
 
     @Test
     void send_order_without_authentication() throws Exception {
+        String json = JsonBuilder.newBuilder()
+                .add("totalPrice", "39.99")
+                .addEmptyList("purchasedClothesList")
+                .build();
         mockMvc.perform(
                 post("/orders")
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"totalPrice\":39.99,\"purchasedClothesList\": []}"))
+                        .content(json))
                 .andExpect(status().is(302))
                 .andReturn();
     }
