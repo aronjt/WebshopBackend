@@ -73,7 +73,7 @@ class UserControllerTest {
                 .andReturn();
     }
 
-    /* should fix test
+    /* TODO should fix test
     @Test
     void get_logged_in_user() throws Exception {
         mockMvc.perform(
