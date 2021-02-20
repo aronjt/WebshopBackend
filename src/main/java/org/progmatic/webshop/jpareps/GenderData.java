@@ -1,4 +1,4 @@
-package org.progmatic.webshop.autodata;
+package org.progmatic.webshop.jpareps;
 
 import org.progmatic.webshop.model.Gender;
 import org.springframework.data.jpa.repository.JpaRepository;

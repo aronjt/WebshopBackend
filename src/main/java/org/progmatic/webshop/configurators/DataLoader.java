@@ -1,6 +1,7 @@
-package org.progmatic.webshop.autodata;
+package org.progmatic.webshop.configurators;
 
 import org.apache.commons.io.IOUtils;
+import org.progmatic.webshop.jpareps.*;
 import org.progmatic.webshop.helpers.ClothDataHelper;
 import org.progmatic.webshop.helpers.EmailSenderHelper;
 import org.progmatic.webshop.helpers.ImageHelper;

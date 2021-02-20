@@ -1,6 +1,6 @@
 package org.progmatic.webshop.services;
 
-import org.progmatic.webshop.autodata.EmailData;
+import org.progmatic.webshop.jpareps.EmailData;
 import org.progmatic.webshop.model.Email;
 import org.progmatic.webshop.helpers.EmailSenderHelper;
 import org.progmatic.webshop.model.User;

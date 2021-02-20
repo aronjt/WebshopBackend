@@ -1,7 +1,7 @@
 package org.progmatic.webshop.controllers;
 
-import org.progmatic.webshop.autodata.ConfirmationTokenData;
-import org.progmatic.webshop.autodata.UserData;
+import org.progmatic.webshop.jpareps.ConfirmationTokenData;
+import org.progmatic.webshop.jpareps.UserData;
 import org.progmatic.webshop.dto.RegisterUserDto;
 import org.progmatic.webshop.helpers.EmailSenderHelper;
 import org.progmatic.webshop.model.ConfirmationToken;
