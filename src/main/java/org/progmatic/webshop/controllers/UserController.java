@@ -1,6 +1,9 @@
 package org.progmatic.webshop.controllers;
 
+import org.progmatic.webshop.dto.UserDto;
 import org.progmatic.webshop.returnmodel.Feedback;
+import org.progmatic.webshop.returnmodel.ListResult;
+import org.progmatic.webshop.returnmodel.Message;
 import org.progmatic.webshop.services.MyUserDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,5 +36,13 @@ public class UserController {
     @GetMapping("/users")
     public Feedback listAllUser(){
         return userService.listAllUsers();
+    }
+
+    @GetMapping("/user")
+    public Feedback getLoggedInUser() {
+        ListResult<UserDto> loggedInUser = new ListResult<>();
+        loggedInUser.getList().add(new UserDto(userService.getLoggedInUser()));
+        loggedInUser.setSuccess(true);
+        return loggedInUser;
     }
 }

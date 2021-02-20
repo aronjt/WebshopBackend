@@ -21,7 +21,7 @@ import java.util.List;
 @Service
 public class ClothesService {
 
-    private static Logger LOG = LoggerFactory.getLogger(ClothesService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ClothesService.class);
 
     @PersistenceContext
     EntityManager em;
