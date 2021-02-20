@@ -68,7 +68,7 @@ public class DataLoader implements ApplicationRunner {
         createImages();
         createClothes();
         putSomeClothesIntoTheStock();
-        createEmail();
+        createEmails();
         createOrder();
         setImagesToGenders();
     }
@@ -77,13 +77,17 @@ public class DataLoader implements ApplicationRunner {
         long usersNum = userData.count();
 
         if (usersNum == 0) {
-            User admin = createAdmin();
+            User admin = createUser("Admin", "Admin", EmailSenderHelper.ADMIN_EMAIL_ADDRESS,
+                    "admin", 1234, "Hungary", "Budapest", "Pf. 666.",
+                    "06 1 234 5678", UserDataHelper.ROLE_ADMIN);
             userData.save(admin);
 
             LOG.info("admin added to database with email {} (creation time: {})",
                     admin.getUsername(), admin.getCreationTime());
 
-            User user = createUser();
+            User user = createUser("Elek", "Érték", "ertekelek@ertek.el",
+                    "jelszó", 9999, "Óperencia", "Túlnan", "Felis út 1.",
+                    "1111111", UserDataHelper.ROLE_USER);
             userData.save(user);
 
             LOG.info("user added to database with email {} (creation time: {})",
@@ -91,34 +95,19 @@ public class DataLoader implements ApplicationRunner {
         }
     }
 
-    private User createAdmin() {
-        User admin = new User();
-        admin.setFirstName("Admin");
-        admin.setLastName("Admin");
-        admin.setPassword(encoder.encode("admin"));
-        admin.setUsername(EmailSenderHelper.ADMIN_EMAIL_ADDRESS);
-        admin.setCountry("Hungary");
-        admin.setZipcode(1234);
-        admin.setCity("Budapest");
-        admin.setAddress("Pf. 666.");
-        admin.setPhoneNumber("06 1 234 5678");
-        admin.setUserRole(UserDataHelper.ROLE_ADMIN);
-        admin.setEnabled(true);
-        return admin;
-    }
-
-    private User createUser() {
+    private User createUser(String firstName, String lastName, String email, String pw, int zip, String country,
+                            String city, String address, String phone, String role) {
         User user = new User();
-        user.setFirstName("Elek");
-        user.setLastName("Érték");
-        user.setPassword(encoder.encode("jelszó"));
-        user.setUsername("ertekelek@ertek.el");
-        user.setCountry("Óperencia");
-        user.setZipcode(9999);
-        user.setCity("Túlnan");
-        user.setAddress("Felis út 42.");
-        user.setPhoneNumber("1111111");
-        user.setUserRole(UserDataHelper.ROLE_USER);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setPassword(encoder.encode(pw));
+        user.setUsername(email);
+        user.setCountry(country);
+        user.setZipcode(zip);
+        user.setCity(city);
+        user.setAddress(address);
+        user.setPhoneNumber(phone);
+        user.setUserRole(role);
         user.setEnabled(true);
         return user;
     }
@@ -196,133 +185,40 @@ public class DataLoader implements ApplicationRunner {
             Image unImg = imageData.findByName(ClothDataHelper.GENDER_UNISEX);
             Image childImg = imageData.findByName(ClothDataHelper.GENDER_CHILD);
 
-            createShirts(shirt, male, female, unisex, maleImg, femaleImg, unImg);
-            createPullovers(pullover, male, female, child, maleImg, femaleImg, childImg);
-            createPants(pants, male, female, unisex, maleImg, femaleImg, unImg);
+            createClothes("Lansketon T-Shirt", "The best shirt for fans!", 19.99f, ClothDataHelper.COLOR_BLACK,
+                    shirt, male, maleImg);
+            createClothes("Hello Kitty", "Cutest t-shirt of the world!", 14.99f, ClothDataHelper.COLOR_PINK,
+                    shirt, female, femaleImg);
+            createClothes("Progmatic", "Best Academy of the World!", 24.99f, ClothDataHelper.COLOR_WHITE,
+                    shirt, unisex, unImg);
+            createClothes("Jackie", "Very comfy.", 29.99f, ClothDataHelper.COLOR_BLUE,
+                    pullover, male, maleImg);
+            createClothes("Baby Doll", "Nice and soft.", 34.99f, ClothDataHelper.COLOR_PINK,
+                    pullover, female, femaleImg);
+            createClothes("Mommy Little Baby", "For every darling.", 24.99f, ClothDataHelper.COLOR_WHITE,
+                    pullover, child, childImg);
+            createClothes("Jack's Pants", "You cannot wear anything better!", 39.99f, ClothDataHelper.COLOR_BLACK,
+                    pants, male, maleImg);
+            createClothes("Meow", "For ladies only!", 39.99f, ClothDataHelper.COLOR_PINK,
+                    pants, female, femaleImg);
+            createClothes("Winter Wearer", "Cold days will be no longer cold, if you wear these pants!", 34.99f,
+                    ClothDataHelper.COLOR_GRAY, pants, unisex, unImg);
         }
     }
 
-    private void createShirts(Type type, Gender male, Gender female, Gender unisex, Image maleImg, Image femaleImg, Image unImg) {
-        Clothes shirt1 = new Clothes();
-        shirt1.setName("Lansketon T-Shirt");
-        shirt1.setDetails("The best shirt for fans!");
-        shirt1.setPrice(19.99f);
-        shirt1.setColor(ClothDataHelper.COLOR_BLACK);
-        shirt1.setType(type);
-        shirt1.setGender(male);
-        shirt1.setImage(maleImg);
-        clothesData.save(shirt1);
+    private void createClothes(String name, String details, float price, String color, Type type, Gender gender, Image image) {
+        Clothes clothes = new Clothes();
+        clothes.setName(name);
+        clothes.setDetails(details);
+        clothes.setPrice(price);
+        clothes.setColor(color);
+        clothes.setType(type);
+        clothes.setGender(gender);
+        clothes.setImage(image);
+        clothesData.save(clothes);
 
-        LOG.info("added new {} to the database with name and price: {}, {}",
-                type.getType(), shirt1.getName(), shirt1.getPrice());
-
-        Clothes shirt2 = new Clothes();
-        shirt2.setName("Hello Kitty");
-        shirt2.setDetails("Cutest t-shirt of the world!");
-        shirt2.setPrice(14.99f);
-        shirt2.setColor(ClothDataHelper.COLOR_PINK);
-        shirt2.setType(type);
-        shirt2.setGender(female);
-        shirt2.setImage(femaleImg);
-        clothesData.save(shirt2);
-
-        LOG.info("added new {} to the database with name and price: {}, {}",
-                type.getType(), shirt2.getName(), shirt2.getPrice());
-
-        Clothes shirt3 = new Clothes();
-        shirt3.setName("Progmatic");
-        shirt3.setDetails("Best Academy of The World");
-        shirt3.setPrice(24.99f);
-        shirt3.setColor(ClothDataHelper.COLOR_WHITE);
-        shirt3.setType(type);
-        shirt3.setGender(unisex);
-        shirt3.setImage(unImg);
-        clothesData.save(shirt3);
-
-        LOG.info("added new {} to the database with name and price: {}, {}",
-                type.getType(), shirt3.getName(), shirt3.getPrice());
-    }
-
-    private void createPullovers(Type type, Gender male, Gender female, Gender child, Image maleImg, Image femaleImg, Image childImg) {
-        Clothes pullover1 = new Clothes();
-        pullover1.setName("Jackie");
-        pullover1.setDetails("Very comfy.");
-        pullover1.setPrice(29.99f);
-        pullover1.setColor(ClothDataHelper.COLOR_BLUE);
-        pullover1.setType(type);
-        pullover1.setGender(male);
-        pullover1.setImage(maleImg);
-        clothesData.save(pullover1);
-
-        LOG.info("added new {} to the database with name and price: {}, {}",
-                type.getType(), pullover1.getName(), pullover1.getPrice());
-
-        Clothes pullover2 = new Clothes();
-        pullover2.setName("Baby Doll");
-        pullover2.setDetails("Nice and soft.");
-        pullover2.setPrice(34.99f);
-        pullover2.setColor(ClothDataHelper.COLOR_PINK);
-        pullover2.setType(type);
-        pullover2.setGender(female);
-        pullover2.setImage(femaleImg);
-        clothesData.save(pullover2);
-
-        LOG.info("added new {} to the database with name and price: {}, {}",
-                type.getType(), pullover2.getName(), pullover2.getPrice());
-
-        Clothes pullover3 = new Clothes();
-        pullover3.setName("Mommy Little Baby");
-        pullover3.setDetails("For every darling.");
-        pullover3.setPrice(24.99f);
-        pullover3.setColor(ClothDataHelper.COLOR_WHITE);
-        pullover3.setType(type);
-        pullover3.setGender(child);
-        pullover3.setImage(childImg);
-        clothesData.save(pullover3);
-
-        LOG.info("added new {} to the database with name and price: {}, {}",
-                type.getType(), pullover3.getName(), pullover3.getPrice());
-    }
-
-    private void createPants(Type type, Gender male, Gender female, Gender unisex, Image maleImg, Image femaleImg, Image unImg) {
-        Clothes pants1 = new Clothes();
-        pants1.setName("Jack's Pants");
-        pants1.setDetails("You cannot wear anything better.");
-        pants1.setPrice(39.99f);
-        pants1.setColor(ClothDataHelper.COLOR_BLACK);
-        pants1.setType(type);
-        pants1.setGender(male);
-        pants1.setImage(maleImg);
-        clothesData.save(pants1);
-
-        LOG.info("added new {} to the database with name and price: {}, {}",
-                type.getType(), pants1.getName(), pants1.getPrice());
-
-        Clothes pants2 = new Clothes();
-        pants2.setName("Meow");
-        pants2.setDetails("For ladies only!");
-        pants2.setPrice(39.99f);
-        pants2.setColor(ClothDataHelper.COLOR_PINK);
-        pants2.setType(type);
-        pants2.setGender(female);
-        pants2.setImage(femaleImg);
-        clothesData.save(pants2);
-
-        LOG.info("added new {} to the database with name and price: {}, {}",
-                type.getType(), pants2.getName(), pants2.getPrice());
-
-        Clothes pants3 = new Clothes();
-        pants3.setName("Winter Wearer");
-        pants3.setDetails("Cold days will be no longer cold, if you wear these pants!");
-        pants3.setPrice(34.99f);
-        pants3.setColor(ClothDataHelper.COLOR_GRAY);
-        pants3.setType(type);
-        pants3.setGender(unisex);
-        pants3.setImage(unImg);
-        clothesData.save(pants3);
-
-        LOG.info("added new {} to the database with name and price: {}, {}",
-                type.getType(), pants3.getName(), pants3.getPrice());
+        LOG.info("added new {} to database with name and price: {}, {}",
+                clothes.getType().getType(), clothes.getName(), clothes.getPrice());
     }
 
     public void putSomeClothesIntoTheStock() {
@@ -345,39 +241,25 @@ public class DataLoader implements ApplicationRunner {
         }
     }
 
-    public void createEmail() {
+    public void createEmails() {
       long emailNum = emailData.count();
 
-        if (emailNum==0) {
-            Email reg= registrationEmail();
-            emailData.save(reg);
-            LOG.info("added new email with type {}, subject {}",
-                    reg.getMessageType(), reg.getSubject());
-        Email shop = shoppingEmail();
-            emailData.save(shop);
-            LOG.info("added new email with type {}, subject {}",
-                    shop.getMessageType(), shop.getSubject());
-        }
+      if (emailNum==0) {
+          createEmail(EmailSenderHelper.REGISTRATION, "Registration verification",
+                  "Thank you for your registration! Have a nice day!\nTo confirm your account, please click here:\n");
+          createEmail(EmailSenderHelper.SHOPPING, "Shopping confirmation",
+                  "Thank you for your shopping! Have a nice day!\n");
+      }
     }
 
-
-    private Email registrationEmail() {
+    private void createEmail(String messageType, String subject, String messageText) {
         Email email = new Email();
-        email.setMessageType(EmailSenderHelper.REGISTRATION);
-        email.setSubject("Registration verification");
-        email.setMessageText(
-                "Thank you for your registration! Have a nice day!\n" +
-                        "To confirm your account, please click here:");
-        return email;
-    }
-
-    private Email shoppingEmail() {
-        Email email = new Email();
-        email.setMessageType(EmailSenderHelper.SHOPPING);
-        email.setSubject("Shopping confirmation");
-        email.setMessageText(
-                "Thank you for your shopping! Have a nice day!");
-        return email;
+        email.setMessageType(messageType);
+        email.setSubject(subject);
+        email.setMessageText(messageText);
+        emailData.save(email);
+        LOG.info("added new email with type {}, subject {}",
+                email.getMessageType(), email.getSubject());
     }
 
     public void createOrder() {
