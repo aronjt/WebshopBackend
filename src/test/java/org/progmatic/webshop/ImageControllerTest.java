@@ -15,7 +15,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -26,7 +25,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
@@ -56,12 +54,14 @@ class ImageControllerTest {
     void send_image() throws Exception {
         MockMultipartFile file = loadImage();
         if (file != null) {
-            mockMvc.perform(
+            MvcResult result = mockMvc.perform(
                     MockMvcRequestBuilders.multipart("/image")
                         .file(file)
                     .with(SecurityMockMvcRequestPostProcessors.csrf()))
                     .andExpect(status().isOk())
                     .andReturn();
+            String response = result.getResponse().getContentAsString();
+            assertTrue(response.contains("successful image upload"));
         }
     }
 
@@ -82,7 +82,6 @@ class ImageControllerTest {
         } catch (Exception e) {
             return null;
         }
-
     }
 
 }
