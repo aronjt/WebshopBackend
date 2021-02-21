@@ -82,6 +82,11 @@ public class OrderService {
     public Feedback finishOrder(long id) {
         OnlineOrder order = em.find(OnlineOrder.class, id);
 
+        if (order == null) {
+            LOG.info("order with id {} cannot be found", id);
+            return new Message("order cannot be found");
+        }
+
         if (order.isFinish()) {
             LOG.info("order with id {} is already finished", id);
             return new Message("order is already finished");
@@ -119,7 +124,7 @@ public class OrderService {
 
         LOG.warn("cannot create order, because user is null");
 
-        return new Message(false, "cannto create order, because user is null");
+        return new Message(false, "cannot create order, because user is null");
     }
 
     private OnlineOrder createNewOrder(User user) {

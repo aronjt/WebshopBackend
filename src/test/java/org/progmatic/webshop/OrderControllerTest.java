@@ -1,6 +1,5 @@
 package org.progmatic.webshop;
 
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.progmatic.webshop.helpers.EmailSenderHelper;
@@ -15,15 +14,15 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -90,16 +89,18 @@ class OrderControllerTest {
 
     @Test
     @WithUserDetails(EmailSenderHelper.ADMIN_EMAIL_ADDRESS)
-    void get_one_order_as_admin() throws Exception {
-        mockMvc.perform(
+    void get_not_existing_order_as_admin() throws Exception {
+        MvcResult result = mockMvc.perform(
                 get("/orders/{id}", 1))
                 .andExpect(status().isOk())
                 .andReturn();
+        String response = result.getResponse().getContentAsString();
+        assertTrue(response.contains("order cannot be found"));
     }
 
     @Test
     @WithUserDetails(USER_EMAIL)
-    void get_one_order_as_user() throws Exception {
+    void get_not_existing_order_as_user() throws Exception {
         mockMvc.perform(
                 get("/orders/{id}", 1))
                 .andExpect(status().is(403))
@@ -108,15 +109,26 @@ class OrderControllerTest {
 
     @Test
     @WithUserDetails(EmailSenderHelper.ADMIN_EMAIL_ADDRESS)
+    void get_existing_order_as_admin() throws Exception {
+        long id = getOrderId();
+        MvcResult result = mockMvc.perform(
+                get("/orders/{id}", id))
+                .andExpect(status().isOk())
+                .andReturn();
+        String response = result.getResponse().getContentAsString();
+        assertTrue(response.contains("totalPrice"));
+    }
+
+    @Test
+    @WithUserDetails(EmailSenderHelper.ADMIN_EMAIL_ADDRESS)
     void finish_order_as_admin() throws Exception {
         long id = getOrderId();
-        if (id != 0) {
-            mockMvc.perform(
-                    put("/orders/{id}", id)
-                            .with(SecurityMockMvcRequestPostProcessors.csrf()))
-                    .andExpect(status().isOk())
-                    .andReturn();
-        }
+
+        mockMvc.perform(
+                put("/orders/{id}", id)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(status().isOk())
+                .andReturn();
     }
 
     @Test
