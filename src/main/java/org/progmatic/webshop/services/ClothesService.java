@@ -58,11 +58,10 @@ public class ClothesService {
     }
 
     @Transactional
-    public long addNewCloth(ClothDto clothDto) {
+    public void addNewCloth(ClothDto clothDto) {
         Clothes c = new Clothes(clothDto);
         em.persist(c);
         LOG.info("one cloth added to database");
-        return c.getId();
     }
 
     public List<ClothDto> filterClothes(FilterClothesDto filter) {
@@ -87,6 +86,7 @@ public class ClothesService {
                 clothDtoList.add(new ClothDto(clothes));
             }
         }
+        LOG.info("Clothes been filtered");
         return clothDtoList;
     }
 
@@ -109,7 +109,7 @@ public class ClothesService {
                 case "XL" -> stockDto.setSizeXl(stock1.getQuantity());
             }
         }
-        LOG.info("Stock level given back");
+        LOG.info("Stock level has given back");
         return stockDto;
     }
 
