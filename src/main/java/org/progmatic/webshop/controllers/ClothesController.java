@@ -1,72 +1,61 @@
 package org.progmatic.webshop.controllers;
 
 import org.progmatic.webshop.dto.*;
+import org.progmatic.webshop.returnmodel.Feedback;
+import org.progmatic.webshop.returnmodel.ListResult;
+import org.progmatic.webshop.returnmodel.Message;
 import org.progmatic.webshop.services.ClothesService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.cors.CorsConfigurationSource;
-
-import java.util.List;
 
 @RestController
 public class ClothesController {
 
-    private ClothesService clothesService;
-    private CorsConfigurationSource corsConfigurationSource;
+    private final ClothesService clothesService;
 
     @Autowired
-    public ClothesController(ClothesService clothesService, @Qualifier("corsConfigurationSource") CorsConfigurationSource corsConfigurationSource) {
+    public ClothesController(ClothesService clothesService) {
         this.clothesService = clothesService;
-        this.corsConfigurationSource = corsConfigurationSource;
     }
 
     @GetMapping("/clothes")
-    public ListDto<ClothDto> getAllClothes() {
-        List<ClothDto> clothDtoList = clothesService.getAllClothes();
-        return new ListDto<>(clothDtoList);
+    public Feedback getAllClothes() {
+        return new ListResult<>(clothesService.getAllClothes());
     }
 
     @PostMapping("/clothes")
-    public FeedbackDto addNewCloth(@RequestBody ClothDto cloth) {
-        try {
-            long id = clothesService.addNewCloth(cloth);
-            return new FeedbackDto(id, "Added successfully");
-        } catch (Exception e) {
-            return new FeedbackDto("Fail to add");
-        }
+    public Feedback addNewCloth(@RequestBody ClothDto cloth) {
+        clothesService.addNewCloth(cloth);
+        return new Message(true, "Cloth successfully added");
     }
 
     @GetMapping("/clothes/{id}")
-    public ListDto<ClothDto> getOneCloth(@PathVariable("id") long id) {
-        ListDto<ClothDto> clothDtoListDto = new ListDto<>();
-        clothDtoListDto.getList().add(clothesService.getOneCloth(id));
-        return clothDtoListDto;
+    public Feedback getOneCloth(@PathVariable("id") long id) {
+        ListResult<ClothDto> cloth = new ListResult<>();
+        cloth.getList().add(clothesService.getOneCloth(id));
+        return cloth;
     }
 
     @GetMapping(value = "/clothes", params = "gender")
-    public ListDto<ClothDto> getClothesFromGender(@RequestParam("gender") String gender) {
-        List<ClothDto> clothDtoList = clothesService.getClothesFromGender(gender);
-        return new ListDto<>(clothDtoList);
+    public Feedback getClothesFromGender(@RequestParam("gender") String gender) {
+        return new ListResult<>(clothesService.getClothesFromGender(gender));
     }
 
     @PostMapping(value = "/clothes/filter")
-    public ListDto<ClothDto> filterClothes(@RequestBody FilterClothesDto filter) {
-        List<ClothDto> clothDtoList = clothesService.filterClothes(filter);
-
-        return new ListDto<>(clothDtoList);
+    public Feedback filterClothes(@RequestBody FilterClothesDto filter) {
+        return new ListResult<>(clothesService.filterClothes(filter));
     }
 
     @PutMapping("/clothes/{id}")
-    public FeedbackDto editCloth(@PathVariable("id") long id) {
+    public Feedback editCloth(@PathVariable("id") long id) {
         return null;
     }
 
     @GetMapping("/stock/{id}")
-    public ListDto<StockDto> getStockLevel(@PathVariable("id") long id) {
-        ListDto<StockDto> stockDtoListDto = new ListDto<>();
-        stockDtoListDto.getList().add(clothesService.getStockLevel(id));
-        return stockDtoListDto;
+    public Feedback getStockLevel(@PathVariable("id") long id) {
+        ListResult<StockDto> clothDtoListResult = new ListResult<>();
+        clothDtoListResult.getList().add(clothesService.getStockLevel(id));
+        return clothDtoListResult;
     }
 
 
