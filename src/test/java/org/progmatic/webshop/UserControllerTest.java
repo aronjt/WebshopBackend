@@ -56,7 +56,7 @@ class UserControllerTest {
     }
 
     @Test
-    void login_wit_invalid_credentials() throws Exception {
+    void login_with_invalid_credentials() throws Exception {
         mockMvc.perform(
                 SecurityMockMvcRequestBuilders.formLogin().user("admin").password("aaa"))
                 .andExpect(status().is(302));

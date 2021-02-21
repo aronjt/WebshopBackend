@@ -14,6 +14,12 @@ public class JsonBuilder {
         return this;
     }
 
+    public JsonBuilder add(String name, float value) {
+        seed.append("\"").append(name).append("\":");
+        seed.append(value).append(",");
+        return this;
+    }
+
     public JsonBuilder addEmptyList(String name) {
         seed.append("\"").append(name).append("\":");
         seed.append("[]").append(",");

@@ -112,20 +112,13 @@ public class OrderService {
 
             em.persist(order);
 
-            return createFeedbackMessage(true, "order success");
+            return new Message(true, "order success with total price: " + order.getTotalPrice());
         }
 
         LOG.warn("cannot create order, because user is null");
 
-        return createFeedbackMessage(false, "cannot create order, because user is null");
+        return new Message(false, "cannto create order, because user is null");
 
-    }
-
-    private Feedback createFeedbackMessage(boolean success, String message) {
-        Message m = new Message();
-        m.setSuccess(success);
-        m.setMessage(message);
-        return m;
     }
 
     private OnlineOrder createNewOrder(User user) {

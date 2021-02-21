@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -28,7 +29,7 @@ class OrderControllerTest {
     @Test
     void send_order_without_authentication() throws Exception {
         String json = JsonBuilder.newBuilder()
-                .add("totalPrice", "39.99")
+                .add("totalPrice", 39.99f)
                 .addEmptyList("purchasedClothesList")
                 .build();
         mockMvc.perform(
@@ -37,6 +38,22 @@ class OrderControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().is(302))
+                .andReturn();
+    }
+
+    @Test
+    @WithUserDetails("ertekelek@ertek.el")
+    void send_order_with_authentication() throws Exception {
+        String json = JsonBuilder.newBuilder()
+                .add("totalPrice", 39.99f)
+                .addEmptyList("purchasedClothesList")
+                .build();
+        mockMvc.perform(
+                post("/orders")
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isOk())
                 .andReturn();
     }
 
