@@ -100,4 +100,8 @@ public class MyUserDetailsService implements UserDetailsService {
         return null;
     }
 
+    @Transactional
+    public User getUser(long id) {
+        return em.find(User.class, id);
+    }
 }

@@ -14,6 +14,7 @@ import java.io.IOException;
 public class CookieSameSiteFilter implements Filter {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(CookieSameSiteFilter.class);
+
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
         LOGGER.trace("CookieSameSiteFilter doFilter called");
@@ -24,6 +25,5 @@ public class CookieSameSiteFilter implements Filter {
             response.setHeader("Set-Cookie", response.getHeader("Set-Cookie") + "; SameSite=None");
         }
         chain.doFilter(request, response);
-
     }
 }
