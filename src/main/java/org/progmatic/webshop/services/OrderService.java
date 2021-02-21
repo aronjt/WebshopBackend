@@ -98,7 +98,9 @@ public class OrderService {
     public Feedback sendOrder(OrderDto orderDto) {
         User user = uds.getLoggedInUser();
 
-        //User user = em.find(User.class, orderDto.getUserId());
+        /* if frontend also sends the userId with the order, use this:
+        User user = em.find(User.class, orderDto.getUserId());
+         */
 
         if (user != null) {
             OnlineOrder order = createNewOrder(user);
@@ -118,7 +120,6 @@ public class OrderService {
         LOG.warn("cannot create order, because user is null");
 
         return new Message(false, "cannto create order, because user is null");
-
     }
 
     private OnlineOrder createNewOrder(User user) {
