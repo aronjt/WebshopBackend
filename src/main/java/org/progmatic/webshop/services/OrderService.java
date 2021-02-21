@@ -157,34 +157,3 @@ public class OrderService {
     }
 
 }
-
-
-
-
-/*
-rendelés
-ruha 1
-ruha 2
-ruha 3
-
-ok, tovább -> sendUserData
-
-szállítási adatok
-    - űrlap megjelenik
-        - user regisztrált?
-            - kitöltött adatokkal jelenik meg
-        - nem regisztrált?
-            - üres űrlap, amit ki kell töltenie
-név
-cím
-tel.
-stb.
-
-ok, tovább -> sendOrder()
-
-megerősítés
-szupi!
-(kap emailt róla)
-
-kösz!
- */
