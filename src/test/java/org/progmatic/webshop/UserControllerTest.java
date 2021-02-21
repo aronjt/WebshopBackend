@@ -29,7 +29,7 @@ class UserControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    void testCsf()  throws Exception{
+    void testCsrf() throws Exception{
         MvcResult mvcResult = mockMvc.perform(get("/csrf"))
                 .andExpect(status().isOk())
                 .andReturn();
