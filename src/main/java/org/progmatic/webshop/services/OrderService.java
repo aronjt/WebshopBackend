@@ -112,7 +112,7 @@ public class OrderService {
 
             em.persist(order);
 
-            return new Message(true, "order success with total price: " + order.getTotalPrice());
+            return new Message(true, "order sent successfully");
         }
 
         LOG.warn("cannot create order, because user is null");
