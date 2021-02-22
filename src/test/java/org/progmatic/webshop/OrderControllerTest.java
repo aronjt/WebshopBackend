@@ -6,6 +6,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.progmatic.webshop.dto.OrderDto;
 import org.progmatic.webshop.helpers.EmailSenderHelper;
 import org.progmatic.webshop.model.OnlineOrder;
+import org.progmatic.webshop.returnmodel.Feedback;
+import org.progmatic.webshop.returnmodel.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -94,7 +97,9 @@ class OrderControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
         String response = result.getResponse().getContentAsString();
-        assertTrue(response.contains("order cannot be found"));
+        Message fb = objectMapper.readValue(response, Message.class);
+        assertFalse(fb.isSuccess());
+        assertEquals("order cannot be found", fb.getMessage());
     }
 
     @Test

@@ -27,10 +27,6 @@ public class RegistrationController {
     EntityManager entityManager;
     EmailSenderService sendEmail;
 
-    /* TODO
-        try this (because in application.properties, there is this link):
-        @Value("${value.of.url}")
-     */
     @Value("${value.of.url}")
     private String valueOfUrl;
 

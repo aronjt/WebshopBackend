@@ -19,10 +19,6 @@ public class EmailSenderService {
 
 private String valueOfUrl;
 
-    /* TODO
-        try this (because in application.properties, there is this link):
-        @Value("${value.of.password}")
-     */
     @Value("${value.of.password}")
     private String fromPassword;
 

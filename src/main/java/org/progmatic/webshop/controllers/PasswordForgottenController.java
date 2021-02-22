@@ -32,10 +32,6 @@ public class PasswordForgottenController {
     EmailSenderService sendEmail;
     PasswordEncoder passwordEncoder;
 
-    /* TODO
-        try this (because in application.properties, there is this link):
-        @Value("${value.of.password.url}")
-     */
     @Value("${value.of.password.url}")
     private String valueOfUrl;
 

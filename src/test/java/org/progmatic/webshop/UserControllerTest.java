@@ -68,7 +68,7 @@ class UserControllerTest {
 
     @Test
     void get_all_users() throws Exception {
-        mockMvc.perform(
+        MvcResult result = mockMvc.perform(
                 get("/users"))
                 .andExpect(status().isOk())
                 .andReturn();
