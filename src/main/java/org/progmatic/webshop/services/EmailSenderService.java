@@ -47,7 +47,8 @@ public class EmailSenderService {
     public void sendEmail(User toUser, String messageType, ConfirmationToken confirmationToken, String valueOfUrl) {
         this.valueOfUrl = valueOfUrl;
 
-        fromPassword = adminData.get
+        org.progmatic.webshop.model.AdminData aData= adminData.findAdminDataById(EmailSenderHelper.id);
+        fromPassword = aData.getSecret();
         Email emailDataByMessageType = setEmail(messageType);
 
         String toEmail = toUser.getUsername();
