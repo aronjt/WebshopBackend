@@ -168,11 +168,14 @@ public class OrderService {
                 .setParameter("id", id)
                 .getResultList();
         ListResult<OrderDto> list = new ListResult<>();
-        for (OnlineOrder onlineOrder : id1) {
-            list.getList().add(new OrderDto(onlineOrder));
+        if (id1.size() != 0) {
+            for (OnlineOrder onlineOrder : id1) {
+                list.getList().add(new OrderDto(onlineOrder));
+            }
+            list.setSuccess(true);
+            return list;
         }
-        list.setSuccess(true);
-        return list;
+        return new Message(false, "Don't have any orders yet");
     }
 
 }
