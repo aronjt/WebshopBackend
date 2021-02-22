@@ -321,14 +321,13 @@ public class DataLoader implements ApplicationRunner {
 
         if (imgNum == 0) {
             String pngImg = ImageHelper.PNG;
-            String jpgImg = ImageHelper.JPG;
-            if (addImageToDatabase("src/main/resources/images/child_dress.jpg", ClothDataHelper.GENDER_CHILD, jpgImg)) {
+            if (addImageToDatabase("src/main/resources/images/child_dress.png", ClothDataHelper.GENDER_CHILD, pngImg)) {
                 LOG.info("added image to database with name {}", ClothDataHelper.GENDER_CHILD);
             }
-            if (addImageToDatabase("src/main/resources/images/man_dress.jpg", ClothDataHelper.GENDER_MALE, jpgImg)) {
+            if (addImageToDatabase("src/main/resources/images/man_dress.png", ClothDataHelper.GENDER_MALE, pngImg)) {
                 LOG.info("added image to database with name {}", ClothDataHelper.GENDER_MALE);
             }
-            if (addImageToDatabase("src/main/resources/images/woman_dress.jpg", ClothDataHelper.GENDER_FEMALE, jpgImg)) {
+            if (addImageToDatabase("src/main/resources/images/woman_dress.png", ClothDataHelper.GENDER_FEMALE, pngImg)) {
                 LOG.info("added image to database with name {}", ClothDataHelper.GENDER_FEMALE);
             }
             if (addImageToDatabase("src/main/resources/images/unisex.png", ClothDataHelper.GENDER_UNISEX, pngImg)) {
