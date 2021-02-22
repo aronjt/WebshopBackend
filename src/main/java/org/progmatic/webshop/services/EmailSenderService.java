@@ -1,8 +1,8 @@
 package org.progmatic.webshop.services;
 
 import org.progmatic.webshop.helpers.EmailSenderHelper;
+import org.progmatic.webshop.jpareps.AdminData;
 import org.progmatic.webshop.jpareps.EmailData;
-import org.progmatic.webshop.model.AdminData;
 import org.progmatic.webshop.model.ConfirmationToken;
 import org.progmatic.webshop.model.Email;
 import org.progmatic.webshop.model.User;
@@ -14,8 +14,6 @@ import javax.mail.*;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.Properties;
 
@@ -23,9 +21,7 @@ import java.util.Properties;
 public class EmailSenderService {
 
     private String valueOfUrl;
-@PersistenceContext
-    EntityManager em;
-//    @Value("${value.of.password}")
+    private AdminData adminData;
     private String fromPassword;
 
 
@@ -33,14 +29,14 @@ public class EmailSenderService {
     private String emailWebSite;
     @Value("${spring.mail.port}")
     private String port;
-
-
-    @Autowired
     private EmailData emailData;
 
-
-    public EmailSenderService() {
+    @Autowired
+    public EmailSenderService(AdminData adminData, EmailData emailData) {
+        this.adminData = adminData;
+        this.emailData = emailData;
     }
+
 
     public Email setEmail(String messageType) {
         Email emailDataByMessageType = emailData.findByMessageType(messageType);
@@ -51,9 +47,7 @@ public class EmailSenderService {
     public void sendEmail(User toUser, String messageType, ConfirmationToken confirmationToken, String valueOfUrl) {
         this.valueOfUrl = valueOfUrl;
 
-        fromPassword= (String) em.createQuery("SELECT a from AdminData a where a.id= :id")
-                .setParameter("id",EmailSenderHelper.id)
-                .getSingleResult();
+        fromPassword = adminData.get
         Email emailDataByMessageType = setEmail(messageType);
 
         String toEmail = toUser.getUsername();
