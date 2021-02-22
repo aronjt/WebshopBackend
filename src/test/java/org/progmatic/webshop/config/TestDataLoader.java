@@ -1,5 +1,6 @@
 package org.progmatic.webshop.config;
 
+import org.apache.tomcat.jni.Local;
 import org.progmatic.webshop.configurators.DataLoader;
 import org.progmatic.webshop.dto.RegisterUserDto;
 import org.progmatic.webshop.jpareps.*;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -24,9 +26,9 @@ public class TestDataLoader extends DataLoader {
     public TestDataLoader(PasswordEncoder encoder, UserData userData, TypeData typeData,
                           GenderData genderData, ClothesData clothesData, StockData stockData,
                           EmailData emailData, OnlineOrderData onlineOrderData, PurchasedClothData pcData,
-                          ImageData imageData, ImageService imageservice) {
+                          ImageData imageData, ImageService imageservice, AdminData adminData) {
         super(encoder, userData, typeData, genderData, clothesData, stockData, emailData, onlineOrderData,
-                pcData, imageData, imageservice);
+                pcData, imageData, imageservice, adminData);
     }
 
     @Override
@@ -63,7 +65,7 @@ public class TestDataLoader extends DataLoader {
                 .setParameter("uName", "burkolorant@gmail.com")
                 .getSingleResult();
         ConfirmationToken token = new ConfirmationToken(user);
-        token.setEnableDate(new Date(2021, Calendar.DECEMBER, 31));
+        token.setEnableDate(LocalDateTime.of(2022,01,01,01,01,01));
         em.persist(token);
     }
 

@@ -6,6 +6,7 @@ import org.progmatic.webshop.helpers.ClothDataHelper;
 import org.progmatic.webshop.helpers.EmailSenderHelper;
 import org.progmatic.webshop.helpers.ImageHelper;
 import org.progmatic.webshop.helpers.UserDataHelper;
+import org.progmatic.webshop.jpareps.AdminData;
 import org.progmatic.webshop.model.*;
 import org.progmatic.webshop.services.ImageService;
 import org.slf4j.Logger;
@@ -41,11 +42,12 @@ public class DataLoader implements ApplicationRunner {
     private final OnlineOrderData onlineOrderData;
     private final PurchasedClothData pcData;
     private final ImageData imageData;
+    private final AdminData adminData;
 
     @Autowired
     public DataLoader(PasswordEncoder encoder, UserData userData, TypeData typeData, GenderData genderData,
                       ClothesData clothesData, StockData stockData, EmailData emailData, OnlineOrderData onlineOrderData,
-                      PurchasedClothData pcData, ImageData imageData,ImageService imageservice) {
+                      PurchasedClothData pcData, ImageData imageData, ImageService imageservice, AdminData adminData) {
         this.encoder = encoder;
         this.userData = userData;
         this.typeData = typeData;
@@ -57,12 +59,14 @@ public class DataLoader implements ApplicationRunner {
         this.pcData = pcData;
         this.imageData = imageData;
         this.imageService = imageservice;
+        this.adminData = adminData;
     }
 
     @Override
     @Transactional
     public void run(ApplicationArguments args) {
         createUsers();
+        addAdminData();
         createTypes();
         createGenders();
         createImages();
@@ -110,6 +114,19 @@ public class DataLoader implements ApplicationRunner {
         user.setUserRole(role);
         user.setEnabled(true);
         return user;
+    }
+
+    public void addAdminData() {
+        long adminNum = adminData.count();
+
+        if (adminNum == 0) {
+            org.progmatic.webshop.model.AdminData data = new org.progmatic.webshop.model.AdminData();
+            data.setId(EmailSenderHelper.id);
+            data.setSecret("MRirdatlan007");
+            adminData.save(data);
+
+            LOG.info("admin data added to database with id {}", data.getId());
+        }
     }
 
     public void createTypes() {
@@ -321,14 +338,13 @@ public class DataLoader implements ApplicationRunner {
 
         if (imgNum == 0) {
             String pngImg = ImageHelper.PNG;
-            String jpgImg = ImageHelper.JPG;
-            if (addImageToDatabase("src/main/resources/images/child_dress.jpg", ClothDataHelper.GENDER_CHILD, jpgImg)) {
+            if (addImageToDatabase("src/main/resources/images/child_dress.png", ClothDataHelper.GENDER_CHILD, pngImg)) {
                 LOG.info("added image to database with name {}", ClothDataHelper.GENDER_CHILD);
             }
-            if (addImageToDatabase("src/main/resources/images/man_dress.jpg", ClothDataHelper.GENDER_MALE, jpgImg)) {
+            if (addImageToDatabase("src/main/resources/images/man_dress.png", ClothDataHelper.GENDER_MALE, pngImg)) {
                 LOG.info("added image to database with name {}", ClothDataHelper.GENDER_MALE);
             }
-            if (addImageToDatabase("src/main/resources/images/woman_dress.jpg", ClothDataHelper.GENDER_FEMALE, jpgImg)) {
+            if (addImageToDatabase("src/main/resources/images/woman_dress.png", ClothDataHelper.GENDER_FEMALE, pngImg)) {
                 LOG.info("added image to database with name {}", ClothDataHelper.GENDER_FEMALE);
             }
             if (addImageToDatabase("src/main/resources/images/unisex.png", ClothDataHelper.GENDER_UNISEX, pngImg)) {
