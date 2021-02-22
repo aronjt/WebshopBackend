@@ -168,7 +168,10 @@ public class OrderService {
                 .setParameter("id", id)
                 .getResultList();
         ListResult<ClothDto> list = new ListResult<>();
-        return null;
+        for (Clothes clothes : id1) {
+            list.getList().add(new ClothDto(clothes));
+        }
+        return list;
     }
 
 }

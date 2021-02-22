@@ -58,6 +58,6 @@ public class UserController {
 
     @GetMapping("/user/order/{id}")
     public Feedback getUsersOrders(@PathVariable("id") long id) {
-        return null;
+        return orderService.getUsersOrders(id);
     }
 }
