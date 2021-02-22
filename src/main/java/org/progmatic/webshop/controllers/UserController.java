@@ -10,9 +10,7 @@ import org.progmatic.webshop.services.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class UserController {
@@ -59,5 +57,10 @@ public class UserController {
     @GetMapping("/user/order/{id}")
     public Feedback getUsersOrders(@PathVariable("id") long id) {
         return orderService.getUsersOrders(id);
+    }
+
+    @PutMapping("/user")
+    public Feedback editUser(@RequestBody RegisterUserDto userDto) {
+        return userService.editUser(userDto);
     }
 }

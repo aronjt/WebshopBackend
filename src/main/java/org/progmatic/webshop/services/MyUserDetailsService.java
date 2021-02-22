@@ -3,7 +3,9 @@ package org.progmatic.webshop.services;
 import org.progmatic.webshop.dto.RegisterUserDto;
 import org.progmatic.webshop.dto.UserDto;
 import org.progmatic.webshop.model.User;
+import org.progmatic.webshop.returnmodel.Feedback;
 import org.progmatic.webshop.returnmodel.ListResult;
+import org.progmatic.webshop.returnmodel.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,5 +105,18 @@ public class MyUserDetailsService implements UserDetailsService {
     @Transactional
     public User getUser(long id) {
         return em.find(User.class, id);
+    }
+
+    @Transactional
+    public Feedback editUser(RegisterUserDto userDto) {
+        User loggedInUser = em.find(User.class, getLoggedInUser().getId());
+        loggedInUser.setFirstName(userDto.getFirstName());
+        loggedInUser.setLastName(userDto.getLastName());
+        loggedInUser.setCountry(userDto.getCountry());
+        loggedInUser.setCity(userDto.getCity());
+        loggedInUser.setAddress(userDto.getAddress());
+        loggedInUser.setZipcode(userDto.getZipcode());
+
+        return new Message(true, "Successfully changed");
     }
 }
