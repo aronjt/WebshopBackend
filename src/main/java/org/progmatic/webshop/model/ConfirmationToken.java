@@ -1,7 +1,7 @@
 package org.progmatic.webshop.model;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -16,16 +16,18 @@ public class ConfirmationToken {
     private String confirmationToken;
 
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdDate;
-    private Date enableDate;
+//    @Temporal(TemporalType.TIMESTAMP)
+    @Column
+    private LocalDateTime createdDate;
+
+    private LocalDateTime enableDate;
     @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false)
     private User user;
 
     public ConfirmationToken(User user) {
         this.user = user;
-        createdDate = new Date();
+        createdDate = LocalDateTime.now();
         confirmationToken = UUID.randomUUID().toString();
     }
 
@@ -33,11 +35,11 @@ public class ConfirmationToken {
 
     }
 
-    public Date getEnableDate() {
+    public LocalDateTime getEnableDate() {
         return enableDate;
     }
 
-    public void setEnableDate(Date enableDate) {
+    public void setEnableDate(LocalDateTime enableDate) {
         this.enableDate = enableDate;
     }
 
@@ -49,11 +51,11 @@ public class ConfirmationToken {
         this.tokenid = tokenid;
     }
 
-    public Date getCreatedDate() {
+    public LocalDateTime getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Date createdDate) {
+    public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
     }
 

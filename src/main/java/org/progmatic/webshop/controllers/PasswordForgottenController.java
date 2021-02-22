@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @RestController
 public class PasswordForgottenController {
@@ -26,7 +26,6 @@ public class PasswordForgottenController {
 
     private final UserData userRepository;
     private final ConfirmationTokenData confirmationTokenRepository;
-    private final RegistrationService registrationService;
     @PersistenceContext
     EntityManager entityManager;
     EmailSenderService sendEmail;
@@ -38,12 +37,11 @@ public class PasswordForgottenController {
     @Autowired
     public PasswordForgottenController(EmailSenderService sendEmail, EntityManager entityManager, UserData userRepository,
                                        ConfirmationTokenData confirmationTokenRepository,
-                                       RegistrationService registrationService, PasswordEncoder passwordEncoder) {
+                                        PasswordEncoder passwordEncoder) {
         this.sendEmail = sendEmail;
         this.entityManager = entityManager;
         this.userRepository = userRepository;
         this.confirmationTokenRepository = confirmationTokenRepository;
-        this.registrationService = registrationService;
         this.passwordEncoder = passwordEncoder;
 
     }
@@ -53,11 +51,10 @@ public class PasswordForgottenController {
         User existingUser = userRepository.findByUsername(emailAdress);
 
         Message feedback = new Message();
-// todo itt nem kell chekthedate
         ConfirmationToken confirmationToken = null;
         if (existingUser != null) {
             confirmationToken = new ConfirmationToken(existingUser);
-            Date tomorrow = registrationService.addDays(confirmationToken.getCreatedDate(), 1);
+            LocalDateTime tomorrow = confirmationToken.getCreatedDate().plusDays(1);
             confirmationToken.setEnableDate(tomorrow);
             confirmationTokenRepository.save(confirmationToken);
             sendEmail.sendEmail(existingUser, EmailSenderHelper.REGISTRATION, confirmationToken, valueOfUrl);
@@ -84,7 +81,7 @@ public class PasswordForgottenController {
 //       todo ellenőrizni a enabledate et
         if (token != null) {
             LOG.info("Token is not null");
-            if (registrationService.checkTheDate(token.getCreatedDate())) {
+            if (RegistrationService.checkTheDate(token.getEnableDate())) {
                 LOG.info("Token is not expired");
                 if (userName.equals(token.getUser().getUsername())) {
                     User user = userRepository.findByUsername(token.getUser().getUsername());
