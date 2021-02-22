@@ -26,9 +26,9 @@ public class TestDataLoader extends DataLoader {
     public TestDataLoader(PasswordEncoder encoder, UserData userData, TypeData typeData,
                           GenderData genderData, ClothesData clothesData, StockData stockData,
                           EmailData emailData, OnlineOrderData onlineOrderData, PurchasedClothData pcData,
-                          ImageData imageData, ImageService imageservice) {
+                          ImageData imageData, ImageService imageservice, AdminData adminData) {
         super(encoder, userData, typeData, genderData, clothesData, stockData, emailData, onlineOrderData,
-                pcData, imageData, imageservice);
+                pcData, imageData, imageservice, adminData);
     }
 
     @Override
