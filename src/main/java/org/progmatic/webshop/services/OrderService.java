@@ -1,5 +1,6 @@
 package org.progmatic.webshop.services;
 
+import org.progmatic.webshop.dto.ClothDto;
 import org.progmatic.webshop.dto.OrderDto;
 import org.progmatic.webshop.dto.PurchasedClothDto;
 import org.progmatic.webshop.model.*;
@@ -159,6 +160,22 @@ public class OrderService {
                         c.getId());
             }
         }
+    }
+
+    @Transactional
+    public Feedback getUsersOrders(long id) {
+        List<OnlineOrder> id1 = em.createQuery("SELECT o FROM OnlineOrder o WHERE o.user.id = :id", OnlineOrder.class)
+                .setParameter("id", id)
+                .getResultList();
+        ListResult<OrderDto> list = new ListResult<>();
+        if (id1.size() != 0) {
+            for (OnlineOrder onlineOrder : id1) {
+                list.getList().add(new OrderDto(onlineOrder));
+            }
+            list.setSuccess(true);
+            return list;
+        }
+        return new Message(false, "Don't have any orders yet");
     }
 
 }

@@ -1,26 +1,35 @@
 package org.progmatic.webshop.services;
 
-import org.progmatic.webshop.jpareps.EmailData;
-import org.progmatic.webshop.model.Email;
 import org.progmatic.webshop.helpers.EmailSenderHelper;
-import org.progmatic.webshop.model.User;
+import org.progmatic.webshop.jpareps.EmailData;
 import org.progmatic.webshop.model.ConfirmationToken;
+import org.progmatic.webshop.model.Email;
+import org.progmatic.webshop.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.mail.*;
-import javax.mail.internet.*;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.transaction.Transactional;
 import java.util.Properties;
 
 @Service
 public class EmailSenderService {
 
-private String valueOfUrl;
+    private String valueOfUrl;
 
     @Value("${value.of.password}")
     private String fromPassword;
+
+
+    @Value("${spring.mail.host}")
+    private String emailWebSite;
+    @Value("${spring.mail.port}")
+    private String port;
+
 
     @Autowired
     private EmailData emailData;
@@ -36,17 +45,17 @@ private String valueOfUrl;
 
     @Transactional
     public void sendEmail(User toUser, String messageType, ConfirmationToken confirmationToken, String valueOfUrl) {
-     this.valueOfUrl=valueOfUrl;
+        this.valueOfUrl = valueOfUrl;
         Email emailDataByMessageType = setEmail(messageType);
 
         String toEmail = toUser.getUsername();
         Properties props = new Properties();
         props.setProperty("mail.transport.protocol", "smtp");
-        props.setProperty("mail.host", "smtp.gmail.com");
+        props.setProperty("mail.host", emailWebSite);
         props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.port", "465");
+        props.put("mail.smtp.port", port);
         props.put("mail.debug", "true");
-        props.put("mail.smtp.socketFactory.port", "465");
+        props.put("mail.smtp.socketFactory.port", port);
         props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         props.put("mail.smtp.socketFactory.fallback", "false");
 
@@ -76,10 +85,9 @@ private String valueOfUrl;
             message.setSubject(subject);
 
 
-
             message.setContent(
                     "<h1>Verification message</h1>"
-                            +getMessageTextWithConfirmationToken(toUser, emailDataByMessageType, confirmationToken),
+                            + getMessageTextWithConfirmationToken(toUser, emailDataByMessageType, confirmationToken),
                     "text/html");
             transport.connect();
             Transport.send(message);
@@ -103,7 +111,7 @@ private String valueOfUrl;
                 toUser.getFirstName() +
                 ",\n" +
                 email.getMessageText()
-                + valueOfUrl+ confirmationToken.getConfirmationToken() +
+                + valueOfUrl + confirmationToken.getConfirmationToken() +
                 "\n For more info visit our website.";
         return text;
     }

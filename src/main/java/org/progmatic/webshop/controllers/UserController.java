@@ -6,6 +6,7 @@ import org.progmatic.webshop.returnmodel.Feedback;
 import org.progmatic.webshop.returnmodel.ListResult;
 import org.progmatic.webshop.returnmodel.Message;
 import org.progmatic.webshop.services.MyUserDetailsService;
+import org.progmatic.webshop.services.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +25,12 @@ public class UserController {
      */
 
     private final MyUserDetailsService userService;
+    private final OrderService orderService;
 
     @Autowired
-    public UserController(MyUserDetailsService userService) {
+    public UserController(MyUserDetailsService userService, OrderService orderService) {
         this.userService = userService;
+        this.orderService = orderService;
     }
 
     @GetMapping("/users")
@@ -45,11 +48,16 @@ public class UserController {
     @GetMapping("/user")
     public Feedback getLoggedInUser() {
         ListResult<UserDto> loggedInUser = new ListResult<>();
+        loggedInUser.getList().add(new UserDto(userService.getLoggedInUser()));
         if (loggedInUser.getList().size() != 0) {
-            loggedInUser.getList().add(new UserDto(userService.getLoggedInUser()));
             loggedInUser.setSuccess(true);
             return loggedInUser;
         }
         return new Message(false, "No user is logged in");
+    }
+
+    @GetMapping("/user/order/{id}")
+    public Feedback getUsersOrders(@PathVariable("id") long id) {
+        return orderService.getUsersOrders(id);
     }
 }
