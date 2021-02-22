@@ -1,9 +1,10 @@
 package org.progmatic.webshop;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.progmatic.webshop.dto.OrderDto;
 import org.progmatic.webshop.helpers.EmailSenderHelper;
-import org.progmatic.webshop.helpers.JsonBuilder;
 import org.progmatic.webshop.model.OnlineOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -18,6 +19,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -33,6 +35,9 @@ class OrderControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @PersistenceContext
     EntityManager em;
 
@@ -40,10 +45,7 @@ class OrderControllerTest {
 
     @Test
     void send_order_without_authentication() throws Exception {
-        String json = JsonBuilder.newBuilder()
-                .add("totalPrice", 39.99f)
-                .addEmptyList("purchasedClothesList")
-                .build();
+        String json = objectMapper.writeValueAsString(createOrder());
         mockMvc.perform(
                 post("/orders")
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
@@ -56,10 +58,7 @@ class OrderControllerTest {
     @Test
     @WithUserDetails(USER_EMAIL)
     void send_order_with_authentication() throws Exception {
-        String json = JsonBuilder.newBuilder()
-                .add("totalPrice", 39.99f)
-                .addEmptyList("purchasedClothesList")
-                .build();
+        String json = objectMapper.writeValueAsString(createOrder());
         mockMvc.perform(
                 post("/orders")
                         .with(SecurityMockMvcRequestPostProcessors.csrf())
@@ -148,6 +147,13 @@ class OrderControllerTest {
             return orders.get(0).getId();
         }
         return 0;
+    }
+
+    private OrderDto createOrder() {
+        OrderDto order = new OrderDto();
+        order.setTotalPrice(39.99f);
+        order.setPurchasedClothesList(new ArrayList<>());
+        return order;
     }
 
 }

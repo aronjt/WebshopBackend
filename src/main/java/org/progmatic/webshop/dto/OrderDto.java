@@ -25,7 +25,7 @@ public class OrderDto {
         setPurchasedClothesList(order.getPurchasedClothesList());
     }
 
-    private void setPurchasedClothesList(List<PurchasedClothes> purchasedClothesList) {
+    public void setPurchasedClothesList(List<PurchasedClothes> purchasedClothesList) {
         this.purchasedClothesList = new ArrayList<>();
         for (PurchasedClothes c : purchasedClothesList) {
             this.purchasedClothesList.add(new PurchasedClothDto(c));
@@ -42,6 +42,10 @@ public class OrderDto {
 
     public float getTotalPrice() {
         return totalPrice;
+    }
+
+    public void setTotalPrice(float totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     public boolean isFinish() {
