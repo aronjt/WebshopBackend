@@ -83,4 +83,12 @@ class UserControllerTest {
                 .andReturn();
     }
 
+    /*@Test
+    void null_pointer() throws Exception {
+        mockMvc.perform(
+                get("/user"))
+                .andExpect(status().isOk())
+                .andReturn();
+    }*/
+
 }
