@@ -50,6 +50,7 @@ public class EmailSenderService {
     @Transactional
     public void sendEmail(User toUser, String messageType, ConfirmationToken confirmationToken, String valueOfUrl) {
         this.valueOfUrl = valueOfUrl;
+
         fromPassword= (String) em.createQuery("SELECT a from AdminData a where a.id= :id")
                 .setParameter("id",EmailSenderHelper.id)
                 .getSingleResult();
