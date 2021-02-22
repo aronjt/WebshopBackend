@@ -1,4 +1,3 @@
-/*
 package org.progmatic.webshop;
 
 import org.apache.commons.io.IOUtils;
@@ -85,4 +84,4 @@ class ImageControllerTest {
         }
     }
 
-}*/
+}

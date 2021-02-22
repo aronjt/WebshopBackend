@@ -1,4 +1,3 @@
-/*
 package org.progmatic.webshop;
 
 import org.junit.jupiter.api.Test;
@@ -38,4 +37,4 @@ class SearchControllerTest {
                 .andReturn();
     }
 
-}*/
+}

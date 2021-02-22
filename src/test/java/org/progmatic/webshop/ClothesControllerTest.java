@@ -1,4 +1,3 @@
-/*
 package org.progmatic.webshop;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,4 +45,4 @@ class ClothesControllerTest {
         clothDto.setPrice(69f);
         return clothDto;
     }
-}*/
+}

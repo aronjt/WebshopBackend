@@ -1,4 +1,3 @@
-/*
 package org.progmatic.webshop;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -162,4 +161,4 @@ class OrderControllerTest {
         return order;
     }
 
-}*/
+}
