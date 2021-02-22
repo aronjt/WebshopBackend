@@ -2,6 +2,7 @@ package org.progmatic.webshop.services;
 
 import org.progmatic.webshop.helpers.EmailSenderHelper;
 import org.progmatic.webshop.jpareps.EmailData;
+import org.progmatic.webshop.model.AdminData;
 import org.progmatic.webshop.model.ConfirmationToken;
 import org.progmatic.webshop.model.Email;
 import org.progmatic.webshop.model.User;
@@ -13,6 +14,8 @@ import javax.mail.*;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.Properties;
 
@@ -20,8 +23,9 @@ import java.util.Properties;
 public class EmailSenderService {
 
     private String valueOfUrl;
-
-    @Value("${value.of.password}")
+@PersistenceContext
+    EntityManager em;
+//    @Value("${value.of.password}")
     private String fromPassword;
 
 
@@ -46,6 +50,9 @@ public class EmailSenderService {
     @Transactional
     public void sendEmail(User toUser, String messageType, ConfirmationToken confirmationToken, String valueOfUrl) {
         this.valueOfUrl = valueOfUrl;
+        fromPassword= (String) em.createQuery("SELECT a from AdminData a where a.id= :id")
+                .setParameter("id",EmailSenderHelper.id)
+                .getSingleResult();
         Email emailDataByMessageType = setEmail(messageType);
 
         String toEmail = toUser.getUsername();
