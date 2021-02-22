@@ -1,3 +1,4 @@
+/*
 package org.progmatic.webshop.config;
 
 import org.apache.tomcat.jni.Local;
@@ -70,3 +71,4 @@ public class TestDataLoader extends DataLoader {
     }
 
 }
+*/

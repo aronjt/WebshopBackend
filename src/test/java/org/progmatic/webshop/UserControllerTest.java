@@ -1,3 +1,4 @@
+/*
 package org.progmatic.webshop;
 
 import org.junit.jupiter.api.Test;
@@ -83,12 +84,14 @@ class UserControllerTest {
                 .andReturn();
     }
 
-    /*@Test
+    */
+/*@Test
     void null_pointer() throws Exception {
         mockMvc.perform(
                 get("/user"))
                 .andExpect(status().isOk())
                 .andReturn();
-    }*/
+    }*//*
 
-}
+
+}*/
