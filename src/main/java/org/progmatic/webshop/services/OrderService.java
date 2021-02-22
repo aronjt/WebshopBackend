@@ -164,13 +164,14 @@ public class OrderService {
 
     @Transactional
     public Feedback getUsersOrders(long id) {
-        List<Clothes> id1 = em.createQuery("SELECT o FROM OnlineOrder o WHERE o.user.id = :id", Clothes.class)
+        List<OnlineOrder> id1 = em.createQuery("SELECT o FROM OnlineOrder o WHERE o.user.id = :id", OnlineOrder.class)
                 .setParameter("id", id)
                 .getResultList();
-        ListResult<ClothDto> list = new ListResult<>();
-        for (Clothes clothes : id1) {
-            list.getList().add(new ClothDto(clothes));
+        ListResult<OrderDto> list = new ListResult<>();
+        for (OnlineOrder onlineOrder : id1) {
+            list.getList().add(new OrderDto(onlineOrder));
         }
+        list.setSuccess(true);
         return list;
     }
 
