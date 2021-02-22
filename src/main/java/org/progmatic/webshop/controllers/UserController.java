@@ -45,7 +45,7 @@ public class UserController {
     @GetMapping("/user")
     public Feedback getLoggedInUser() {
         ListResult<UserDto> loggedInUser = new ListResult<>();
-        if (loggedInUser.getList() != null) {
+        if (loggedInUser.getList().size() != 0) {
             loggedInUser.getList().add(new UserDto(userService.getLoggedInUser()));
             loggedInUser.setSuccess(true);
             return loggedInUser;
