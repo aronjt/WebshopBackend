@@ -47,28 +47,19 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
-
     }
-
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        /* TODO
-            have to clear endpoints...
-            and have to clear who has access to what...
-         */
-        //csrf token disabled
+
         http.cors().and()
-                /*.csrf().disable()*/.formLogin()
-               // .loginPage("/login")
-              //  .successHandler(successHandler)
+                .formLogin()
                 .permitAll()
                 .defaultSuccessUrl("/user", true)
                 .and()
                 .logout()
                 .logoutSuccessUrl("/login")
                 .and()
-              //  .addFilterAfter(new CookieSameSiteFilter(), BasicAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/**").permitAll();
     }
