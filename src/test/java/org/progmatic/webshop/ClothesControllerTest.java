@@ -1,22 +1,26 @@
 package org.progmatic.webshop;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.progmatic.webshop.dto.ClothDto;
+import org.progmatic.webshop.helpers.ClothDataHelper;
+import org.progmatic.webshop.testservice.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -28,22 +32,13 @@ class ClothesControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private ObjectMapper objectMapper;
-
-    @PersistenceContext
-    EntityManager em;
+    private TestService service;
 
     /*
-    post /clothes
-        body: ClothDto
-    get /clothes/{id}
-        id
-    get /clothes?gender=
     post /clothes/filter
         body: FilterClothesDto
     put /clothes/{id}
         missing
-    get /stock/{id}
      */
 
     @Test
@@ -53,9 +48,113 @@ class ClothesControllerTest {
                 .andReturn();
     }
 
-    private ClothDto createCloth() {
-        ClothDto clothDto = new ClothDto();
-        clothDto.setPrice(69f);
-        return clothDto;
+    @Test
+    void get_one_clothes() throws Exception {
+        long id = service.getOneClothId();
+        if (id > -1) {
+            MvcResult result = mockMvc.perform(
+                    get("/clothes/{id}", id))
+                    .andExpect(status().isOk())
+                    .andReturn();
+            String response = result.getResponse().getContentAsString();
+            assertTrue(response.contains("name"));
+        }
     }
+
+    @Test
+    void get_clothes_with_given_gender() throws Exception {
+        MvcResult result = mockMvc.perform(
+                get("/clothes")
+                    .param("gender", ClothDataHelper.GENDER_FEMALE))
+                .andExpect(status().isOk())
+                .andReturn();
+        String response = result.getResponse().getContentAsString();
+        assertTrue(response.contains("name"));
+    }
+
+    @Test
+    void get_one_clothes_from_stock() throws Exception {
+        long id = service.getOneClothId();
+
+        if (id > -1) {
+            MvcResult result = mockMvc.perform(
+                    get("/stock/{id}", id))
+                    .andExpect(status().isOk())
+                    .andReturn();
+            String response = result.getResponse().getContentAsString();
+            assertTrue(response.contains("true"));
+        }
+    }
+
+    /* TODO
+        fix addNewCloth method in ClothesController
+            ClothDto does not contain TYPE and GENDER, but without them, new cloth cannot be added to database
+            test failed because of this validation
+     */
+    /* test failed
+    @Test
+    void add_new_clothes() throws Exception {
+        String json = service.createJson(service.createClothes());
+        if (json != null) {
+            MvcResult result = mockMvc.perform(
+                    post("/clothes")
+                            .with(SecurityMockMvcRequestPostProcessors.csrf())
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(json))
+                    .andExpect(status().isOk())
+                    .andReturn();
+            String response = result.getResponse().getContentAsString();
+            assertTrue(response.contains("Cloth successfully added"));
+        }
+    }
+    */
+
+    @Test
+    void filter_clothes_with_null_filter() throws Exception {
+        String json = service.createJson(service.createNullFilter());
+        if (json != null) {
+            MvcResult result = mockMvc.perform(
+                    post("/clothes/filter")
+                            .with(SecurityMockMvcRequestPostProcessors.csrf())
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(json))
+                    .andExpect(status().isOk())
+                    .andReturn();
+            String response = result.getResponse().getContentAsString();
+            assertTrue(response.contains("true"));
+        }
+    }
+
+    @Test
+    void filter_clothes_with_some_filter_data() throws Exception {
+        String json = service.createJson(service.createFilterWithSomeData());
+        if (json != null) {
+            MvcResult result = mockMvc.perform(
+                    post("/clothes/filter")
+                            .with(SecurityMockMvcRequestPostProcessors.csrf())
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(json))
+                    .andExpect(status().isOk())
+                    .andReturn();
+            String response = result.getResponse().getContentAsString();
+            assertTrue(response.contains("true"));
+        }
+    }
+
+    @Test
+    void filter_clothes_with_full_filter_data() throws Exception {
+        String json = service.createJson(service.createFilterWithAllData());
+        if (json != null) {
+            MvcResult result = mockMvc.perform(
+                    post("/clothes/filter")
+                            .with(SecurityMockMvcRequestPostProcessors.csrf())
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(json))
+                    .andExpect(status().isOk())
+                    .andReturn();
+            String response = result.getResponse().getContentAsString();
+            assertTrue(response.contains("true"));
+        }
+    }
+
 }

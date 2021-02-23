@@ -2,13 +2,13 @@ package org.progmatic.webshop.testservice;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.IOUtils;
+import org.progmatic.webshop.dto.ClothDto;
+import org.progmatic.webshop.dto.FilterClothesDto;
 import org.progmatic.webshop.dto.OrderDto;
 import org.progmatic.webshop.dto.RegisterUserDto;
+import org.progmatic.webshop.helpers.ClothDataHelper;
 import org.progmatic.webshop.helpers.ImageHelper;
-import org.progmatic.webshop.model.ConfirmationToken;
-import org.progmatic.webshop.model.Image;
-import org.progmatic.webshop.model.OnlineOrder;
-import org.progmatic.webshop.model.User;
+import org.progmatic.webshop.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
@@ -142,6 +142,46 @@ public class TestService {
         user.setAddress("Cím út 1.");
         user.setPhoneNumber("111-11-11");
         return user;
+    }
+
+    public long getOneClothId() {
+        List<Clothes> clothes = em.createQuery("SELECT c FROM Clothes c", Clothes.class).getResultList();
+        if (clothes.size() > 0) {
+            return clothes.get(0).getId();
+        }
+        return -1;
+    }
+
+    public ClothDto createClothes() {
+        ClothDto c = new ClothDto();
+        c.setName("Tesztelde");
+        c.setDetails("Fáradt vagyok értelmes szöveghez...");
+        c.setPrice(99.99f);
+        c.setDetails(ClothDataHelper.COLOR_PINK);
+        return c;
+    }
+
+    public FilterClothesDto createNullFilter() {
+        return new FilterClothesDto();
+    }
+
+    public FilterClothesDto createFilterWithSomeData() {
+        FilterClothesDto filter = new FilterClothesDto();
+        filter.setGender(ClothDataHelper.GENDER_UNISEX);
+        filter.setColor(ClothDataHelper.COLOR_BLACK);
+        filter.setPriceMin(10);
+        return filter;
+    }
+
+    public FilterClothesDto createFilterWithAllData() {
+        FilterClothesDto filter = new FilterClothesDto();
+        filter.setName("a");
+        filter.setGender(ClothDataHelper.GENDER_UNISEX);
+        filter.setType(ClothDataHelper.TYPE_TSHIRT);
+        filter.setColor(ClothDataHelper.COLOR_BLACK);
+        filter.setPriceMin(1);
+        filter.setPriceMax(3000);
+        return filter;
     }
 
 }
