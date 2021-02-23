@@ -1,5 +1,7 @@
 package org.progmatic.webshop.configurators;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -9,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.session.web.http.DefaultCookieSerializer;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -19,10 +22,19 @@ import java.util.Arrays;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecConfig extends WebSecurityConfigurerAdapter {
 
+   /* @Autowired
+    CustomAuthenticationSuccessHandler successHandler;*/
+
     @SuppressWarnings("deprecation")
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    @ConfigurationProperties("spring.session.cookie")
+    public DefaultCookieSerializer cookieSerializer()  {
+        return new DefaultCookieSerializer();
     }
 
     @Bean
@@ -49,13 +61,14 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
         http.cors().and()
                 /*.csrf().disable()*/.formLogin()
                // .loginPage("/login")
+              //  .successHandler(successHandler)
                 .permitAll()
                 .defaultSuccessUrl("/user", true)
                 .and()
                 .logout()
                 .logoutSuccessUrl("/login")
                 .and()
-                .addFilterAfter(new CookieSameSiteFilter(), BasicAuthenticationFilter.class)
+              //  .addFilterAfter(new CookieSameSiteFilter(), BasicAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/**").permitAll();
     }
