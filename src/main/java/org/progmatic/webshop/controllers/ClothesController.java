@@ -55,7 +55,6 @@ public class ClothesController {
     public Feedback getStockLevel(@PathVariable("id") long id) {
         ListResult<StockDto> clothDtoListResult = new ListResult<>();
         clothDtoListResult.getList().add(clothesService.getStockLevel(id));
-        clothDtoListResult.setSuccess(true);
         return clothDtoListResult;
     }
 

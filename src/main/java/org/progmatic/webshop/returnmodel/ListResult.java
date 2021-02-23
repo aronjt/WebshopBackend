@@ -7,7 +7,9 @@ public class ListResult<T> extends Feedback {
 
     private List<T> list = new ArrayList<>();
 
-    public ListResult() {}
+    public ListResult() {
+        setSuccess(true);
+    }
 
     public ListResult(List<T> list) {
         setSuccess(true);
