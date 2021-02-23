@@ -9,6 +9,7 @@ import org.progmatic.webshop.model.User;
 import org.progmatic.webshop.returnmodel.Feedback;
 import org.progmatic.webshop.returnmodel.Message;
 import org.progmatic.webshop.services.EmailSenderService;
+import org.progmatic.webshop.services.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,19 +27,19 @@ public class RegistrationController {
     EntityManager entityManager;
     EmailSenderService sendEmail;
 
-    private final PasswordEncoder encoder;
+    MyUserDetailsService service;
 
     @Value("${value.of.url}")
     private String valueOfUrl;
 
     @Autowired
     public RegistrationController(EmailSenderService sendEmail, EntityManager entityManager, UserData userRepository,
-                                  ConfirmationTokenData confirmationTokenRepository, PasswordEncoder encoder) {
+                                  ConfirmationTokenData confirmationTokenRepository, MyUserDetailsService service) {
         this.sendEmail = sendEmail;
         this.entityManager = entityManager;
         this.userRepository = userRepository;
         this.confirmationTokenRepository = confirmationTokenRepository;
-        this.encoder = encoder;
+        this.service = service;
     }
 
     @PostMapping(value = "/register")
@@ -56,8 +57,8 @@ public class RegistrationController {
             message = new Message(true, "Confirmation token sent to Old User");
         } else {
             User user = new User(registerUserDto);
-            user.setPassword(encoder.encode(registerUserDto.getPassword()));
-            userRepository.save(user);
+            service.createUser(user);
+            //userRepository.save(user);
 
             confirmationToken = new ConfirmationToken(user);
 
