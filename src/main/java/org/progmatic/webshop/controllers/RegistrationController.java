@@ -26,7 +26,7 @@ public class RegistrationController {
     EntityManager entityManager;
     EmailSenderService sendEmail;
 
-    PasswordEncoder encoder;
+    private final PasswordEncoder encoder;
 
     @Value("${value.of.url}")
     private String valueOfUrl;
