@@ -22,7 +22,7 @@ public class TomcatConfiguration {
                     @Override
                     public void customize(Context context) {
                         Rfc6265CookieProcessor processor=new Rfc6265CookieProcessor();
-                        processor.setSameSiteCookies("strict");
+                        processor.setSameSiteCookies("None");
                         context.setCookieProcessor(processor);
                     }
                 });
