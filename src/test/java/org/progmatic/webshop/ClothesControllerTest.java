@@ -2,7 +2,6 @@ package org.progmatic.webshop;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.progmatic.webshop.dto.ClothDto;
 import org.progmatic.webshop.helpers.ClothDataHelper;
 import org.progmatic.webshop.testservice.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +34,6 @@ class ClothesControllerTest {
     private TestService service;
 
     /*
-    post /clothes/filter
-        body: FilterClothesDto
     put /clothes/{id}
         missing
      */
