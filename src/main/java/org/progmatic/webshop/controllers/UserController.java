@@ -46,9 +46,9 @@ public class UserController {
     @GetMapping("/user")
     public Feedback getLoggedInUser() {
         ListResult<UserDto> loggedInUser = new ListResult<>();
-        loggedInUser.getList().add(new UserDto(userService.getLoggedInUser()));
-        if (loggedInUser.getList().size() != 0) {
+        if (userService.getLoggedInUser() != null) {
             loggedInUser.setSuccess(true);
+            loggedInUser.getList().add(new UserDto(userService.getLoggedInUser()));
             return loggedInUser;
         }
         return new Message(false, "No user is logged in");
