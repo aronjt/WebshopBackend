@@ -1,12 +1,8 @@
 package org.progmatic.webshop;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.progmatic.webshop.dto.RegisterUserDto;
 import org.progmatic.webshop.helpers.EmailSenderHelper;
-import org.progmatic.webshop.model.OnlineOrder;
-import org.progmatic.webshop.model.User;
 import org.progmatic.webshop.testservice.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -20,11 +16,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -41,14 +32,6 @@ class UserControllerTest {
 
     @Autowired
     private TestService service;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @PersistenceContext
-    EntityManager em;
-
-    final String USER_EMAIL = "ertekelek@ertek.el";
 
     @Test
     void testCsrf() throws Exception{
@@ -105,17 +88,13 @@ class UserControllerTest {
                 .andReturn();
     }
 
-    /* TODO
-        still null pointer
-    */
-    /* should fix
     @Test
     void null_pointer() throws Exception {
         mockMvc.perform(
                 get("/user"))
                 .andExpect(status().isOk())
                 .andReturn();
-    }*/
+    }
 
     @Test
     void get_one_user() throws Exception {
@@ -156,7 +135,7 @@ class UserControllerTest {
     }
 
     @Test
-    @WithUserDetails(USER_EMAIL)
+    @WithUserDetails(TestService.USER_EMAIL)
     void edit_user_data() throws Exception {
         String json = service.createJson(service.userForEditUserTest());
         if (json != null) {
