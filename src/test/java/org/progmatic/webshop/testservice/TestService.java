@@ -116,4 +116,32 @@ public class TestService {
         }
     }
 
+    public long getOneUser() {
+        List<User> users = em.createQuery("SELECT u FROM User u", User.class).getResultList();
+        if (users.size() > 0) {
+            return users.get(0).getId();
+        }
+        return 0;
+    }
+
+    public long getUserWithOrder() {
+        List<OnlineOrder> orders = em.createQuery("SELECT o FROM OnlineOrder o", OnlineOrder.class).getResultList();
+        if (orders.size() > 0) {
+            return orders.get(0).getUser().getId();
+        }
+        return 0;
+    }
+
+    public RegisterUserDto userForEditUserTest() {
+        RegisterUserDto user = new RegisterUserDto();
+        user.setFirstName("Erik");
+        user.setLastName("Kis M.");
+        user.setCountry("Ország");
+        user.setZipcode(6969);
+        user.setCity("Város");
+        user.setAddress("Cím út 1.");
+        user.setPhoneNumber("111-11-11");
+        return user;
+    }
+
 }

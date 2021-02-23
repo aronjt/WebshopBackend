@@ -7,6 +7,7 @@ import org.progmatic.webshop.dto.RegisterUserDto;
 import org.progmatic.webshop.helpers.EmailSenderHelper;
 import org.progmatic.webshop.model.OnlineOrder;
 import org.progmatic.webshop.model.User;
+import org.progmatic.webshop.testservice.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -37,6 +38,9 @@ class UserControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private TestService service;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -115,7 +119,7 @@ class UserControllerTest {
 
     @Test
     void get_one_user() throws Exception {
-        long id = getOneUser();
+        long id = service.getOneUser();
         if (id != 0) {
             MvcResult result = mockMvc.perform(
                     get("/users/{id}", id))
@@ -128,13 +132,17 @@ class UserControllerTest {
 
     @Test
     void get_user_orders_if_exist() throws Exception {
-        long id = getUserWithOrder();
-        MvcResult result = mockMvc.perform(
-                get("/user/order/{id}", id))
-                .andExpect(status().isOk())
-                .andReturn();
-        String response = result.getResponse().getContentAsString();
-        assertTrue(response.contains("true"));
+        long id = service.getUserWithOrder();
+
+        if (id != 0) {
+            MvcResult result = mockMvc.perform(
+                    get("/user/order/{id}", id))
+                    .andExpect(status().isOk())
+                    .andReturn();
+            String response = result.getResponse().getContentAsString();
+            assertTrue(response.contains("true"));
+        }
+
     }
 
     @Test
@@ -150,44 +158,18 @@ class UserControllerTest {
     @Test
     @WithUserDetails(USER_EMAIL)
     void edit_user_data() throws Exception {
-        String json = objectMapper.writeValueAsString(userForEditUserTest());
-        MvcResult result = mockMvc.perform(
-                put("/user")
-                        .with(SecurityMockMvcRequestPostProcessors.csrf())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(json))
-                .andExpect(status().isOk())
-                .andReturn();
-        String response = result.getResponse().getContentAsString();
-        assertTrue(response.contains("Successfully changed"));
-    }
-
-    private long getOneUser() {
-        List<User> users = em.createQuery("SELECT u FROM User u", User.class).getResultList();
-        if (users.size() > 0) {
-            return users.get(0).getId();
+        String json = service.createJson(service.userForEditUserTest());
+        if (json != null) {
+            MvcResult result = mockMvc.perform(
+                    put("/user")
+                            .with(SecurityMockMvcRequestPostProcessors.csrf())
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(json))
+                    .andExpect(status().isOk())
+                    .andReturn();
+            String response = result.getResponse().getContentAsString();
+            assertTrue(response.contains("Successfully changed"));
         }
-        return 0;
-    }
-
-    private long getUserWithOrder() {
-        List<OnlineOrder> orders = em.createQuery("SELECT o FROM OnlineOrder o", OnlineOrder.class).getResultList();
-        if (orders.size() > 0) {
-            return orders.get(0).getUser().getId();
-        }
-        return 0;
-    }
-
-    private RegisterUserDto userForEditUserTest() {
-        RegisterUserDto user = new RegisterUserDto();
-        user.setFirstName("Erik");
-        user.setLastName("Kis M.");
-        user.setCountry("Ország");
-        user.setZipcode(6969);
-        user.setCity("Város");
-        user.setAddress("Cím út 1.");
-        user.setPhoneNumber("111-11-11");
-        return user;
     }
 
 }
