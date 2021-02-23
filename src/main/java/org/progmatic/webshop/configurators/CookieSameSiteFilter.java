@@ -20,10 +20,8 @@ public class CookieSameSiteFilter implements Filter {
         LOGGER.trace("CookieSameSiteFilter doFilter called");
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
-        if(StringUtils.isNotBlank(response.getHeader("Set-Cookie"))){
             LOGGER.trace("SameSite=None added to cookie");
             response.setHeader("Set-Cookie", response.getHeader("Set-Cookie") + "; SameSite=None");
-        }
         chain.doFilter(request, response);
     }
 }
