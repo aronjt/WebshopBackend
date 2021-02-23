@@ -161,7 +161,7 @@ public class TestService {
         c.setName("Tesztelde");
         c.setDetails("Fáradt vagyok értelmes szöveghez...");
         c.setPrice(99.99f);
-        c.setDetails(ClothDataHelper.COLOR_PINK);
+        c.setColor(ClothDataHelper.COLOR_PINK);
         return c;
     }
 

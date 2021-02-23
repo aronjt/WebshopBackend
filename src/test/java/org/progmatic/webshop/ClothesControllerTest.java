@@ -85,10 +85,8 @@ class ClothesControllerTest {
 
     /* TODO
         fix addNewCloth method in ClothesController
-            ClothDto does not contain TYPE and GENDER, but without them, new cloth cannot be added to database
-            test failed because of this validation
+            ClothDto does not contain TYPE and GENDER, but should (I think)
      */
-    /* test failed
     @Test
     void add_new_clothes() throws Exception {
         String json = service.createJson(service.createClothes());
@@ -104,7 +102,6 @@ class ClothesControllerTest {
             assertTrue(response.contains("Cloth successfully added"));
         }
     }
-    */
 
     @Test
     void filter_clothes_with_null_filter() throws Exception {
