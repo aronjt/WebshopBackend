@@ -3,9 +3,12 @@ package org.progmatic.webshop.testservice;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.IOUtils;
 import org.progmatic.webshop.dto.OrderDto;
+import org.progmatic.webshop.dto.RegisterUserDto;
 import org.progmatic.webshop.helpers.ImageHelper;
+import org.progmatic.webshop.model.ConfirmationToken;
 import org.progmatic.webshop.model.Image;
 import org.progmatic.webshop.model.OnlineOrder;
+import org.progmatic.webshop.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
@@ -77,6 +80,40 @@ public class TestService {
         order.setTotalPrice(39.99f);
         order.setPurchasedClothesList(new ArrayList<>());
         return order;
+    }
+
+    public RegisterUserDto createUser() {
+        RegisterUserDto user = new RegisterUserDto();
+        user.setFirstName("Egyed");
+        user.setLastName("Mindmeg");
+        user.setPassword("szilvásbukta");
+        user.setEmail("mindmegegyed@gmail.com");
+        user.setCountry("Valhalla");
+        user.setZipcode(666);
+        user.setCity("Ygdrassil");
+        user.setAddress("Második ág 1.");
+        user.setPhoneNumber("666-66-66");
+        return user;
+    }
+
+    public ConfirmationToken findToken(User user) {
+        try {
+            return em.createQuery("SELECT t FROM ConfirmationToken t WHERE t.user = :user", ConfirmationToken.class)
+                    .setParameter("user", user)
+                    .getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public User findUser() {
+        try {
+            return em.createQuery("SELECT u FROM User u WHERE u.username = :uName", User.class)
+                    .setParameter("uName", "burkolorant@gmail.com")
+                    .getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 }
