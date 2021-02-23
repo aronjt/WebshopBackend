@@ -33,6 +33,19 @@ class ClothesControllerTest {
     @PersistenceContext
     EntityManager em;
 
+    /*
+    post /clothes
+        body: ClothDto
+    get /clothes/{id}
+        id
+    get /clothes?gender=
+    post /clothes/filter
+        body: FilterClothesDto
+    put /clothes/{id}
+        missing
+    get /stock/{id}
+     */
+
     @Test
     void getAllClothes() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/clothes"))

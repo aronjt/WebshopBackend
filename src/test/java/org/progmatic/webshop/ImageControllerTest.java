@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.progmatic.webshop.helpers.ImageHelper;
 import org.progmatic.webshop.model.Image;
+import org.progmatic.webshop.testservice.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,13 +37,13 @@ class ImageControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @PersistenceContext
-    EntityManager em;
+    @Autowired
+    TestService service;
 
     @Test
     void get_one_image() throws Exception {
-        long id = getOneImageId();
-        if (id != 0) {
+        long id = service.getOneImageId();
+        if (id > -1) {
             mockMvc.perform(
                     get("/images/{id}", id))
                     .andExpect(status().isOk())
@@ -52,7 +53,7 @@ class ImageControllerTest {
 
     @Test
     void send_image() throws Exception {
-        MockMultipartFile file = loadImage();
+        MockMultipartFile file = service.loadImage();
         if (file != null) {
             MvcResult result = mockMvc.perform(
                     MockMvcRequestBuilders.multipart("/image")
@@ -62,25 +63,6 @@ class ImageControllerTest {
                     .andReturn();
             String response = result.getResponse().getContentAsString();
             assertTrue(response.contains("successful image upload"));
-        }
-    }
-
-    private long getOneImageId() {
-        List<Image> images = em.createQuery("SELECT i FROM Image i", Image.class).getResultList();
-        if (images.size() > 0) {
-            return images.get(0).getId();
-        }
-        return 0;
-    }
-
-    private MockMultipartFile loadImage() {
-        try {
-            File file = new File("src/main/resources/images/unisex.png");
-            FileInputStream input = new FileInputStream(file);
-            return new MockMultipartFile("image",
-                    "unisex", ImageHelper.PNG, IOUtils.toByteArray(input));
-        } catch (Exception e) {
-            return null;
         }
     }
 
