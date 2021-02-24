@@ -16,9 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.chrono.ChronoLocalDateTime;
 
 @RestController
 public class RegistrationController {
@@ -48,7 +46,7 @@ public class RegistrationController {
         User existingUser = userRepository.findByUsername(registerUserDto.getEmail());
         Message message;
 
-        ConfirmationToken confirmationToken = null;
+        ConfirmationToken confirmationToken;
         if (existingUser != null) {
             message = new Message(false, "This email adress already exists.(login or confirm the token)  ");
         } else {

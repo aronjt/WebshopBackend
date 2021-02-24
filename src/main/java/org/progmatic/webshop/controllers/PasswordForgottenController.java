@@ -51,7 +51,7 @@ public class PasswordForgottenController {
         User existingUser = userRepository.findByUsername(emailAdress);
 
         Message feedback = new Message();
-        ConfirmationToken confirmationToken = null;
+        ConfirmationToken confirmationToken;
         if (existingUser != null) {
             confirmationToken = new ConfirmationToken(existingUser);
             LocalDateTime tomorrow = confirmationToken.getCreatedDate().plusDays(1);
