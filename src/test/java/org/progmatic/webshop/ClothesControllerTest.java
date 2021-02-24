@@ -108,8 +108,7 @@ class ClothesControllerTest {
         String json = service.createJson(service.createNullFilter());
         if (json != null) {
             MvcResult result = mockMvc.perform(
-                    post("/clothes/filter")
-                            .with(SecurityMockMvcRequestPostProcessors.csrf())
+                    get("/clothes/filter")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(json))
                     .andExpect(status().isOk())
@@ -124,8 +123,7 @@ class ClothesControllerTest {
         String json = service.createJson(service.createFilterWithSomeData());
         if (json != null) {
             MvcResult result = mockMvc.perform(
-                    post("/clothes/filter")
-                            .with(SecurityMockMvcRequestPostProcessors.csrf())
+                    get("/clothes/filter")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(json))
                     .andExpect(status().isOk())
@@ -140,8 +138,7 @@ class ClothesControllerTest {
         String json = service.createJson(service.createFilterWithAllData());
         if (json != null) {
             MvcResult result = mockMvc.perform(
-                    post("/clothes/filter")
-                            .with(SecurityMockMvcRequestPostProcessors.csrf())
+                    get("/clothes/filter")
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(json))
                     .andExpect(status().isOk())

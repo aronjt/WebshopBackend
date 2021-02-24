@@ -182,7 +182,7 @@ public class TestService {
         filter.setName("a");
         filter.setGender(ClothDataHelper.GENDER_UNISEX);
         filter.setType(ClothDataHelper.TYPE_TSHIRT);
-        filter.setColor(ClothDataHelper.COLOR_BLACK);
+        filter.setColor(ClothDataHelper.COLOR_WHITE);
         filter.setPriceMin(1);
         filter.setPriceMax(3000);
         return filter;
