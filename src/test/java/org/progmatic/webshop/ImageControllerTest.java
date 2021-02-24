@@ -31,7 +31,7 @@ class ImageControllerTest {
     TestService service;
 
     @Test
-    void get_one_image() throws Exception {
+    void get_one_image_if_exists() throws Exception {
         long id = service.getOneImageId();
         if (id > -1) {
             mockMvc.perform(
@@ -39,6 +39,14 @@ class ImageControllerTest {
                     .andExpect(status().isOk())
                     .andReturn();
         }
+    }
+
+    @Test
+    void get_one_image_if_not_exists() throws Exception {
+        mockMvc.perform(
+                get("/images/{id}", 999))
+                .andExpect(status().isOk())
+                .andReturn();
     }
 
     @Test
