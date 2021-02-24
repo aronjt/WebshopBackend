@@ -73,7 +73,7 @@ public class RegistrationController {
         Message message;
         if (token != null) {
             User user = userRepository.findByUsername(token.getUser().getUsername());
-            if (token.getEnableDate().isAfter(ChronoLocalDateTime.from(LocalDate.now()))) {
+            if (token.getEnableDate().isAfter(LocalDateTime.now())) {
 
                 user.setEnabled(true);
 //           T O D O letesztelni hogy save nélkül működik -e
