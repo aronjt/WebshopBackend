@@ -3,7 +3,6 @@ package org.progmatic.webshop.services;
 import org.progmatic.webshop.dto.OrderDto;
 import org.progmatic.webshop.dto.RegisterUserDto;
 import org.progmatic.webshop.dto.UserDto;
-import org.progmatic.webshop.helpers.UserDataHelper;
 import org.progmatic.webshop.model.OnlineOrder;
 import org.progmatic.webshop.model.User;
 import org.progmatic.webshop.returnmodel.Feedback;
