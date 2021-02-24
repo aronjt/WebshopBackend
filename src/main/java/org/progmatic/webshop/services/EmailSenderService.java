@@ -49,7 +49,7 @@ public class EmailSenderService {
     public void sendEmail(User toUser, String messageType, ConfirmationToken confirmationToken, String valueOfUrl) {
         this.valueOfUrl = valueOfUrl;
 
-        org.progmatic.webshop.model.AdminData aData= adminData.findAdminDataById(EmailSenderHelper.id);
+        org.progmatic.webshop.model.AdminData aData= adminData.findAdminDataById(EmailSenderHelper.ID);
         fromPassword = aData.getSecret();
         Email emailDataByMessageType = setEmail(messageType);
 

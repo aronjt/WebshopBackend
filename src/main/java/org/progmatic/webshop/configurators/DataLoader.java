@@ -121,7 +121,7 @@ public class DataLoader implements ApplicationRunner {
 
         if (adminNum == 0) {
             org.progmatic.webshop.model.AdminData data = new org.progmatic.webshop.model.AdminData();
-            data.setId(EmailSenderHelper.id);
+            data.setId(EmailSenderHelper.ID);
             data.setSecret("MRirdatlan007");
             adminData.save(data);
 
