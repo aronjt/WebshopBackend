@@ -40,9 +40,11 @@ class ClothesControllerTest {
 
     @Test
     void getAllClothes() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/clothes"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
+        MvcResult result = mockMvc.perform(get("/clothes"))
+                .andExpect(status().isOk())
                 .andReturn();
+        String response = result.getResponse().getContentAsString();
+        assertTrue(response.contains("true"));
     }
 
     @Test
@@ -54,6 +56,7 @@ class ClothesControllerTest {
                     .andExpect(status().isOk())
                     .andReturn();
             String response = result.getResponse().getContentAsString();
+            assertTrue(response.contains("true"));
             assertTrue(response.contains("name"));
         }
     }
@@ -66,6 +69,7 @@ class ClothesControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
         String response = result.getResponse().getContentAsString();
+        assertTrue(response.contains("true"));
         assertTrue(response.contains("name"));
     }
 
@@ -99,6 +103,7 @@ class ClothesControllerTest {
                     .andExpect(status().isOk())
                     .andReturn();
             String response = result.getResponse().getContentAsString();
+            assertTrue(response.contains("true"));
             assertTrue(response.contains("Cloth successfully added"));
         }
     }

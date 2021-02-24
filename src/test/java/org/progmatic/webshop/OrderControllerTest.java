@@ -51,23 +51,28 @@ class OrderControllerTest {
     void send_order_with_authentication() throws Exception {
         String json = service.createJson(service.createOrder());
         if (json != null) {
-            mockMvc.perform(
+            MvcResult result = mockMvc.perform(
                     post("/orders")
                             .with(SecurityMockMvcRequestPostProcessors.csrf())
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(json))
                     .andExpect(status().isOk())
                     .andReturn();
+            String response = result.getResponse().getContentAsString();
+            assertTrue(response.contains("true"));
+            assertTrue(response.contains("order sent successfully"));
         }
     }
 
     @Test
     @WithUserDetails(EmailSenderHelper.ADMIN_EMAIL_ADDRESS)
     void get_all_orders_as_admin() throws Exception {
-        mockMvc.perform(
+        MvcResult result = mockMvc.perform(
                 get("/orders"))
                 .andExpect(status().isOk())
                 .andReturn();
+        String response = result.getResponse().getContentAsString();
+        assertTrue(response.contains("true"));
     }
 
     @Test
@@ -86,7 +91,6 @@ class OrderControllerTest {
                 get("/orders/{id}", 1))
                 .andExpect(status().isOk())
                 .andReturn();
-
         String response = result.getResponse().getContentAsString();
         Message fb = service.createObject(response, Message.class);
 
@@ -117,6 +121,7 @@ class OrderControllerTest {
                     .andReturn();
             String response = result.getResponse().getContentAsString();
             assertTrue(response.contains("totalPrice"));
+            assertTrue(response.contains("true"));
         }
     }
 
@@ -126,11 +131,14 @@ class OrderControllerTest {
         long id = service.getOneOrderId();
 
         if (id != -1) {
-            mockMvc.perform(
+            MvcResult result = mockMvc.perform(
                     put("/orders/{id}", id)
                             .with(SecurityMockMvcRequestPostProcessors.csrf()))
                     .andExpect(status().isOk())
                     .andReturn();
+            String response = result.getResponse().getContentAsString();
+            assertTrue(response.contains("true"));
+            assertTrue(response.contains("order is finished now"));
         }
     }
 

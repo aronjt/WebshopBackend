@@ -77,23 +77,34 @@ class UserControllerTest {
                 get("/users"))
                 .andExpect(status().isOk())
                 .andReturn();
+        String response = result.getResponse().getContentAsString();
+        assertTrue(response.contains("true"));
+        assertTrue(response.contains("email"));
+        assertTrue(response.contains("userRole"));
     }
 
     @Test
     @WithUserDetails("ertekelek@ertek.el")
-    void get_logged_in_user() throws Exception {
-        mockMvc.perform(
+    void get_logged_in_user_if_exists() throws Exception {
+        MvcResult result = mockMvc.perform(
                 get("/user"))
                 .andExpect(status().isOk())
                 .andReturn();
+        String response = result.getResponse().getContentAsString();
+        assertTrue(response.contains("true"));
+        assertTrue(response.contains("email"));
+        assertTrue(response.contains("userRole"));
     }
 
     @Test
-    void null_pointer() throws Exception {
-        mockMvc.perform(
+    void get_logged_in_user_if_not_exists() throws Exception {
+        MvcResult result = mockMvc.perform(
                 get("/user"))
                 .andExpect(status().isOk())
                 .andReturn();
+        String response = result.getResponse().getContentAsString();
+        assertTrue(response.contains("false"));
+        assertTrue(response.contains("No user is logged in"));
     }
 
     @Test
@@ -105,6 +116,7 @@ class UserControllerTest {
                     .andExpect(status().isOk())
                     .andReturn();
             String response = result.getResponse().getContentAsString();
+            assertTrue(response.contains("true"));
             assertTrue(response.contains("email"));
         }
     }
@@ -120,6 +132,7 @@ class UserControllerTest {
                     .andReturn();
             String response = result.getResponse().getContentAsString();
             assertTrue(response.contains("true"));
+            assertTrue(response.contains("totalPrice"));
         }
 
     }
@@ -131,6 +144,7 @@ class UserControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
         String response = result.getResponse().getContentAsString();
+        assertTrue(response.contains("false"));
         assertTrue(response.contains("Don't have any orders yet"));
     }
 
@@ -147,6 +161,7 @@ class UserControllerTest {
                     .andExpect(status().isOk())
                     .andReturn();
             String response = result.getResponse().getContentAsString();
+            assertTrue(response.contains("true"));
             assertTrue(response.contains("Successfully changed"));
         }
     }

@@ -34,6 +34,7 @@ public class TestService {
     EntityManager em;
 
     public static final String USER_EMAIL = "ertekelek@ertek.el";
+    public static final String TEST_REGISTERED_USER = "burkolorant@gmail.com";
 
     public String createJson(Object o) {
         try {
@@ -86,12 +87,12 @@ public class TestService {
         return order;
     }
 
-    public RegisterUserDto createUser() {
+    public RegisterUserDto createUser(String email) {
         RegisterUserDto user = new RegisterUserDto();
         user.setFirstName("Egyed");
         user.setLastName("Mindmeg");
         user.setPassword("szilvásbukta");
-        user.setEmail("mindmegegyed@gmail.com");
+        user.setEmail(email);
         user.setCountry("Valhalla");
         user.setZipcode(666);
         user.setCity("Ygdrassil");
@@ -110,10 +111,10 @@ public class TestService {
         }
     }
 
-    public User findUser() {
+    public User findUser(String username) {
         try {
             return em.createQuery("SELECT u FROM User u WHERE u.username = :uName", User.class)
-                    .setParameter("uName", "burkolorant@gmail.com")
+                    .setParameter("uName", username)
                     .getSingleResult();
         } catch (Exception e) {
             return null;

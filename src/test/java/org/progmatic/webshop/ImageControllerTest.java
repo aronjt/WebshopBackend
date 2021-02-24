@@ -52,6 +52,7 @@ class ImageControllerTest {
                     .andExpect(status().isOk())
                     .andReturn();
             String response = result.getResponse().getContentAsString();
+            assertTrue(response.contains("true"));
             assertTrue(response.contains("successful image upload"));
         }
     }

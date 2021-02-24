@@ -7,6 +7,7 @@ import org.progmatic.webshop.jpareps.*;
 import org.progmatic.webshop.model.ConfirmationToken;
 import org.progmatic.webshop.model.User;
 import org.progmatic.webshop.services.ImageService;
+import org.progmatic.webshop.testservice.TestService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,8 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
-import java.util.Calendar;
-import java.util.Date;
 
 @Component
 public class TestDataLoader extends DataLoader {
@@ -36,7 +35,25 @@ public class TestDataLoader extends DataLoader {
         super.createUsers();
 
         addUserToDB();
-        addTokenToUser();
+        addTokensToUser();
+    }
+
+    @Transactional
+    void addUserToDB() {
+        User user = new User(createUser());
+        em.persist(user);
+    }
+
+    @Transactional
+    void addTokensToUser() {
+        ConfirmationToken valid = createToken("burkolorant@gmail.com", LocalDateTime.now().plusDays(100));
+        ConfirmationToken invalid = createToken(TestService.USER_EMAIL, LocalDateTime.now().minusDays(100));
+        if (valid != null) {
+            em.persist(valid);
+        }
+        if (invalid != null) {
+            em.persist(invalid);
+        }
     }
 
     public RegisterUserDto createUser() {
@@ -53,20 +70,17 @@ public class TestDataLoader extends DataLoader {
         return user;
     }
 
-    @Transactional
-    void addUserToDB() {
-        User user = new User(createUser());
-        em.persist(user);
-    }
-
-    @Transactional
-    void addTokenToUser() {
-        User user = em.createQuery("SELECT u FROM User u WHERE u.username = :uName", User.class)
-                .setParameter("uName", "burkolorant@gmail.com")
-                .getSingleResult();
-        ConfirmationToken token = new ConfirmationToken(user);
-        token.setEnableDate(LocalDateTime.of(2022,01,01,01,01,01));
-        em.persist(token);
+    public ConfirmationToken createToken(String username, LocalDateTime enableDate) {
+        try {
+            User user = em.createQuery("SELECT u FROM User u WHERE u.username = :uName", User.class)
+                    .setParameter("uName", username)
+                    .getSingleResult();
+            ConfirmationToken token = new ConfirmationToken(user);
+            token.setEnableDate(enableDate);
+            return token;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 }

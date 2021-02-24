@@ -8,7 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -23,18 +25,24 @@ class SearchControllerTest {
 
     @Test
     void get_all_genders() throws Exception {
-        mockMvc.perform(
+        MvcResult result = mockMvc.perform(
                 get("/genders"))
                 .andExpect(status().isOk())
                 .andReturn();
+        String response = result.getResponse().getContentAsString();
+        assertTrue(response.contains("true"));
+        assertTrue(response.contains("gender"));
     }
 
     @Test
     void get_all_types() throws Exception {
-        mockMvc.perform(
+        MvcResult result = mockMvc.perform(
                 get("/types"))
                 .andExpect(status().isOk())
                 .andReturn();
+        String response = result.getResponse().getContentAsString();
+        assertTrue(response.contains("true"));
+        assertTrue(response.contains("type"));
     }
 
 }
