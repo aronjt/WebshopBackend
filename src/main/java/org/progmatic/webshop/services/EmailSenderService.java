@@ -119,7 +119,10 @@ public class EmailSenderService {
                 + "<a href=\""
                 + valueOfUrl + confirmationToken.getConfirmationToken()
                 + "\">"
-                + "<br><br>For more info visit our website.</p>";
+                + valueOfUrl + confirmationToken.getConfirmationToken()
+                + "</a><br><br>For more info visit <a href=\""
+                + mainpage
+                + "\">our website</a>.</p>";
         return text;
     }
 }
