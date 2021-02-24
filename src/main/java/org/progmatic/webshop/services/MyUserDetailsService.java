@@ -2,9 +2,7 @@ package org.progmatic.webshop.services;
 
 import org.progmatic.webshop.dto.RegisterUserDto;
 import org.progmatic.webshop.dto.UserDto;
-import org.progmatic.webshop.helpers.UserDataHelper;
 import org.progmatic.webshop.model.User;
-import org.progmatic.webshop.oauth.CustomOAuth2User;
 import org.progmatic.webshop.returnmodel.Feedback;
 import org.progmatic.webshop.returnmodel.ListResult;
 import org.progmatic.webshop.returnmodel.Message;
@@ -19,14 +17,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-//import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class MyUserDetailsService implements UserDetailsService {
@@ -35,7 +31,7 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @PersistenceContext
     EntityManager em;
-@Autowired
+
     PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -50,10 +46,11 @@ public class MyUserDetailsService implements UserDetailsService {
                 .setParameter("username", username)
                 .getSingleResult();
     }
-@Transactional
+
+    @Transactional
     public boolean userExists(String username) {
         try {
-            User user = em.createQuery("select u from User u where u.username = :username", User.class)
+            em.createQuery("select u from User u where u.username = :username", User.class)
                     .setParameter("username", username)
                     .getSingleResult();
             LOG.info("User already exists");
@@ -82,23 +79,6 @@ public class MyUserDetailsService implements UserDetailsService {
         em.persist(user);
         LOG.info("User created, email: {}", user.getUsername());
     }
-
-//    @Transactional
-//    public void createFakeUser(CustomOAuth2User oAuth2User) {
-//        User user = new User();
-//        String[] s = oAuth2User.getFullName().split(" ", 1);
-//        user.setFirstName(s[0]);
-//        user.setLastName(s[1]);
-//        user.setUsername(oAuth2User.getEmail());  // email
-//        user.setUserRole(UserDataHelper.ROLE_USER);
-//
-//
-//        String randomString = UUID.randomUUID().toString();
-//        int index = randomString.indexOf('-');
-//        user.setPassword(randomString.substring(0, index));
-//        em.persist(user);
-//        LOG.info("Fake user created");
-//    }
 
     public User getLoggedInUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

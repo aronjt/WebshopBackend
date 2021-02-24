@@ -13,18 +13,24 @@ import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 @Service
 public class ImageService {
-    private static Logger LOG = LoggerFactory.getLogger(ImageService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ImageService.class);
 
     @PersistenceContext
     EntityManager em;
 
-//    @Transactional
-//    public List<Image> getAllImages() {
-//        List<Image> images = em.createQuery("SELECT i FROM Image i", Image.class).getResultList();
-//        return images;
-//    }
+    /* unused method
+    @Transactional
+    public List<Image> getAllImages() {
+        List<Image> images = em.createQuery("SELECT i FROM Image i", Image.class).getResultList();
+        return images;
+    }
+     */
 
-    // compress the image bytes before storing it in the database
+    /**
+     * compress the image bytes before storing it in the database
+     * @param data the image's data to be compressed
+     * @return the compressed data
+     */
     public byte[] compressBytes(byte[] data) {
         Deflater deflater = new Deflater();
         deflater.setInput(data);
@@ -40,12 +46,16 @@ public class ImageService {
             outputStream.close();
         } catch (IOException e) {
         }
-        System.out.println("Compressed Image Byte Size - " + outputStream.toByteArray().length);
+        LOG.info("compressed image byte size is {}", outputStream.toByteArray().length);
 
         return outputStream.toByteArray();
     }
 
-    // uncompress the image bytes before returning it to the angular application
+    /**
+     * uncompress the image bytes before returning it to the angular application
+     * @param data is the image's data to be decompressed
+     * @return the decompressed data
+     */
     public  byte[] decompressBytes(byte[] data) {
         Inflater inflater = new Inflater();
         inflater.setInput(data);

@@ -21,7 +21,7 @@ import java.util.Properties;
 public class EmailSenderService {
 
     private String valueOfUrl;
-    private AdminData adminData;
+    private final AdminData adminData;
     private String fromPassword;
 
 
@@ -31,7 +31,7 @@ public class EmailSenderService {
     private String port;
     @Value("${value.of.mainpage}")
     private String mainpage;
-    private EmailData emailData;
+    private final EmailData emailData;
 
     @Autowired
     public EmailSenderService(AdminData adminData, EmailData emailData) {
@@ -41,8 +41,7 @@ public class EmailSenderService {
 
 
     public Email setEmail(String messageType) {
-        Email emailDataByMessageType = emailData.findByMessageType(messageType);
-        return emailDataByMessageType;
+        return emailData.findByMessageType(messageType);
     }
 
     @Transactional
