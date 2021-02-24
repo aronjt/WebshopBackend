@@ -3,6 +3,7 @@ package org.progmatic.webshop;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.progmatic.webshop.helpers.EmailSenderHelper;
+import org.progmatic.webshop.services.MyUserDetailsService;
 import org.progmatic.webshop.testservice.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -32,6 +33,9 @@ class UserControllerTest {
 
     @Autowired
     private TestService service;
+
+    @Autowired
+    private MyUserDetailsService userService;
 
     @Test
     void testCsrf() throws Exception{
@@ -93,7 +97,7 @@ class UserControllerTest {
         String response = result.getResponse().getContentAsString();
         assertTrue(response.contains("true"));
         assertTrue(response.contains("email"));
-        assertTrue(response.contains("userRole"));
+        assertTrue(response.contains("address"));
     }
 
     @Test
@@ -164,6 +168,24 @@ class UserControllerTest {
             assertTrue(response.contains("true"));
             assertTrue(response.contains("Successfully changed"));
         }
+    }
+
+    @Test
+    void get_existing_user_if_user_not_exists() {
+        boolean userExists = userService.userExists("kiscica@gmail.com");
+        assertFalse(userExists);
+    }
+
+    @Test
+    void get_existing_user_if_user_exists() {
+        boolean userExists = userService.userExists(TestService.USER_EMAIL);
+        assertTrue(userExists);
+    }
+
+    @Test
+    void get_existing_user_if_null() {
+        boolean userExists = userService.userExists(null);
+        assertFalse(userExists);
     }
 
 }
