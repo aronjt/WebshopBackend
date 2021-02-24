@@ -12,6 +12,7 @@ public class RegisterUserDto {
     private String city;
     private String address;
     private String phoneNumber;
+    private long id;
 
     public RegisterUserDto() {
     }
@@ -26,6 +27,7 @@ public class RegisterUserDto {
         address = user.getAddress();
         phoneNumber = user.getPhoneNumber();
         password = "";
+        id = user.getId();
     }
 
     public void setFirstName(String firstName) {
