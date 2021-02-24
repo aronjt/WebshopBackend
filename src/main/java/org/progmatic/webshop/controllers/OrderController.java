@@ -1,25 +1,20 @@
 package org.progmatic.webshop.controllers;
 
 import org.progmatic.webshop.dto.*;
-import org.progmatic.webshop.model.User;
 import org.progmatic.webshop.returnmodel.Feedback;
-import org.progmatic.webshop.services.MyUserDetailsService;
 import org.progmatic.webshop.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 @RestController
 public class OrderController {
 
     private final OrderService service;
-    private final MyUserDetailsService uds;
 
     @Autowired
-    public OrderController(OrderService service, MyUserDetailsService uds) {
+    public OrderController(OrderService service) {
         this.service = service;
-        this.uds = uds;
     }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")

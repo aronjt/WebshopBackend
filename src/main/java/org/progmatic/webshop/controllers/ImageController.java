@@ -38,11 +38,14 @@ public class ImageController {
     }
 
     @GetMapping(path = {"/images/{id}"}, produces = MediaType.IMAGE_PNG_VALUE)
-    public byte[] getImageById(@PathVariable("id") Long imageId) throws IOException {
+    public byte[] getImageById(@PathVariable("id") Long imageId) {
         final Optional<Image> retrievedImage = imageData.findById(imageId);
-        Image img = new Image(retrievedImage.get().getName(),
-                imageService.decompressBytes(retrievedImage.get().getData()));
-        return img.getData();
+        if (retrievedImage.isPresent()) {
+            Image img = new Image(retrievedImage.get().getName(),
+                    imageService.decompressBytes(retrievedImage.get().getData()));
+            return img.getData();
+        }
+        return new byte[]{};
     }
 }
 

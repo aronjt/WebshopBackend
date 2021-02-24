@@ -1,8 +1,6 @@
 package org.progmatic.webshop.model;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table
@@ -17,9 +15,7 @@ public class Email {
     private Long emailId;
 
 
-    public Email() {
-
-    }
+    public Email() {}
 
     public String getMessageText() {
         return messageText;

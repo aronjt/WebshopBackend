@@ -1,9 +1,6 @@
 package org.progmatic.webshop.dto;
 
 import org.progmatic.webshop.model.Clothes;
-import org.progmatic.webshop.model.Gender;
-import org.progmatic.webshop.model.Image;
-import org.progmatic.webshop.model.Type;
 
 public class ClothDto {
 
@@ -13,8 +10,6 @@ public class ClothDto {
     private float price;
     private String color;
     private long imageId;
-
-
 
     public ClothDto(Clothes clothes) {
         id = clothes.getId();

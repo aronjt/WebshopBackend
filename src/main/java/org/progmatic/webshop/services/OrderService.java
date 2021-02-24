@@ -1,6 +1,5 @@
 package org.progmatic.webshop.services;
 
-import org.progmatic.webshop.dto.ClothDto;
 import org.progmatic.webshop.dto.OrderDto;
 import org.progmatic.webshop.dto.PurchasedClothDto;
 import org.progmatic.webshop.model.*;
@@ -66,7 +65,8 @@ public class OrderService {
     /* TODO
         how to do dis? only change field "isFinish" from false to true?
      */
-    /*@Transactional
+    /* maybe will not be used
+    @Transactional
     public OrderDto changeOrder(long id, OnlineOrder newOrder) {
         OnlineOrder oldOlder = em.find(OnlineOrder.class, id);
         LOG.info("old older with id {} was: {}, {}, {}",

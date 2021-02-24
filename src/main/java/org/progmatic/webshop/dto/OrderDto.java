@@ -13,6 +13,7 @@ public class OrderDto {
     private boolean isFinish;
     private long userId;
     private List<PurchasedClothDto> purchasedClothesList;
+    private String comment;
 
     public OrderDto() {}
 
@@ -60,6 +61,12 @@ public class OrderDto {
         return purchasedClothesList;
     }
 
+    public String getComment() {
+        return comment;
+    }
 
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 
 }

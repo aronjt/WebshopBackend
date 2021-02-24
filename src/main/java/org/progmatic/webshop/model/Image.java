@@ -14,10 +14,6 @@ public class Image {
     @Column()
     private String name;
 
-    //image bytes can have large lengths so we specify a value
-    //which is more than the default length for picByte column
-//    @Column(length = 1000)
-//    private byte[] picByte;
     public Image() {
     }
 
