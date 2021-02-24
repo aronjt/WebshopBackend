@@ -1,8 +1,10 @@
 package org.progmatic.webshop.services;
 
+import org.progmatic.webshop.dto.OrderDto;
 import org.progmatic.webshop.dto.RegisterUserDto;
 import org.progmatic.webshop.dto.UserDto;
 import org.progmatic.webshop.helpers.UserDataHelper;
+import org.progmatic.webshop.model.OnlineOrder;
 import org.progmatic.webshop.model.User;
 import org.progmatic.webshop.oauth.CustomOAuth2User;
 import org.progmatic.webshop.returnmodel.Feedback;
@@ -136,5 +138,23 @@ public class MyUserDetailsService implements UserDetailsService {
         loggedInUser.setZipcode(userDto.getZipcode());
 
         return new Message(true, "Successfully changed");
+    }
+
+    @Transactional
+    public Feedback getUserOrders() {
+        User loggedInUser = getLoggedInUser();
+        long id = loggedInUser.getId();
+        List<OnlineOrder> id1 = em.createQuery("SELECT o FROM OnlineOrder o WHERE o.user.id = :id", OnlineOrder.class)
+                .setParameter("id", id)
+                .getResultList();
+        ListResult<OrderDto> list = new ListResult<>();
+        if (id1.size() != 0) {
+            for (OnlineOrder onlineOrder : id1) {
+                list.getList().add(new OrderDto(onlineOrder));
+            }
+            list.setSuccess(true);
+            return list;
+        }
+        return new Message(false, "Don't have any orders yet");
     }
 }

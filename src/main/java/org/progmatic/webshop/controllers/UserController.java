@@ -15,20 +15,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class UserController {
 
-    /* endpoints
-    get   /profile
-    put  /profile
-    get  /users                                          //list all users (admin)
-    get  /users/{id}                                   //list one user (admin)
-     */
-
     private final MyUserDetailsService userService;
-    private final OrderService orderService;
 
     @Autowired
-    public UserController(MyUserDetailsService userService, OrderService orderService) {
+    public UserController(MyUserDetailsService userService) {
         this.userService = userService;
-        this.orderService = orderService;
     }
 
     @GetMapping("/users")
@@ -54,9 +45,9 @@ public class UserController {
         return new Message(false, "No user is logged in");
     }
 
-    @GetMapping("/user/order/{id}")
-    public Feedback getUsersOrders(@PathVariable("id") long id) {
-        return orderService.getUsersOrders(id);
+    @GetMapping("/user/order/")
+    public Feedback getUsersOrders() {
+        return userService.getUserOrders();
     }
 
     @PutMapping("/user")
