@@ -114,6 +114,13 @@ public class MyUserDetailsService implements UserDetailsService {
     }
 
     @Transactional
+    public RegisterUserDto getLoggedInRegisterDto() {
+        User loggedInUser = getLoggedInUser();
+        User userLogged = em.find(User.class, loggedInUser.getId());
+        return new RegisterUserDto(userLogged);
+    }
+
+    @Transactional
     public User getUser(long id) {
         return em.find(User.class, id);
     }
