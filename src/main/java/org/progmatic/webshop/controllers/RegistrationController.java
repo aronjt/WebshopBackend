@@ -12,12 +12,13 @@ import org.progmatic.webshop.services.EmailSenderService;
 import org.progmatic.webshop.services.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.chrono.ChronoLocalDateTime;
 
 @RestController
 public class RegistrationController {
@@ -49,12 +50,7 @@ public class RegistrationController {
 
         ConfirmationToken confirmationToken = null;
         if (existingUser != null) {
-            confirmationToken = new ConfirmationToken(existingUser);
-            LocalDateTime tomorrow = confirmationToken.getCreatedDate().plusDays(1);
-            confirmationToken.setEnableDate(tomorrow);
-            confirmationTokenRepository.save(confirmationToken);
-            sendEmail.sendEmail(existingUser, EmailSenderHelper.REGISTRATION, confirmationToken, valueOfUrl);
-            message = new Message(true, "Confirmation token sent to Old User");
+            message = new Message(false, "This email adress already exists.(login or confirm the token)  ");
         } else {
             User user = new User(registerUserDto);
             service.createUser(user);
@@ -77,14 +73,24 @@ public class RegistrationController {
         Message message;
         if (token != null) {
             User user = userRepository.findByUsername(token.getUser().getUsername());
-            user.setEnabled(true);
+            if (token.getEnableDate().isAfter(ChronoLocalDateTime.from(LocalDate.now()))) {
+
+                user.setEnabled(true);
 //           T O D O letesztelni hogy save nélkül működik -e
 //            válasz nem
 //            köszi, Máté, hogy benne hagytad!!! ^^ ~Ria
-            userRepository.save(user);
-            message = new Message(true, "account verified");
-        } else {
-            message = new Message("The link is invalid or broken!");
+                userRepository.save(user);
+                message = new Message(true, "account verified");
+            } else {
+                ConfirmationToken newToken = new ConfirmationToken(user);
+                LocalDateTime tomorrow = newToken.getCreatedDate().plusDays(1);
+                newToken.setEnableDate(tomorrow);
+                confirmationTokenRepository.save(newToken);
+                sendEmail.sendEmail(user, EmailSenderHelper.REGISTRATION, newToken,valueOfUrl);
+                message = new Message("This token is broken ! We sent you new one to your email adress.");
+
+        }} else {
+            message = new Message("The token is invalid!");
         }
         return message;
     }

@@ -29,6 +29,8 @@ public class EmailSenderService {
     private String emailWebSite;
     @Value("${spring.mail.port}")
     private String port;
+    @Value("${value.of.mainpage}")
+    private String mainpage;
     private EmailData emailData;
 
     @Autowired
