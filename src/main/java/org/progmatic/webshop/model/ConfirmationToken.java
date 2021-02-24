@@ -28,6 +28,7 @@ public class ConfirmationToken {
     public ConfirmationToken(User user) {
         this.user = user;
         createdDate = LocalDateTime.now();
+        enableDate = createdDate.plusDays(2);
         confirmationToken = UUID.randomUUID().toString();
     }
 
