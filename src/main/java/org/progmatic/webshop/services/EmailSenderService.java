@@ -112,12 +112,14 @@ public class EmailSenderService {
     }
 
     public String getMessageTextWithConfirmationToken(User toUser, Email email, ConfirmationToken confirmationToken) throws MessagingException {
-        String text = "Hello " +
+        String text = "<p style=\"font-size:20px\">Hello " +
                 toUser.getFirstName() +
-                ",\n" +
+                ",<br>" +
                 email.getMessageText()
-                + valueOfUrl + confirmationToken.getConfirmationToken() +
-                "\n For more info visit our website.";
+                + "<a href=\""
+                + valueOfUrl + confirmationToken.getConfirmationToken()
+                + "\">"
+                + "<br><br>For more info visit our website.</p>";
         return text;
     }
 }

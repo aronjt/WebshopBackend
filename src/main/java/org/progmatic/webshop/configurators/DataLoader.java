@@ -263,9 +263,9 @@ public class DataLoader implements ApplicationRunner {
 
       if (emailNum==0) {
           createEmail(EmailSenderHelper.REGISTRATION, "Registration verification",
-                  "Thank you for your registration! Have a nice day!\nTo confirm your account, please click here:\n");
+                  "Thank you for your registration! Have a nice day!<br>To confirm your account, please click here:<br>");
           createEmail(EmailSenderHelper.SHOPPING, "Shopping confirmation",
-                  "Thank you for your shopping! Have a nice day!\n");
+                  "Thank you for your shopping! Have a nice day!<br>");
       }
     }
 
