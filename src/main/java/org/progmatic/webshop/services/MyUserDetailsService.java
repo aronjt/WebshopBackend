@@ -35,7 +35,7 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @PersistenceContext
     EntityManager em;
-
+@Autowired
     PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -83,14 +83,22 @@ public class MyUserDetailsService implements UserDetailsService {
         LOG.info("User created, email: {}", user.getUsername());
     }
 
-    @Transactional
-    public void createFakeUser(RegisterUserDto user) {
-        String randomString = UUID.randomUUID().toString();
-        int index = randomString.indexOf('-');
-        user.setPassword(randomString.substring(0, index));
-        em.persist(user);
-        LOG.info("Fake user created");
-    }
+//    @Transactional
+//    public void createFakeUser(CustomOAuth2User oAuth2User) {
+//        User user = new User();
+//        String[] s = oAuth2User.getFullName().split(" ", 1);
+//        user.setFirstName(s[0]);
+//        user.setLastName(s[1]);
+//        user.setUsername(oAuth2User.getEmail());  // email
+//        user.setUserRole(UserDataHelper.ROLE_USER);
+//
+//
+//        String randomString = UUID.randomUUID().toString();
+//        int index = randomString.indexOf('-');
+//        user.setPassword(randomString.substring(0, index));
+//        em.persist(user);
+//        LOG.info("Fake user created");
+//    }
 
     public User getLoggedInUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
