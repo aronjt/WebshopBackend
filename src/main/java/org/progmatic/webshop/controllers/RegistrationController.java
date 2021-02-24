@@ -54,12 +54,8 @@ public class RegistrationController {
         } else {
             User user = new User(registerUserDto);
             service.createUser(user);
-            //userRepository.save(user);
-
             confirmationToken = new ConfirmationToken(user);
-
             confirmationTokenRepository.save(confirmationToken);
-
             sendEmail.sendEmail(user, EmailSenderHelper.REGISTRATION, confirmationToken, valueOfUrl);
             message = new Message(true, "Confirmation token sent to New User");
         }
@@ -74,22 +70,16 @@ public class RegistrationController {
         if (token != null) {
             User user = userRepository.findByUsername(token.getUser().getUsername());
             if (token.getEnableDate().isAfter(LocalDateTime.now())) {
-
                 user.setEnabled(true);
-//           T O D O letesztelni hogy save nélkül működik -e
-//            válasz nem
-//            köszi, Máté, hogy benne hagytad!!! ^^ ~Ria
                 userRepository.save(user);
                 message = new Message(true, "account verified");
             } else {
                 ConfirmationToken newToken = new ConfirmationToken(user);
-                LocalDateTime tomorrow = newToken.getCreatedDate().plusDays(1);
-                newToken.setEnableDate(tomorrow);
                 confirmationTokenRepository.save(newToken);
-                sendEmail.sendEmail(user, EmailSenderHelper.REGISTRATION, newToken,valueOfUrl);
+                sendEmail.sendEmail(user, EmailSenderHelper.REGISTRATION, newToken, valueOfUrl);
                 message = new Message("This token is broken ! We sent you new one to your email adress.");
-
-        }} else {
+            }
+        } else {
             message = new Message("The token is invalid!");
         }
         return message;
