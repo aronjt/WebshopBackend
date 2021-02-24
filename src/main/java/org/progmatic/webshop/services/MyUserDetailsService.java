@@ -2,7 +2,9 @@ package org.progmatic.webshop.services;
 
 import org.progmatic.webshop.dto.RegisterUserDto;
 import org.progmatic.webshop.dto.UserDto;
+import org.progmatic.webshop.helpers.UserDataHelper;
 import org.progmatic.webshop.model.User;
+import org.progmatic.webshop.oauth.CustomOAuth2User;
 import org.progmatic.webshop.returnmodel.Feedback;
 import org.progmatic.webshop.returnmodel.ListResult;
 import org.progmatic.webshop.returnmodel.Message;
@@ -17,11 +19,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+//import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
 
@@ -47,7 +50,7 @@ public class MyUserDetailsService implements UserDetailsService {
                 .setParameter("username", username)
                 .getSingleResult();
     }
-
+@Transactional
     public boolean userExists(String username) {
         try {
             User user = em.createQuery("select u from User u where u.username = :username", User.class)
