@@ -23,10 +23,6 @@ import java.util.List;
 @Service
 public class TestService {
 
-    /* TODO
-        more thorough tests needed!
-     */
-
     @Autowired
     private ObjectMapper objectMapper;
 
