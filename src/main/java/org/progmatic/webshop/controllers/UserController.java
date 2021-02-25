@@ -5,6 +5,7 @@ import org.progmatic.webshop.dto.UserDto;
 import org.progmatic.webshop.returnmodel.Feedback;
 import org.progmatic.webshop.returnmodel.ListResult;
 import org.progmatic.webshop.returnmodel.Message;
+import org.progmatic.webshop.returnmodel.Result;
 import org.progmatic.webshop.services.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -33,13 +34,9 @@ public class UserController {
 
     @GetMapping("/user")
     public Feedback getLoggedInUser() {
-        ListResult<RegisterUserDto> loggedInUser = new ListResult<>();
-        if (userService.getLoggedInUser() != null) {
-            loggedInUser.setSuccess(true);
-            loggedInUser.getList().add(userService.getLoggedInRegisterDto());
-            return loggedInUser;
-        }
-        return new Message(false, "No user is logged in");
+        Result<RegisterUserDto> loggedInUser = new Result<>(userService.getLoggedInRegisterDto());
+        loggedInUser.setSuccess(true);
+        return loggedInUser;
     }
 
     @GetMapping("/user/order")

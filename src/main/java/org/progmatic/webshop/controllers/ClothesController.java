@@ -41,7 +41,7 @@ public class ClothesController {
         return new ListResult<>(clothesService.getClothesFromGender(gender));
     }
 
-    @GetMapping(value = "/clothes/filter")
+    @PostMapping(value = "/clothes/filter")
     public Feedback filterClothes(@RequestBody FilterClothesDto filter) {
         return new ListResult<>(clothesService.filterClothes(filter));
     }

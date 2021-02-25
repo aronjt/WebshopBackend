@@ -5,6 +5,7 @@ import org.progmatic.webshop.model.PurchasedClothes;
 public class PurchasedClothDto {
 
     private long clothesId;
+    private String name;
     private int quantity;
     private String size;
 
@@ -14,6 +15,7 @@ public class PurchasedClothDto {
         clothesId = cloth.getClothes().getId();
         quantity = cloth.getQuantity();
         size = cloth.getSize();
+        name = cloth.getClothes().getName();
     }
 
     public long getClothesId() {
@@ -28,4 +30,7 @@ public class PurchasedClothDto {
         return size;
     }
 
+    public String getName() {
+        return name;
+    }
 }
