@@ -2,7 +2,10 @@ package org.progmatic.webshop;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.progmatic.webshop.dto.ClothDto;
 import org.progmatic.webshop.helpers.ClothDataHelper;
+import org.progmatic.webshop.returnmodel.Feedback;
+import org.progmatic.webshop.returnmodel.ListResult;
 import org.progmatic.webshop.testservice.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -133,9 +136,10 @@ class ClothesControllerTest {
                             .content(json))
                     .andExpect(status().isOk())
                     .andReturn();
-            String response = result.getResponse().getContentAsString();
-            assertTrue(response.contains("true"));
-            System.out.println(response);
+            String responseString = result.getResponse().getContentAsString();
+            ListResult<ClothDto> response = service.createObject(responseString, ListResult.class);
+            assertTrue(response.isSuccess());
+            assertTrue(response.getList().size() > 0);
         }
     }
 
