@@ -2,7 +2,6 @@ package org.progmatic.webshop;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.progmatic.webshop.helpers.EmailSenderHelper;
 import org.progmatic.webshop.returnmodel.Message;
 import org.progmatic.webshop.testservice.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +64,7 @@ class OrderControllerTest {
     }
 
     @Test
-    @WithUserDetails(EmailSenderHelper.ADMIN_EMAIL_ADDRESS)
+    @WithUserDetails(TestService.ADMIN_EMAIL)
     void get_all_orders_as_admin() throws Exception {
         MvcResult result = mockMvc.perform(
                 get("/orders"))
@@ -85,7 +84,7 @@ class OrderControllerTest {
     }
 
     @Test
-    @WithUserDetails(EmailSenderHelper.ADMIN_EMAIL_ADDRESS)
+    @WithUserDetails(TestService.ADMIN_EMAIL)
     void get_not_existing_order_as_admin() throws Exception {
         MvcResult result = mockMvc.perform(
                 get("/orders/{id}", 1))
@@ -110,7 +109,7 @@ class OrderControllerTest {
     }
 
     @Test
-    @WithUserDetails(EmailSenderHelper.ADMIN_EMAIL_ADDRESS)
+    @WithUserDetails(TestService.ADMIN_EMAIL)
     void get_existing_order_as_admin() throws Exception {
         long id = service.getOneOrderId();
 
@@ -126,7 +125,7 @@ class OrderControllerTest {
     }
 
     @Test
-    @WithUserDetails(EmailSenderHelper.ADMIN_EMAIL_ADDRESS)
+    @WithUserDetails(TestService.ADMIN_EMAIL)
     void finish_order_as_admin() throws Exception {
         long id = service.getOneOrderId();
 
