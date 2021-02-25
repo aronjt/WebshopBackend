@@ -29,6 +29,7 @@ public class TestService {
     @PersistenceContext
     EntityManager em;
 
+    public static final String ADMIN_EMAIL = "webshopmnager@gmail.com";
     public static final String USER_EMAIL = "ertekelek@ertek.el";
     public static final String TEST_REGISTERED_USER = "burkolorant@gmail.com";
 

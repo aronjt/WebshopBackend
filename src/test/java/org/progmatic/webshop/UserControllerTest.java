@@ -2,7 +2,6 @@ package org.progmatic.webshop;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.progmatic.webshop.helpers.EmailSenderHelper;
 import org.progmatic.webshop.services.MyUserDetailsService;
 import org.progmatic.webshop.testservice.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +47,7 @@ class UserControllerTest {
 
     @Test
     void login_without_csrf() throws Exception {
-        String username = EmailSenderHelper.ADMIN_EMAIL_ADDRESS;
+        String username = TestService.ADMIN_EMAIL;
         mockMvc.perform(
                 post("/login")
                         .contentType("multipart/form-data")
@@ -60,7 +59,7 @@ class UserControllerTest {
     @Test
     void login_as_admin() throws Exception {
         mockMvc.perform(
-                SecurityMockMvcRequestBuilders.formLogin().user(EmailSenderHelper.ADMIN_EMAIL_ADDRESS).password("admin"))
+                SecurityMockMvcRequestBuilders.formLogin().user(TestService.ADMIN_EMAIL).password("admin"))
                 .andExpect(SecurityMockMvcResultMatchers.authenticated());
     }
 
@@ -88,8 +87,8 @@ class UserControllerTest {
     }
 
     @Test
-    @WithUserDetails("ertekelek@ertek.el")
-    void get_logged_in_user_if_exists() throws Exception {
+    @WithUserDetails(TestService.USER_EMAIL)
+    void get_logged_in_user_if_logged_in() throws Exception {
         MvcResult result = mockMvc.perform(
                 get("/user"))
                 .andExpect(status().isOk())
@@ -101,7 +100,7 @@ class UserControllerTest {
     }
 
     @Test
-    void get_logged_in_user_if_not_exists() throws Exception {
+    void get_logged_in_user_if_not_logged_in() throws Exception {
         MvcResult result = mockMvc.perform(
                 get("/user"))
                 .andExpect(status().isOk())

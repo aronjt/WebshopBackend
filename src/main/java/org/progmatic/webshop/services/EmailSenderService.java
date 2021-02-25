@@ -6,6 +6,7 @@ import org.progmatic.webshop.jpareps.AdminData;
 import org.progmatic.webshop.jpareps.EmailData;
 import org.progmatic.webshop.model.ConfirmationToken;
 import org.progmatic.webshop.model.Email;
+import org.progmatic.webshop.model.ExtraData;
 import org.progmatic.webshop.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,7 +17,6 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.transaction.Transactional;
-import java.awt.*;
 import java.util.Properties;
 
 @Service
@@ -49,7 +49,7 @@ public class EmailSenderService {
     @Transactional
     public Session prepareSession(
     ) {
-        org.progmatic.webshop.model.AdminData aData = adminData.findAdminDataById(EmailSenderHelper.ID);
+        ExtraData aData = adminData.findAdminDataById(EmailSenderHelper.ID);
         fromPassword = aData.getSecret();
         Properties props = new Properties();
         props.setProperty("mail.transport.protocol", "smtp");
@@ -74,7 +74,7 @@ public class EmailSenderService {
     @Transactional
     public void prepareConfirmationEmail(User toUser, String messageType, ConfirmationToken confirmationToken) {
 
-        org.progmatic.webshop.model.AdminData aData = adminData.findAdminDataById(EmailSenderHelper.ID);
+        ExtraData aData = adminData.findAdminDataById(EmailSenderHelper.ID);
         fromPassword = aData.getSecret();
         Email emailDataByMessageType = setEmail(messageType);
 //
@@ -143,7 +143,7 @@ transportEmail(message);
         @Transactional
         public void prepareSuccesfulOrderEmail(OrderDto order, User loggedInUser,String messageType) {
 
-            org.progmatic.webshop.model.AdminData aData = adminData.findAdminDataById(EmailSenderHelper.ID);
+            ExtraData aData = adminData.findAdminDataById(EmailSenderHelper.ID);
             fromPassword = aData.getSecret();
             Email emailDataByMessageType = setEmail(messageType);
 //
