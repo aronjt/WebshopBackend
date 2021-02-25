@@ -170,8 +170,8 @@ public class TestService {
     public FilterClothesDto createFilterWithSomeData() {
         FilterClothesDto filter = new FilterClothesDto();
         filter.setGender(ClothDataHelper.GENDER_UNISEX);
-        filter.setColor(ClothDataHelper.COLOR_BLACK);
-        filter.setPriceMin(10);
+        /*filter.setColor(ClothDataHelper.COLOR_BLACK);
+        filter.setPriceMin(10);*/
         return filter;
     }
 

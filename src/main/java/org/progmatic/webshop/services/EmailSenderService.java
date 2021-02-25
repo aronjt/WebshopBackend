@@ -61,11 +61,10 @@ public class EmailSenderService {
         props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         props.put("mail.smtp.socketFactory.fallback", "false");
 
-        String fromEmail = EmailSenderHelper.ADMIN_EMAIL_ADDRESS;
         Session session = Session.getDefaultInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(fromEmail, fromPassword);
+                        return new PasswordAuthentication(EmailSenderHelper.ADMIN_EMAIL_ADDRESS, fromPassword);
                     }
                 });
         return session;
@@ -77,13 +76,12 @@ public class EmailSenderService {
         ExtraData aData = adminData.findAdminDataById(EmailSenderHelper.ID);
         fromPassword = aData.getSecret();
         Email emailDataByMessageType = setEmail(messageType);
-//
+
         String toEmail = toUser.getUsername();
-//
-        String fromEmail = EmailSenderHelper.ADMIN_EMAIL_ADDRESS;
+
         InternetAddress addressFrom = null;
         try {
-            addressFrom = new InternetAddress(fromEmail);
+            addressFrom = new InternetAddress(EmailSenderHelper.ADMIN_EMAIL_ADDRESS);
         } catch (AddressException e) {
             e.printStackTrace();
         }
@@ -146,9 +144,9 @@ transportEmail(message);
             ExtraData aData = adminData.findAdminDataById(EmailSenderHelper.ID);
             fromPassword = aData.getSecret();
             Email emailDataByMessageType = setEmail(messageType);
-//
+
             String toEmail = loggedInUser.getUsername();
-//
+
             String fromEmail = EmailSenderHelper.ADMIN_EMAIL_ADDRESS;
             InternetAddress addressFrom = null;
             try {

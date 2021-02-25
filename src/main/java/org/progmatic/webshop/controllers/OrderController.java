@@ -59,13 +59,9 @@ public class OrderController {
 
         if (orderFeedback.isSuccess()){
 //            todo emailkuldes
-            sendEmail.prepareSuccesfulOrderEmail(order,uds.getLoggedInUser(),
-//                    EmailSenderHelper.SHOPPING
-            EmailSenderHelper.REGISTRATION
-            );
-//        +feedback
+            sendEmail.prepareSuccesfulOrderEmail(order,uds.getLoggedInUser(), EmailSenderHelper.SHOPPING);
         }
-        return null;
+        return orderFeedback;
     }
 
 }

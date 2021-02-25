@@ -104,10 +104,6 @@ public class OrderService {
     public Feedback sendOrder(OrderDto orderDto) {
         User user = uds.getLoggedInUser();
 
-        /* if frontend also sends the userId with the order, use this:
-        User user = em.find(User.class, orderDto.getUserId());
-         */
-
         if (user != null) {
             OnlineOrder order = createNewOrder(user);
 
@@ -119,7 +115,6 @@ public class OrderService {
                     order.getPurchasedClothesList().size(), order.getUser().getUsername(), order.getCreationTime());
 
             em.persist(order);
-
 
             return new Message(true, "order sent successfully");
         }
