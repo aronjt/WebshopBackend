@@ -34,7 +34,13 @@ public class UserController {
 
     @GetMapping("/user")
     public Feedback getLoggedInUser() {
-        Result<RegisterUserDto> loggedInUser = new Result<>(userService.getLoggedInRegisterDto());
+//        Zolinak itt list kell a t helyett :)
+//        ListResult<RegisterUserDto> loggedInUser = new Result<>(userService.getLoggedInRegisterDto());
+
+
+        ListResult<RegisterUserDto> loggedInUser = new ListResult<>();
+        loggedInUser.getList().add(userService.getLoggedInRegisterDto());
+
         loggedInUser.setSuccess(true);
         return loggedInUser;
     }

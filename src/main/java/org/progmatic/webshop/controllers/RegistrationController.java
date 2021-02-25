@@ -70,7 +70,7 @@ public class RegistrationController {
             if (token.getEnableDate().isAfter(LocalDateTime.now())) {
                 user.setEnabled(true);
                 userRepository.save(user);
-                message = new Message(true, "account verified");
+                message = new Message(true, "Account verified");
             } else {
                 ConfirmationToken newToken = new ConfirmationToken(user);
                 confirmationTokenRepository.save(newToken);
