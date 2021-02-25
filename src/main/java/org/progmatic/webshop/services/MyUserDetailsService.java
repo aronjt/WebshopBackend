@@ -98,12 +98,18 @@ public class MyUserDetailsService implements UserDetailsService {
     @Transactional
     public RegisterUserDto getLoggedInRegisterDto() {
         User loggedInUser = getLoggedInUser();
-        User userLogged = em.find(User.class, loggedInUser.getId());
-        return new RegisterUserDto(userLogged);
+        if (loggedInUser != null) {
+            LOG.info("User logged in");
+            User userLogged = em.find(User.class, loggedInUser.getId());
+            return new RegisterUserDto(userLogged);
+        }
+        LOG.info("User not logged in");
+        return null;
     }
 
     @Transactional
     public User getUser(long id) {
+        LOG.info("User has given back");
         return em.find(User.class, id);
     }
 
@@ -116,7 +122,7 @@ public class MyUserDetailsService implements UserDetailsService {
         loggedInUser.setCity(userDto.getCity());
         loggedInUser.setAddress(userDto.getAddress());
         loggedInUser.setZipcode(userDto.getZipcode());
-
+        LOG.info("User edited");
         return new Message(true, "Successfully changed");
     }
 
@@ -124,6 +130,7 @@ public class MyUserDetailsService implements UserDetailsService {
     public Feedback getUserOrders() {
         User loggedInUser = getLoggedInUser();
         if (loggedInUser == null) {
+            LOG.info("No user logged in");
             return new Message(false, "No user is logged in");
         }
         long id = loggedInUser.getId();
@@ -136,8 +143,10 @@ public class MyUserDetailsService implements UserDetailsService {
                 list.getList().add(new OrderDto(onlineOrder));
             }
             list.setSuccess(true);
+            LOG.info("Listed user orders");
             return list;
         }
+        LOG.info("User don't have orders");
         return new Message(false, "Don't have any orders yet");
     }
 }

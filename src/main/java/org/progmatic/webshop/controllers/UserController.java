@@ -2,6 +2,7 @@ package org.progmatic.webshop.controllers;
 
 import org.progmatic.webshop.dto.RegisterUserDto;
 import org.progmatic.webshop.dto.UserDto;
+import org.progmatic.webshop.model.User;
 import org.progmatic.webshop.returnmodel.Feedback;
 import org.progmatic.webshop.returnmodel.ListResult;
 import org.progmatic.webshop.returnmodel.Message;
@@ -34,15 +35,25 @@ public class UserController {
 
     @GetMapping("/user")
     public Feedback getLoggedInUser() {
-//        Zolinak itt list kell a t helyett :)
-//        ListResult<RegisterUserDto> loggedInUser = new Result<>(userService.getLoggedInRegisterDto());
+        RegisterUserDto registerUserDto = userService.getLoggedInRegisterDto();
+        if (registerUserDto != null) {
+            Result<RegisterUserDto> loggedInUser = new Result<>(registerUserDto);
+            loggedInUser.setSuccess(true);
+            return loggedInUser;
+        }
+        return new Message(false, "No user logged in");
+    }
 
-
-        ListResult<RegisterUserDto> loggedInUser = new ListResult<>();
-        loggedInUser.getList().add(userService.getLoggedInRegisterDto());
-
-        loggedInUser.setSuccess(true);
-        return loggedInUser;
+    @GetMapping("/login/success")
+    public Feedback loginSuccess() {
+        ListResult<UserDto> loggedInUser = new ListResult<>();
+        User user = userService.getLoggedInUser();
+        if (user != null) {
+            loggedInUser.getList().add(new UserDto(user));
+            loggedInUser.setSuccess(true);
+            return loggedInUser;
+        }
+        return new Message(false, "No user logged in");
     }
 
     @GetMapping("/user/order")

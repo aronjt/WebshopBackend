@@ -50,7 +50,7 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
         http.cors().and()
                 .formLogin()
                 .permitAll()
-                .defaultSuccessUrl("/user", true)
+                .defaultSuccessUrl("/login/success", true)
                 .and()
                 .logout()
                 .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))
