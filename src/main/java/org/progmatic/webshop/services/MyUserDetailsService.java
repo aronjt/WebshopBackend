@@ -123,6 +123,9 @@ public class MyUserDetailsService implements UserDetailsService {
     @Transactional
     public Feedback getUserOrders() {
         User loggedInUser = getLoggedInUser();
+        if (loggedInUser == null) {
+            return new Message(false, "No user is logged in");
+        }
         long id = loggedInUser.getId();
         List<OnlineOrder> id1 = em.createQuery("SELECT o FROM OnlineOrder o WHERE o.user.id = :id", OnlineOrder.class)
                 .setParameter("id", id)
