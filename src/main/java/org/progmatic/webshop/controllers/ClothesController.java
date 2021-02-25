@@ -43,6 +43,7 @@ public class ClothesController {
 
     @PostMapping(value = "/clothes/filter")
     public Feedback filterClothes(@RequestBody FilterClothesDto filter) {
+
         return new ListResult<>(clothesService.filterClothes(filter));
     }
 
