@@ -79,12 +79,13 @@ public class ClothesService {
         if (!StringUtils.isEmpty(filter.getColor())) {
             whereCondition.and(QClothes.clothes.color.eq(filter.getColor()));
         }
+        if (filter.getPriceMin() > 0 && filter.getPriceMax() > 0 && filter.getPriceMin() < filter.getPriceMax()) {
+            whereCondition.and(QClothes.clothes.price.between(filter.getPriceMin(), filter.getPriceMax()));
+        }
         List<Clothes> clothesList = queryFactory.selectFrom(QClothes.clothes).where(whereCondition).fetch();
         List<ClothDto> clothDtoList = new ArrayList<>();
-        if (filter.getPriceMin() > 0 && filter.getPriceMax() > 0 && filter.getPriceMin() < filter.getPriceMax()) {
-            for (Clothes clothes : clothesList) {
-                clothDtoList.add(new ClothDto(clothes));
-            }
+        for (Clothes clothes : clothesList) {
+            clothDtoList.add(new ClothDto(clothes));
         }
         LOG.info("Clothes been filtered");
         return clothDtoList;
