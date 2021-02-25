@@ -187,4 +187,13 @@ class UserControllerTest {
         assertFalse(userExists);
     }
 
+    @Test
+    @WithUserDetails(TestService.USER_EMAIL)
+    void get_login_success_page() throws Exception {
+        mockMvc.perform(
+                get("/login/success"))
+                .andExpect(status().isOk())
+                .andReturn();
+    }
+
 }
