@@ -1,7 +1,11 @@
 package org.progmatic.webshop.controllers;
 
 import org.progmatic.webshop.dto.*;
+import org.progmatic.webshop.helpers.EmailSenderHelper;
+import org.progmatic.webshop.model.User;
 import org.progmatic.webshop.returnmodel.Feedback;
+import org.progmatic.webshop.services.EmailSenderService;
+import org.progmatic.webshop.services.MyUserDetailsService;
 import org.progmatic.webshop.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,10 +15,14 @@ import org.springframework.web.bind.annotation.*;
 public class OrderController {
 
     private final OrderService service;
+    private final EmailSenderService sendEmail;
+    private final MyUserDetailsService uds;
 
     @Autowired
-    public OrderController(OrderService service) {
+    public OrderController(OrderService service,EmailSenderService sendEmail,MyUserDetailsService uds) {
         this.service = service;
+        this.sendEmail = sendEmail;
+        this.uds = uds;
     }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
@@ -47,7 +55,17 @@ public class OrderController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/orders")
     public Feedback sendOrder(@RequestBody OrderDto order) {
-        return service.sendOrder(order);
+        Feedback orderFeedback=service.sendOrder(order);
+
+        if (orderFeedback.isSuccess()){
+//            todo emailkuldes
+            sendEmail.prepareSuccesfulOrderEmail(order,uds.getLoggedInUser(),
+//                    EmailSenderHelper.SHOPPING
+            EmailSenderHelper.REGISTRATION
+            );
+//        +feedback
+        }
+        return null;
     }
 
 }

@@ -54,7 +54,7 @@ public class RegistrationController {
             service.createUser(user);
             confirmationToken = new ConfirmationToken(user);
             confirmationTokenRepository.save(confirmationToken);
-            sendEmail.sendEmail(user, EmailSenderHelper.REGISTRATION, confirmationToken, valueOfUrl);
+            sendEmail.prepareConfirmationEmail(user, EmailSenderHelper.REGISTRATION, confirmationToken);
             message = new Message(true, "Confirmation token sent to New User");
         }
         return message;
@@ -74,7 +74,7 @@ public class RegistrationController {
             } else {
                 ConfirmationToken newToken = new ConfirmationToken(user);
                 confirmationTokenRepository.save(newToken);
-                sendEmail.sendEmail(user, EmailSenderHelper.REGISTRATION, newToken, valueOfUrl);
+                sendEmail.prepareConfirmationEmail(user, EmailSenderHelper.REGISTRATION, newToken);
                 message = new Message("This token is broken ! We sent you new one to your email adress.");
             }
         } else {

@@ -57,7 +57,7 @@ public class PasswordForgottenController {
             LocalDateTime tomorrow = confirmationToken.getCreatedDate().plusDays(1);
             confirmationToken.setEnableDate(tomorrow);
             confirmationTokenRepository.save(confirmationToken);
-            sendEmail.sendEmail(existingUser, EmailSenderHelper.REGISTRATION, confirmationToken, valueOfUrl);
+            sendEmail.prepareConfirmationEmail(existingUser, EmailSenderHelper.REGISTRATION, confirmationToken);
             feedback.setSuccess(true);
             feedback.setMessage("Password Confirmation token sent to User");
             LOG.info("Password Confirmation token sent to User");
