@@ -42,7 +42,7 @@ public class UserController {
         return new Message(false, "No user is logged in");
     }
 
-    @GetMapping("/user/order/")
+    @GetMapping("/user/order")
     public Feedback getUsersOrders() {
         return userService.getUserOrders();
     }
