@@ -109,12 +109,12 @@ public class OrderService {
 
             addPurchasedClothesToDBAndToOrder(orderDto.getPurchasedClothesList(), order);
             order.setTotalPrice(orderDto.getTotalPrice());
+            em.persist(order);
             changeQuantitiesInStock(order.getPurchasedClothesList());
 
             LOG.info("new order created, list size {}, username {}, total price {}",
                     order.getPurchasedClothesList().size(), order.getUser().getUsername(), order.getCreationTime());
 
-            em.persist(order);
 
             return new Message(true, "order sent successfully");
         }
@@ -145,16 +145,31 @@ public class OrderService {
 
     @Transactional
     public void changeQuantitiesInStock(List<PurchasedClothes> clothes) {
-        for (PurchasedClothes c : clothes) {
+        for (PurchasedClothes pc : clothes) {
             try {
-                Stock stock = em.createQuery("SELECT s FROM Stock s WHERE s.clothes = :cloth", Stock.class)
-                        .setParameter("cloth", c)
-                        .getSingleResult();
-                stock.setQuantity(stock.getQuantity() - c.getQuantity());
+                Clothes c = em.find(Clothes.class, pc.getClothes().getId());
+                changeStock(c, pc.getQuantity());
             } catch (NoResultException e) {
                 LOG.warn("cloth with id {} not found in stock",
-                        c.getId());
+                        pc.getId());
             }
+        }
+    }
+
+    @Transactional
+    public void changeStock(Clothes c, int quantity) {
+        try {
+            System.out.println("*******************************");
+            System.out.println("changeStock method called");
+            Stock stock = em.createQuery("SELECT s FROM Stock s WHERE s.clothes = :cloth", Stock.class)
+                    .setParameter("cloth", c)
+                    .getSingleResult();
+            System.out.println("stock found");
+            System.out.println(stock.getId());
+            stock.setQuantity(stock.getQuantity() - quantity);
+        } catch (NoResultException e) {
+            LOG.warn("cloth with id {} not found in stock",
+                    c.getId());
         }
     }
 }

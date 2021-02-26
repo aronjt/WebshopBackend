@@ -22,15 +22,10 @@ public class OrderDto {
         totalPrice = order.getTotalPrice();
         isFinish = order.isFinish();
         userId = order.getUser().getId();
-
-        setPurchasedClothesList(order.getPurchasedClothesList());
     }
 
-    public void setPurchasedClothesList(List<PurchasedClothes> purchasedClothesList) {
-        this.purchasedClothesList = new ArrayList<>();
-        for (PurchasedClothes c : purchasedClothesList) {
-            this.purchasedClothesList.add(new PurchasedClothDto(c));
-        }
+    public void setPurchasedClothesList(List<PurchasedClothDto> list) {
+        purchasedClothesList = list;
     }
 
     public long getId() {
