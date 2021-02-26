@@ -1,9 +1,8 @@
 package org.progmatic.webshop.configurators;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.progmatic.webshop.oauth.InMemoryRequestRepository;
-import org.progmatic.webshop.oauth.TokenFilter;
-import org.progmatic.webshop.oauth.TokenStore;
+import org.progmatic.webshop.oauth.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
@@ -80,30 +79,42 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/**").permitAll()
                 .and()
+//                .oauth2Login()
+//                .authorizationEndpoint()
+//                .authorizationRequestRepository(new InMemoryRequestRepository())
+//                .and()
                 .oauth2Login()
-                .authorizationEndpoint()
-                .authorizationRequestRepository(new InMemoryRequestRepository())
+                .loginPage("/login")
+        .userInfoEndpoint().userService(oath2UserService)
                 .and()
-                .successHandler(this::successHandler)
+                .successHandler(successHandler)
                 .and()
-                .exceptionHandling()
-                .authenticationEntryPoint(this::authenticationEntryPoint);
-        http.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
+        .logout().permitAll();
+    }
+    @Autowired
+    CustomOath2UserService oath2UserService;
+@Autowired
+    private Oauth2LoginSuccessHandler successHandler;
+//                .successHandler(this::successHandler)
+//                .and()
+//                .exceptionHandling()
+//                .authenticationEntryPoint(this::authenticationEntryPoint);
+//        http.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
-    private void successHandler(HttpServletRequest request, HttpServletResponse httpServletResponse, org.springframework.security.core.Authentication authentication) {
-        String token = tokenStore.generateToken(authentication);
-        try {
-            httpServletResponse.getWriter().write(mapper.writeValueAsString(Collections
-                    .singletonMap("accessToken", token)));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    private void successHandler(HttpServletRequest request, HttpServletResponse httpServletResponse, org.springframework.security.core.Authentication authentication) {
+//        String token = tokenStore.generateToken(authentication);
+//        try {
+//            httpServletResponse.getWriter().write(mapper.writeValueAsString(Collections
+//                    .singletonMap("accessToken", token)));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
-    private void authenticationEntryPoint(HttpServletRequest request, HttpServletResponse httpServletResponse, org.springframework.security.core.AuthenticationException e) throws IOException {
-        httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        httpServletResponse.getWriter().write(mapper.writeValueAsString(Collections.singletonMap("error", "Unauthenticated")));
-    }
+//    private void authenticationEntryPoint(HttpServletRequest request, HttpServletResponse httpServletResponse, org.springframework.security.core.AuthenticationException e) throws IOException {
+//        httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//        httpServletResponse.getWriter().write(mapper.writeValueAsString(Collections.singletonMap("error", "Unauthenticated")));
+//    }
 
-}
+//}
