@@ -100,8 +100,9 @@ public class MyUserDetailsService implements UserDetailsService {
     public RegisterUserDto getLoggedInRegisterDto() {
         User loggedInUser = getLoggedInUser();
         if (loggedInUser != null) {
+            User user = em.find(User.class, loggedInUser.getId());
             LOG.info("User logged in");
-            return new RegisterUserDto(loggedInUser);
+            return new RegisterUserDto(user);
         }
         LOG.info("User not logged in");
         return null;
