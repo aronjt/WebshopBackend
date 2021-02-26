@@ -88,7 +88,7 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(this::authenticationEntryPoint);
-                http.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     private void successHandler(HttpServletRequest request, HttpServletResponse httpServletResponse, org.springframework.security.core.Authentication authentication) {
