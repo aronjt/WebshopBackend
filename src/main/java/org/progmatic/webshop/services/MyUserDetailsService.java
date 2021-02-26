@@ -122,13 +122,13 @@ public class MyUserDetailsService implements UserDetailsService {
         if (!StringUtils.isEmpty(userDto.getLastName())) {
             loggedInUser.setLastName(userDto.getLastName());
         }
-        if (!StringUtils.isEmpty(userDto.getCountry()) {
+        if (!StringUtils.isEmpty(userDto.getCountry())) {
             loggedInUser.setCountry(userDto.getCountry());
         }
-        if (!StringUtils.isEmpty(userDto.getCity()) {
+        if (!StringUtils.isEmpty(userDto.getCity())) {
             loggedInUser.setCity(userDto.getCity());
         }
-        if (!StringUtils.isEmpty(userDto.getAddress()) {
+        if (!StringUtils.isEmpty(userDto.getAddress())) {
             loggedInUser.setAddress(userDto.getAddress());
         }
         if (userDto.getZipcode() > 0) {
