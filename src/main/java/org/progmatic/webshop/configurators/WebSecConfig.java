@@ -2,6 +2,7 @@ package org.progmatic.webshop.configurators;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.progmatic.webshop.oauth.InMemoryRequestRepository;
+import org.progmatic.webshop.oauth.TokenFilter;
 import org.progmatic.webshop.oauth.TokenStore;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.session.web.http.DefaultCookieSerializer;
 import org.springframework.web.cors.CorsConfiguration;
@@ -30,10 +32,12 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
 
     public final ObjectMapper mapper;
     public final TokenStore tokenStore;
+    public final TokenFilter tokenFilter;
 
-    public WebSecConfig(ObjectMapper mapper, TokenStore tokenStore) {
+    public WebSecConfig(ObjectMapper mapper, TokenStore tokenStore, TokenFilter tokenFilter) {
         this.mapper = mapper;
         this.tokenStore = tokenStore;
+        this.tokenFilter = tokenFilter;
     }
 
     @Bean
@@ -50,10 +54,14 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type", "X-CSRF-TOKEN"));
+//        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type", "X-CSRF-TOKEN"));
         configuration.setAllowCredentials(true);
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "https://progmatic-webshop-project.herokuapp.com"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE", "PUT", "PATCH", "HEAD", "OPTIONS"));
+//        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200", "https://progmatic-webshop-project.herokuapp.com"));
+//        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE", "PUT", "PATCH", "HEAD", "OPTIONS"));
+
+        configuration.setAllowedMethods(Collections.singletonList("*"));
+        configuration.setAllowedHeaders(Collections.singletonList("*"));
+        configuration.setAllowedOrigins(Collections.singletonList("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
@@ -80,6 +88,7 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling()
                 .authenticationEntryPoint(this::authenticationEntryPoint);
+                http.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     private void successHandler(HttpServletRequest request, HttpServletResponse httpServletResponse, org.springframework.security.core.Authentication authentication) {
