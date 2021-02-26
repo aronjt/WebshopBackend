@@ -136,7 +136,7 @@ public class OrderService {
     public void addPurchasedClothesToDBAndToOrder(List<PurchasedClothDto> clothes, OnlineOrder order) {
         for (PurchasedClothDto c : clothes) {
             PurchasedClothes newC = new PurchasedClothes(c);
-            newC.setClothes(em.find(Clothes.class, c.getClothesId()));
+            newC.setClothes(em.find(Clothes.class, c.getId()));
             newC.setOnlineOrder(order);
             order.getPurchasedClothesList().add(newC);
             em.persist(newC);
