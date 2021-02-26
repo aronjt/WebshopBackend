@@ -29,6 +29,10 @@ public class InMemoryRequestRepository implements AuthorizationRequestRepository
 
     @Override
     public OAuth2AuthorizationRequest removeAuthorizationRequest(HttpServletRequest httpServletRequest) {
-        return null;
+       String state =httpServletRequest.getParameter("state");
+       if (state!=null){
+           return cache.remove(state);
+       }
+       return null;
     }
 }
