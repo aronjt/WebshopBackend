@@ -8,6 +8,8 @@ public class PurchasedClothDto {
     private String name;
     private int quantity;
     private String size;
+    private long imageId;
+    private float subTotal;
 
     public PurchasedClothDto() {}
 
