@@ -159,13 +159,9 @@ public class OrderService {
     @Transactional
     public void changeStock(Clothes c, int quantity) {
         try {
-            System.out.println("*******************************");
-            System.out.println("changeStock method called");
             Stock stock = em.createQuery("SELECT s FROM Stock s WHERE s.clothes = :cloth", Stock.class)
                     .setParameter("cloth", c)
                     .getSingleResult();
-            System.out.println("stock found");
-            System.out.println(stock.getId());
             stock.setQuantity(stock.getQuantity() - quantity);
         } catch (NoResultException e) {
             LOG.warn("cloth with id {} not found in stock",
