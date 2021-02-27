@@ -202,7 +202,7 @@ public class DataLoader implements ApplicationRunner {
             Image unImg = imageData.findByName(ClothDataHelper.GENDER_UNISEX);
             Image childImg = imageData.findByName(ClothDataHelper.GENDER_CHILD);
 
-            createClothes("Lansketon T-Shirt", "The best shirt for fans!", 19.99f, ClothDataHelper.COLOR_BLACK,
+            createClothes("Regular Fit Crew-neck T-shirt", "Regular fit, Round Neck, Cotton 100%", 6.99f, ClothDataHelper.COLOR_BEIGE,
                     shirt, male, maleImg);
             createClothes("Hello Kitty", "Cutest t-shirt of the world!", 14.99f, ClothDataHelper.COLOR_PINK,
                     shirt, female, femaleImg);
@@ -338,6 +338,7 @@ public class DataLoader implements ApplicationRunner {
 
         if (imgNum == 0) {
             String pngImg = ImageHelper.PNG;
+            String jpegImg = ImageHelper.JPG;
             if (addImageToDatabase("src/main/resources/images/child_dress.png", ClothDataHelper.GENDER_CHILD, pngImg)) {
                 LOG.info("added image to database with name {}", ClothDataHelper.GENDER_CHILD);
             }
@@ -350,6 +351,9 @@ public class DataLoader implements ApplicationRunner {
             if (addImageToDatabase("src/main/resources/images/unisex.png", ClothDataHelper.GENDER_UNISEX, pngImg)) {
                 LOG.info("added image to database with name {}", ClothDataHelper.GENDER_UNISEX);
             }
+            /*if (addImageToDatabase("src/main/resources/images/Regular Fit Crew-neck T-shirt.jpeg", ClothDataHelper.GENDER_MALE, jpegImg)) {
+                LOG.info("added image to database with name {}", "Regular Fit Crew-neck T-shirt");
+            }*/
         }
     }
 

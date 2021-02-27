@@ -21,5 +21,6 @@ public class ClothDataHelper {
     public static final String COLOR_GRAY = "gray";
     public static final String COLOR_PINK = "pink";
     public static final String COLOR_BLUE = "blue";
+    public static final String COLOR_BEIGE = "Beige";
 
 }
