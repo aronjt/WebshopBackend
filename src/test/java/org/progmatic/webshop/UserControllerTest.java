@@ -3,6 +3,7 @@ package org.progmatic.webshop;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.progmatic.webshop.services.MyUserDetailsService;
+import org.progmatic.webshop.testhelper.FeedbackMessageHelper;
 import org.progmatic.webshop.testservice.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -107,7 +108,7 @@ class UserControllerTest {
                 .andReturn();
         String response = result.getResponse().getContentAsString();
         assertTrue(response.contains("false"));
-        assertTrue(response.contains("No user is logged in"));
+        assertTrue(response.contains(FeedbackMessageHelper.USER_NOT_LOGGED_IN));
     }
 
     @Test
@@ -125,12 +126,13 @@ class UserControllerTest {
     }
 
     @Test
+    @WithUserDetails(TestService.USER_EMAIL)
     void get_user_orders_if_exist() throws Exception {
         long id = service.getUserWithOrder();
 
         if (id != 0) {
             MvcResult result = mockMvc.perform(
-                    get("/user/order/{id}", id))
+                    get("/user/order"))
                     .andExpect(status().isOk())
                     .andReturn();
             String response = result.getResponse().getContentAsString();
@@ -141,14 +143,15 @@ class UserControllerTest {
     }
 
     @Test
+    @WithUserDetails(TestService.ADMIN_EMAIL)
     void get_user_orders_if_not_exist() throws Exception {
         MvcResult result = mockMvc.perform(
-                get("/user/order/{id}", 666))
+                get("/user/order"))
                 .andExpect(status().isOk())
                 .andReturn();
         String response = result.getResponse().getContentAsString();
         assertTrue(response.contains("false"));
-        assertTrue(response.contains("Don't have any orders yet"));
+        assertTrue(response.contains(FeedbackMessageHelper.USER_ORDER_GET_NO_ORDER));
     }
 
     @Test
@@ -165,7 +168,7 @@ class UserControllerTest {
                     .andReturn();
             String response = result.getResponse().getContentAsString();
             assertTrue(response.contains("true"));
-            assertTrue(response.contains("Successfully changed"));
+            assertTrue(response.contains(FeedbackMessageHelper.USER_PUT_SUCCESS));
         }
     }
 

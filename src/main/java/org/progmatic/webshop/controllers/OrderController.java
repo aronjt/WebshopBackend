@@ -2,7 +2,6 @@ package org.progmatic.webshop.controllers;
 
 import org.progmatic.webshop.dto.*;
 import org.progmatic.webshop.helpers.EmailSenderHelper;
-import org.progmatic.webshop.model.User;
 import org.progmatic.webshop.returnmodel.Feedback;
 import org.progmatic.webshop.services.EmailSenderService;
 import org.progmatic.webshop.services.MyUserDetailsService;
@@ -55,12 +54,13 @@ public class OrderController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/orders")
     public Feedback sendOrder(@RequestBody OrderDto order) {
-        Feedback orderFeedback=service.sendOrder(order);
+        Feedback orderFeedback = service.sendOrder(order);
 
         if (orderFeedback.isSuccess()){
 //            todo emailkuldes
             sendEmail.prepareSuccesfulOrderEmail(order,uds.getLoggedInUser(), EmailSenderHelper.SHOPPING);
         }
+
         return orderFeedback;
     }
 

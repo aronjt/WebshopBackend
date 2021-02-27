@@ -2,6 +2,7 @@ package org.progmatic.webshop;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.progmatic.webshop.testhelper.FeedbackMessageHelper;
 import org.progmatic.webshop.testservice.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -61,7 +62,7 @@ class ImageControllerTest {
                     .andReturn();
             String response = result.getResponse().getContentAsString();
             assertTrue(response.contains("true"));
-            assertTrue(response.contains("successful image upload"));
+            assertTrue(response.contains(FeedbackMessageHelper.IMAGE_POST_SUCCESS));
         }
     }
 

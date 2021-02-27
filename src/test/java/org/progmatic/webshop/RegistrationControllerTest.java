@@ -2,6 +2,7 @@ package org.progmatic.webshop;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.progmatic.webshop.testhelper.FeedbackMessageHelper;
 import org.progmatic.webshop.testservice.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -43,7 +44,7 @@ class RegistrationControllerTest {
                     .andReturn();
             String response = result.getResponse().getContentAsString();
             assertTrue(response.contains("true"));
-            assertTrue(response.contains("Confirmation token sent to New User"));
+            assertTrue(response.contains(FeedbackMessageHelper.REGISTRATION_POST_SUCCESS));
         }
     }
 
@@ -60,7 +61,7 @@ class RegistrationControllerTest {
                     .andReturn();
             String response = result.getResponse().getContentAsString();
             assertTrue(response.contains("false"));
-            assertTrue(response.contains("This email adress already exists"));
+            assertTrue(response.contains(FeedbackMessageHelper.REGISTRATION_POST_TAKEN_EMAIL));
         }
     }
 
@@ -77,7 +78,7 @@ class RegistrationControllerTest {
 
             String response = result.getResponse().getContentAsString();
             assertTrue(response.contains("true"));
-            assertTrue(response.contains("account verified"));
+            assertTrue(response.contains(FeedbackMessageHelper.REGISTRATION_GET_SUCCESS));
         }
     }
 
@@ -94,7 +95,7 @@ class RegistrationControllerTest {
 
             String response = result.getResponse().getContentAsString();
             assertTrue(response.contains("false"));
-            assertTrue(response.contains("This token is broken "));
+            assertTrue(response.contains(FeedbackMessageHelper.REGISTRATION_GET_EXPIRED_TOKEN));
         }
     }
 

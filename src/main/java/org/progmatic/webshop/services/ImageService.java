@@ -45,6 +45,7 @@ public class ImageService {
         try {
             outputStream.close();
         } catch (IOException e) {
+            LOG.error("exception occurred... {}", e.getMessage());
         }
         LOG.info("compressed image byte size is {}", outputStream.toByteArray().length);
 
@@ -68,6 +69,7 @@ public class ImageService {
             }
             outputStream.close();
         } catch (IOException | DataFormatException i) {
+            LOG.error("exception occurred... {}", i.getMessage());
         }
         return outputStream.toByteArray();
     }

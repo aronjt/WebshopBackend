@@ -5,6 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.progmatic.webshop.dto.ClothDto;
 import org.progmatic.webshop.helpers.ClothDataHelper;
 import org.progmatic.webshop.returnmodel.ListResult;
+import org.progmatic.webshop.testhelper.FeedbackMessageHelper;
 import org.progmatic.webshop.testservice.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -104,7 +105,7 @@ class ClothesControllerTest {
                     .andReturn();
             String response = result.getResponse().getContentAsString();
             assertTrue(response.contains("true"));
-            assertTrue(response.contains("Cloth successfully added"));
+            assertTrue(response.contains(FeedbackMessageHelper.CLOTH_POST_SUCCESS));
         }
     }
 

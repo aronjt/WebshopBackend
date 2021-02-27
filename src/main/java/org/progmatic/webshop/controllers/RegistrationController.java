@@ -48,7 +48,7 @@ public class RegistrationController {
 
         ConfirmationToken confirmationToken;
         if (existingUser != null) {
-            message = new Message(false, "This email adress already exists.(login or confirm the token)  ");
+            message = new Message(false, "This email address already exists.(login or confirm the token)");
         } else {
             User user = new User(registerUserDto);
             service.createUser(user);
@@ -75,7 +75,7 @@ public class RegistrationController {
                 ConfirmationToken newToken = new ConfirmationToken(user);
                 confirmationTokenRepository.save(newToken);
                 sendEmail.prepareConfirmationEmail(user, EmailSenderHelper.REGISTRATION, newToken);
-                message = new Message("This token is broken ! We sent you new one to your email adress.");
+                message = new Message("This token is broken ! We sent you new one to your email address.");
             }
         } else {
             message = new Message("The token is invalid!");

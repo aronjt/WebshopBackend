@@ -63,7 +63,7 @@ public class PasswordForgottenController {
             LOG.info("Password Confirmation token sent to User");
 //            }
         } else {
-            feedback.setMessage("User not found ");
+            feedback.setMessage("User not found");
             LOG.info("User not found");
         }
 

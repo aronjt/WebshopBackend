@@ -3,6 +3,7 @@ package org.progmatic.webshop;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.progmatic.webshop.returnmodel.Message;
+import org.progmatic.webshop.testhelper.FeedbackMessageHelper;
 import org.progmatic.webshop.testservice.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -59,7 +60,7 @@ class OrderControllerTest {
                     .andReturn();
             String response = result.getResponse().getContentAsString();
             assertTrue(response.contains("true"));
-            assertTrue(response.contains("order sent successfully"));
+            assertTrue(response.contains(FeedbackMessageHelper.ORDER_POST_SUCCESS));
         }
     }
 
@@ -95,7 +96,7 @@ class OrderControllerTest {
 
         if (fb != null) {
             assertFalse(fb.isSuccess());
-            assertEquals("order cannot be found", fb.getMessage());
+            assertEquals(FeedbackMessageHelper.ORDER_GET_NOT_FOUND, fb.getMessage());
         }
     }
 
@@ -119,8 +120,8 @@ class OrderControllerTest {
                     .andExpect(status().isOk())
                     .andReturn();
             String response = result.getResponse().getContentAsString();
-            assertTrue(response.contains("totalPrice"));
             assertTrue(response.contains("true"));
+            assertTrue(response.contains("totalPrice"));
         }
     }
 
@@ -137,7 +138,7 @@ class OrderControllerTest {
                     .andReturn();
             String response = result.getResponse().getContentAsString();
             assertTrue(response.contains("true"));
-            assertTrue(response.contains("order is finished now"));
+            assertTrue(response.contains(FeedbackMessageHelper.ORDER_PUT_SUCCESS));
         }
     }
 

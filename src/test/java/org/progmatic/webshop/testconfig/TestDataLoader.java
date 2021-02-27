@@ -1,6 +1,5 @@
-package org.progmatic.webshop.config;
+package org.progmatic.webshop.testconfig;
 
-import org.apache.tomcat.jni.Local;
 import org.progmatic.webshop.configurators.DataLoader;
 import org.progmatic.webshop.dto.RegisterUserDto;
 import org.progmatic.webshop.jpareps.*;
