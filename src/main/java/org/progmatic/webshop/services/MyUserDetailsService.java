@@ -1,5 +1,6 @@
 package org.progmatic.webshop.services;
 
+import org.apache.commons.lang3.StringUtils;
 import org.progmatic.webshop.dto.OrderDto;
 import org.progmatic.webshop.dto.RegisterUserDto;
 import org.progmatic.webshop.dto.UserDto;
@@ -99,8 +100,9 @@ public class MyUserDetailsService implements UserDetailsService {
     public RegisterUserDto getLoggedInRegisterDto() {
         User loggedInUser = getLoggedInUser();
         if (loggedInUser != null) {
+            User user = em.find(User.class, loggedInUser.getId());
             LOG.info("User logged in");
-            return new RegisterUserDto(loggedInUser);
+            return new RegisterUserDto(user);
         }
         LOG.info("User not logged in");
         return null;
@@ -115,12 +117,24 @@ public class MyUserDetailsService implements UserDetailsService {
     @Transactional
     public Feedback editUser(RegisterUserDto userDto) {
         User loggedInUser = em.find(User.class, getLoggedInUser().getId());
-        loggedInUser.setFirstName(userDto.getFirstName());
-        loggedInUser.setLastName(userDto.getLastName());
-        loggedInUser.setCountry(userDto.getCountry());
-        loggedInUser.setCity(userDto.getCity());
-        loggedInUser.setAddress(userDto.getAddress());
-        loggedInUser.setZipcode(userDto.getZipcode());
+        if (!StringUtils.isEmpty(userDto.getFirstName())) {
+            loggedInUser.setFirstName(userDto.getFirstName());
+        }
+        if (!StringUtils.isEmpty(userDto.getLastName())) {
+            loggedInUser.setLastName(userDto.getLastName());
+        }
+        if (!StringUtils.isEmpty(userDto.getCountry())) {
+            loggedInUser.setCountry(userDto.getCountry());
+        }
+        if (!StringUtils.isEmpty(userDto.getCity())) {
+            loggedInUser.setCity(userDto.getCity());
+        }
+        if (!StringUtils.isEmpty(userDto.getAddress())) {
+            loggedInUser.setAddress(userDto.getAddress());
+        }
+        if (userDto.getZipcode() > 0) {
+            loggedInUser.setZipcode(userDto.getZipcode());
+        }
         LOG.info("User edited");
         return new Message(true, "Successfully changed");
     }
