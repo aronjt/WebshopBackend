@@ -66,7 +66,7 @@ public class DataLoader implements ApplicationRunner {
     @Transactional
     public void run(ApplicationArguments args) {
         createUsers();
-        addAdminData();
+        createAdminData();
         createTypes();
         createGenders();
         createImages();
@@ -116,7 +116,7 @@ public class DataLoader implements ApplicationRunner {
         return user;
     }
 
-    public void addAdminData() {
+    public void createAdminData() {
         long adminNum = adminData.count();
 
         if (adminNum == 0) {
