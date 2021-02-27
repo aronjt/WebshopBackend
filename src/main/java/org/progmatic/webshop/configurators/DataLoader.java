@@ -201,9 +201,10 @@ public class DataLoader implements ApplicationRunner {
             Image femaleImg = imageData.findByName(ClothDataHelper.GENDER_FEMALE);
             Image unImg = imageData.findByName(ClothDataHelper.GENDER_UNISEX);
             Image childImg = imageData.findByName(ClothDataHelper.GENDER_CHILD);
+            Image regularFitTShirt = imageData.findByName("Regular Fit Crew-neck T-shirt.jpeg");
 
             createClothes("Regular Fit Crew-neck T-shirt", "Regular fit, Round Neck, Cotton 100%", 6.99f, ClothDataHelper.COLOR_BEIGE,
-                    shirt, male, maleImg);
+                    shirt, male, regularFitTShirt);
             createClothes("Hello Kitty", "Cutest t-shirt of the world!", 14.99f, ClothDataHelper.COLOR_PINK,
                     shirt, female, femaleImg);
             createClothes("Progmatic", "Best Academy of the World!", 24.99f, ClothDataHelper.COLOR_WHITE,
@@ -308,7 +309,7 @@ public class DataLoader implements ApplicationRunner {
     }
 
     private List<PurchasedClothes> putClothesToCart(OnlineOrder order) {
-        Clothes cloth1 = clothesData.findByName("Lansketon T-Shirt");
+        Clothes cloth1 = clothesData.findByName("Regular Fit Crew-neck T-shirt");
         Clothes cloth2 = clothesData.findByName("Jack's Pants");
 
         List<PurchasedClothes> toBuy = new ArrayList<>();
@@ -351,9 +352,9 @@ public class DataLoader implements ApplicationRunner {
             if (addImageToDatabase("src/main/resources/images/unisex.png", ClothDataHelper.GENDER_UNISEX, pngImg)) {
                 LOG.info("added image to database with name {}", ClothDataHelper.GENDER_UNISEX);
             }
-            /*if (addImageToDatabase("src/main/resources/images/Regular Fit Crew-neck T-shirt.jpeg", ClothDataHelper.GENDER_MALE, jpegImg)) {
+            if (addImageToDatabase("src/main/resources/images/Regular Fit Crew-neck T-shirt.jpeg", "Regular Fit Crew-neck T-shirt.jpeg", jpegImg)) {
                 LOG.info("added image to database with name {}", "Regular Fit Crew-neck T-shirt");
-            }*/
+            }
         }
     }
 
