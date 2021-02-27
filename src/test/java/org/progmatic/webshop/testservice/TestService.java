@@ -2,10 +2,7 @@ package org.progmatic.webshop.testservice;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.IOUtils;
-import org.progmatic.webshop.dto.ClothDto;
-import org.progmatic.webshop.dto.FilterClothesDto;
-import org.progmatic.webshop.dto.OrderDto;
-import org.progmatic.webshop.dto.RegisterUserDto;
+import org.progmatic.webshop.dto.*;
 import org.progmatic.webshop.helpers.ClothDataHelper;
 import org.progmatic.webshop.helpers.ImageHelper;
 import org.progmatic.webshop.model.*;
@@ -81,6 +78,10 @@ public class TestService {
         OrderDto order = new OrderDto();
         order.setTotalPrice(39.99f);
         order.setPurchasedClothesList(new ArrayList<>());
+        PurchasedClothDto pc = createOnePurchasedCloth();
+        if (pc != null) {
+            order.getPurchasedClothesList().add(pc);
+        }
         return order;
     }
 
@@ -184,6 +185,27 @@ public class TestService {
         filter.setPriceMin(1);
         filter.setPriceMax(3000);
         return filter;
+    }
+
+    public Stock getOneClothFromStock() {
+        List<Stock> stocks = em.createQuery("SELECT s FROM Stock s", Stock.class).getResultList();
+        if (stocks.size() > 0) {
+            return stocks.get(0);
+        }
+        return null;
+    }
+    
+    public PurchasedClothDto createOnePurchasedCloth() {
+        Stock s = getOneClothFromStock();
+        if (s != null) {
+            PurchasedClothDto pc = new PurchasedClothDto();
+            pc.setId(s.getClothes().getId());
+            pc.setName(s.getClothes().getName());
+            pc.setQuantity(1);
+            pc.setSize(s.getSize());
+            return pc;
+        }
+        return null;
     }
 
 }

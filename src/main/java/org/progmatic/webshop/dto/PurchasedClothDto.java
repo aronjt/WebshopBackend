@@ -1,5 +1,6 @@
 package org.progmatic.webshop.dto;
 
+import org.progmatic.webshop.model.Clothes;
 import org.progmatic.webshop.model.PurchasedClothes;
 
 public class PurchasedClothDto {
@@ -24,15 +25,32 @@ public class PurchasedClothDto {
         return id;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public int getQuantity() {
         return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public String getSize() {
         return size;
     }
 
+    public void setSize(String size) {
+        this.size = size;
+    }
+
     public String getName() {
         return name;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
 }

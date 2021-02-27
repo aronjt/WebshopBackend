@@ -49,7 +49,6 @@ class OrderControllerTest {
     @WithUserDetails(TestService.USER_EMAIL)
     void send_order_with_authentication() throws Exception {
         String json = service.createJson(service.createOrder());
-        System.out.println(json);
         if (json != null) {
             MvcResult result = mockMvc.perform(
                     post("/orders")
