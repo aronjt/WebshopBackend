@@ -1,6 +1,5 @@
 package org.progmatic.webshop.dto;
 
-import org.progmatic.webshop.model.Clothes;
 import org.progmatic.webshop.model.PurchasedClothes;
 
 public class PurchasedClothDto {
