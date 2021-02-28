@@ -32,15 +32,26 @@ import java.util.Collections;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecConfig extends WebSecurityConfigurerAdapter {
 
-    public final ObjectMapper mapper;
-    public final TokenStore tokenStore;
-    public final TokenFilter tokenFilter;
+    private final ObjectMapper mapper;
+    private final TokenStore tokenStore;
+    private final TokenFilter tokenFilter;
+    private final CustomOath2UserService oath2UserService;
 
-    public WebSecConfig(ObjectMapper mapper, TokenStore tokenStore, TokenFilter tokenFilter) {
+    @Autowired
+    public WebSecConfig(ObjectMapper mapper, TokenStore tokenStore, TokenFilter tokenFilter, CustomOath2UserService service) {
         this.mapper = mapper;
         this.tokenStore = tokenStore;
         this.tokenFilter = tokenFilter;
+        oath2UserService = service;
     }
+
+    /* changes made:
+        all fields are now private final
+        @Autowired has been removed from field CustomOath2UserService oath2UserService
+        CustomOath2UserService oath2UserService field is initialized inside the constructor
+        TODO check oauth working
+            TODO also clear this class...
+     */
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -94,9 +105,8 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
                 .and()
         .logout().permitAll();
     }
+
     @Autowired
-    CustomOath2UserService oath2UserService;
-@Autowired
     private Oauth2LoginSuccessHandler successHandler;
 //                .successHandler(this::successHandler)
 //                .and()
