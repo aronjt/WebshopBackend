@@ -27,7 +27,7 @@ import java.util.List;
 
 /**
  * An {@link ApplicationRunner} class to fill up the database with default data for testing and presentation
- * if the analyzed table of the database do not contain any data.<br>
+ * if the analyzed table of the database does not contain any data.<br>
  * @apiNote It may not be used when the application runs in real life.
  */
 @Component
@@ -72,14 +72,13 @@ public class DataLoader implements ApplicationRunner {
     public void run(ApplicationArguments args) {
         createUsers();
         createAdminData();
+        createImages();
         createTypes();
         createGenders();
-        createImages();
         createClothes();
         putSomeClothesIntoTheStock();
         createEmails();
         createOrder();
-        setImagesToGenders();
     }
 
     /**
@@ -119,7 +118,7 @@ public class DataLoader implements ApplicationRunner {
      * @param city is the city
      * @param address is the address
      * @param phone is the phone number
-     * @param role is the role
+     * @param role is the role (comes from {@link UserDataHelper})
      * @return the created {@link User} object
      */
     private User createUser(String firstName, String lastName, String email, String pw, int zip, String country,
@@ -204,31 +203,29 @@ public class DataLoader implements ApplicationRunner {
         long genderNum = genderData.count();
 
         if (genderNum == 0) {
-            Gender male = new Gender();
-            male.setGender(ClothDataHelper.GENDER_MALE);
-            genderData.save(male);
+            Image male = imageData.findByName(ClothDataHelper.GENDER_MALE);
+            Image female = imageData.findByName(ClothDataHelper.GENDER_FEMALE);
+            Image child = imageData.findByName(ClothDataHelper.GENDER_CHILD);
+            Image unisex = imageData.findByName(ClothDataHelper.GENDER_UNISEX);
 
-            LOG.info("{} gender added to database", male.getGender());
-
-            Gender female = new Gender();
-            female.setGender(ClothDataHelper.GENDER_FEMALE);
-            genderData.save(female);
-
-            LOG.info("{} gender added to database", female.getGender());
-
-            Gender child = new Gender();
-            child.setGender(ClothDataHelper.GENDER_CHILD);
-            genderData.save(child);
-
-            LOG.info("{} gender added to database", child.getGender());
-
-            Gender unisex = new Gender();
-            unisex.setGender(ClothDataHelper.GENDER_UNISEX);
-            genderData.save(unisex);
-
-            LOG.info("{} gender added to database", unisex.getGender());
-
+            createGender(ClothDataHelper.GENDER_MALE, male);
+            createGender(ClothDataHelper.GENDER_FEMALE, female);
+            createGender(ClothDataHelper.GENDER_CHILD, child);
+            createGender(ClothDataHelper.GENDER_UNISEX, unisex);
         }
+    }
+
+    /**
+     * Uploads a {@link Gender} entity to the database.
+     * @param gender is the name of the gender comes from {@link ClothDataHelper}
+     * @param image is the image for the gender comes from the database
+     */
+    private void createGender(String gender, Image image) {
+        Gender g = new Gender();
+        g.setGender(gender);
+        g.setImage(image);
+        genderData.save(g);
+        LOG.info("{} gender added to database with image id {}", g.getGender(), image.getId());
     }
 
     /**
@@ -304,7 +301,7 @@ public class DataLoader implements ApplicationRunner {
     /**
      * Uploads {@link Stock} entities to the database from the existing {@link Clothes}.<br>
      *     Every clothes from the database will be presented in the Stock table in the database
-     *     with random size (comes from {@link ClothDataHelper} and in random quantity (between 0 and 4).
+     *     with random size (comes from {@link ClothDataHelper}) and in random quantity (between 0 and 4).
      */
     public void putSomeClothesIntoTheStock() {
         long stockNum = stockData.count();
@@ -359,7 +356,8 @@ public class DataLoader implements ApplicationRunner {
     }
 
     /**
-     * Uploads an {@link OnlineOrder} entity to the database.
+     * Uploads an {@link OnlineOrder} entity to the database with {@link PurchasedClothes}.<br>
+     *     See {@link DataLoader#putClothesToCart(OnlineOrder)}.
      */
     public void createOrder() {
         long orderNum = onlineOrderData.count();
@@ -391,7 +389,7 @@ public class DataLoader implements ApplicationRunner {
 
     /**
      * Uploads two {@link PurchasedClothes} entities to the database.
-     * @param order is the {@link OnlineOrder} which contains the purchased clothes
+     * @param order is the {@link OnlineOrder} which should contain the purchased clothes
      * @return the list of purchased clothes
      */
     private List<PurchasedClothes> putClothesToCart(OnlineOrder order) {
@@ -450,57 +448,12 @@ public class DataLoader implements ApplicationRunner {
         }
     }
 
-    /* TODO
-        refactor!!
-     */
-    public void setImagesToGenders() {
-        Gender man = genderData.findByGender(ClothDataHelper.GENDER_MALE);
-        Image manImg = imageData.findByName(ClothDataHelper.GENDER_MALE);
-        if (man != null && manImg != null) {
-            if (man.getImage() == null) {
-                man.setImage(manImg);
-                genderData.save(man);
-                LOG.info("added image to gender {}", man.getGender());
-            }
-        }
-
-        Gender woman = genderData.findByGender(ClothDataHelper.GENDER_FEMALE);
-        Image womanImg = imageData.findByName(ClothDataHelper.GENDER_FEMALE);
-        if (woman != null && womanImg != null) {
-            if (woman.getImage() == null) {
-                woman.setImage(womanImg);
-                genderData.save(woman);
-                LOG.info("added image to gender {}", woman.getGender());
-            }
-        }
-
-        Gender child = genderData.findByGender(ClothDataHelper.GENDER_CHILD);
-        Image childImg = imageData.findByName(ClothDataHelper.GENDER_CHILD);
-        if (child != null && childImg != null) {
-            if (child.getImage() == null) {
-                child.setImage(childImg);
-                genderData.save(child);
-                LOG.info("added image to gender {}", child.getGender());
-            }
-        }
-
-        Gender uni = genderData.findByGender(ClothDataHelper.GENDER_UNISEX);
-        Image unImg = imageData.findByName(ClothDataHelper.GENDER_UNISEX);
-        if (uni != null && unImg != null) {
-            if (uni.getImage() == null) {
-                uni.setImage(unImg);
-                genderData.save(uni);
-                LOG.info("added image to gender {}", uni.getGender());
-            }
-        }
-    }
-
     /**
      * Uploads an {@link Image} to the database by creating a {@link MockMultipartFile} object.
      * @param filepath is the filepath where the image can be found
      * @param name is the name that will be added to the image (must be unique)
-     * @param contentType is the content type of the image (comes from {@link ImageHelper}
-     * @return if the upload was successfully, or false if any exception occurred
+     * @param contentType is the content type of the image (comes from {@link ImageHelper})
+     * @return true if the upload was successfully, or false if any exception occurred
      */
     private boolean addImageToDatabase(String filepath, String name, String contentType) {
         try {
