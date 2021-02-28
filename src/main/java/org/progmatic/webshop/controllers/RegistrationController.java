@@ -18,15 +18,24 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 
+/**
+ * Controls actions related to user registration.<br>
+ *     Containing endpoints:
+ *     <ul>
+ *         <li>/register, post</li>
+ *         <li>/confirm-account?token=, get</li>
+ *     </ul>
+ */
 @RestController
 public class RegistrationController {
-    private final UserData userRepository;
-    private final ConfirmationTokenData confirmationTokenRepository;
+
     @PersistenceContext
     EntityManager entityManager;
-    EmailSenderService sendEmail;
 
-    MyUserDetailsService service;
+    private final UserData userRepository;
+    private final ConfirmationTokenData confirmationTokenRepository;
+    private final EmailSenderService sendEmail;
+    private final MyUserDetailsService service;
 
     @Value("${value.of.url}")
     private String valueOfUrl;
@@ -41,6 +50,13 @@ public class RegistrationController {
         this.service = service;
     }
 
+    /**
+     * Endpoint for registering a new user.<br>
+     *     After a successful registration, an account confirmation email will be sent.<br>
+     *     See {@link EmailSenderService#prepareConfirmationEmail(User, String, ConfirmationToken)} for more information.
+     * @param registerUserDto is the data of the new user
+     * @return a confirm {@link Message} about the registration process
+     */
     @PostMapping(value = "/register")
     public Feedback registerUser(@RequestBody RegisterUserDto registerUserDto) {
         User existingUser = userRepository.findByUsername(registerUserDto.getEmail());
@@ -60,7 +76,12 @@ public class RegistrationController {
         return message;
     }
 
-
+    /**
+     * Endpoint for confirming the new user's account.<br>
+     *     See {@link EmailSenderService#prepareConfirmationEmail(User, String, ConfirmationToken)} for more information.
+     * @param confirmationToken is the token that has been sent in email after the registration
+     * @return a confirm {@link Message} about the confirmation process
+     */
     @GetMapping(value = "/confirm-account")
     public Feedback confirmUserAccount(@RequestParam("token") String confirmationToken) {
         ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);

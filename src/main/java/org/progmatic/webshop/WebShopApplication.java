@@ -9,7 +9,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
  * students of Progmatic Academy.<br><br>
  *     The application permit of ordering clothes, handling clothes' information and users' profiles in database.<br><br>
  *     Frontend developers: Gábor Lanszki (project owner), Zoltán Márai, Róbert Sárközi, Márk Weisz<br>
- *     Collaborators: Hédi Besenyei (scrum master), Péter Nyilasy, Gergő Papp
+ *     Collaborators: Hédi Besenyei (scrum master), Gábor Komáromi, Péter Nyilasy, Gergő Papp
  * @author Mária Benedek, Áron Józsa-Teleki, Máté Skoda
  */
 @SpringBootApplication

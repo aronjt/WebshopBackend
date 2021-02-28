@@ -11,6 +11,18 @@ import org.progmatic.webshop.services.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controls actions related to users.<br>
+ *     Containing endpoints:
+ *     <ul>
+ *         <li>/users, get</li>
+ *         <li>/users/{id}, get</li>
+ *         <li>/user, get</li>
+ *         <li>/user, put</li>
+ *         <li>/user/order, get</li>
+ *         <li>/login/success, get</li>
+ *     </ul>
+ */
 @RestController
 public class UserController {
 
@@ -21,11 +33,22 @@ public class UserController {
         this.userService = userService;
     }
 
+    /**
+     * Endpoint for getting all registered users.<br>
+     *     See {@link MyUserDetailsService#listAllUsers()} for more information.
+     * @return a {@link ListResult} that contains all users
+     */
     @GetMapping("/users")
     public Feedback listAllUser(){
         return userService.listAllUsers();
     }
 
+    /**
+     * Endpoint for getting one user with the id.<br>
+     *     See {@link MyUserDetailsService#getUser(long)} for more information.
+     * @param id is the user's id (in the database)
+     * @return a {@link ListResult} that contains the single user
+     */
     @GetMapping("/users/{id}")
     public Feedback getUser(@PathVariable("id") long id) {
         ListResult<UserDto> userDtoList = new ListResult<>();
@@ -33,6 +56,11 @@ public class UserController {
         return userDtoList;
     }
 
+    /**
+     * Endpoint for getting the user who is logged in.<br>
+     *     See {@link MyUserDetailsService#getLoggedInUser()} for more information.
+     * @return a {@link Result} that contains the logged-in user, or a {@link Message} if no user is logged in
+     */
     @GetMapping("/user")
     public Feedback getLoggedInUser() {
         RegisterUserDto registerUserDto = userService.getLoggedInRegisterDto();
@@ -44,6 +72,10 @@ public class UserController {
         return new Message(false, "No user logged in");
     }
 
+    /**
+     * See {@link UserController#getLoggedInUser()}.
+     * @return a {@link ListResult} that contains the logged-in user, or a {@link Message} if no user is logged in
+     */
     @GetMapping("/login/success")
     public Feedback loginSuccess() {
         ListResult<UserDto> loggedInUser = new ListResult<>();
@@ -56,16 +88,26 @@ public class UserController {
         return new Message(false, "No user logged in");
     }
 
+    /**
+     * Endpoint for getting all orders from the logged-in user.<br>
+     *     See {@link MyUserDetailsService#getUserOrders()} for more information.
+     * @return a {@link ListResult} that contains the user's orders, or a {@link Message} if no orders have been found
+     */
     @GetMapping("/user/order")
     public Feedback getUsersOrders() {
         return userService.getUserOrders();
 
     }
 
+    /**
+     * Endpoint for changing a logged-in user's data.<br>
+     *     See {@link MyUserDetailsService#editUser(RegisterUserDto)} for more information.
+     * @param userDto is the user's data that should be changed
+     * @return a confirm {@link Message} about the changing process
+     */
     @PutMapping("/user")
     public Feedback editUser(@RequestBody RegisterUserDto userDto) {
         return userService.editUser(userDto);
     }
-
 
 }
