@@ -2,6 +2,10 @@ package org.progmatic.webshop.dto;
 
 import org.progmatic.webshop.model.PurchasedClothes;
 
+/* TODO
+    never used class, should be removed
+ */
+
 public class PurchasedClothesDto {
 
     private long id;

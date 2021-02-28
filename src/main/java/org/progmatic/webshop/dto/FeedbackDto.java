@@ -1,5 +1,9 @@
 package org.progmatic.webshop.dto;
 
+/* TODO
+    never used class, should be removed
+ */
+
 public class FeedbackDto {
 
     private long id;
