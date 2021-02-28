@@ -25,6 +25,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 
+/**
+ * {@link WebSecurityConfigurerAdapter} class to configure web security.
+ */
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecConfig extends WebSecurityConfigurerAdapter {
