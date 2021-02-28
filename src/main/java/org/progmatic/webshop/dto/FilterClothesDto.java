@@ -1,5 +1,19 @@
 package org.progmatic.webshop.dto;
 
+import org.progmatic.webshop.model.Clothes;
+
+/**
+ * DTO for filtering clothes' results. It is used when a user wants to search.<br>
+ *     Contains:
+ *     <ul>
+ *         <li>String name</li>
+ *         <li>String gender</li>
+ *         <li>String type</li>
+ *         <li>String color</li>
+ *         <li>int priceMin</li>
+ *         <li>int priceMax</li>
+ *     </ul>
+ */
 public class FilterClothesDto {
 
     private String name;

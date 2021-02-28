@@ -2,6 +2,18 @@ package org.progmatic.webshop.dto;
 
 import org.progmatic.webshop.model.Clothes;
 
+/**
+ * DTO for {@link Clothes} entity.<br>
+ *     Contains:
+ *     <ul>
+ *         <li>long id</li>
+ *         <li>String name</li>
+ *         <li>String details</li>
+ *         <li>float price</li>
+ *         <li>String color</li>
+ *         <li>long imageId</li>
+ *     </ul>
+ */
 public class ClothDto {
 
     private long id;
@@ -11,6 +23,10 @@ public class ClothDto {
     private String color;
     private long imageId;
 
+    /**
+     * Works as dozer.
+     * @param clothes is the cloth that will be transformed to {@link ClothDto}
+     */
     public ClothDto(Clothes clothes) {
         id = clothes.getId();
         name = clothes.getName();
