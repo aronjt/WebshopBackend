@@ -36,19 +36,23 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
     private final TokenStore tokenStore;
     private final TokenFilter tokenFilter;
     private final CustomOath2UserService oath2UserService;
+    private final Oauth2LoginSuccessHandler successHandler;
 
     @Autowired
-    public WebSecConfig(ObjectMapper mapper, TokenStore tokenStore, TokenFilter tokenFilter, CustomOath2UserService service) {
+    public WebSecConfig(ObjectMapper mapper, TokenStore tokenStore, TokenFilter tokenFilter, CustomOath2UserService service,
+                        Oauth2LoginSuccessHandler handler) {
         this.mapper = mapper;
         this.tokenStore = tokenStore;
         this.tokenFilter = tokenFilter;
         oath2UserService = service;
+        successHandler = handler;
     }
 
     /* changes made:
         all fields are now private final
         @Autowired has been removed from field CustomOath2UserService oath2UserService
         CustomOath2UserService oath2UserService field is initialized inside the constructor
+        Oauth2LoginSuccessHandler successHandler field is initialized inside the constructor
         TODO check oauth working
             TODO also clear this class...
      */
@@ -106,14 +110,12 @@ public class WebSecConfig extends WebSecurityConfigurerAdapter {
         .logout().permitAll();
     }
 
-    @Autowired
-    private Oauth2LoginSuccessHandler successHandler;
 //                .successHandler(this::successHandler)
 //                .and()
 //                .exceptionHandling()
 //                .authenticationEntryPoint(this::authenticationEntryPoint);
 //        http.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
-    }
+}
 
 //    private void successHandler(HttpServletRequest request, HttpServletResponse httpServletResponse, org.springframework.security.core.Authentication authentication) {
 //        String token = tokenStore.generateToken(authentication);
