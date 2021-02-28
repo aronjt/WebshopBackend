@@ -94,7 +94,7 @@ public class DataLoader implements ApplicationRunner {
                     "06 1 234 5678", UserDataHelper.ROLE_ADMIN);
             userData.save(admin);
 
-            LOG.info("admin added to database with email {} (creation time: {})",
+            LOG.debug("admin added to database with email {} (creation time: {})",
                     admin.getUsername(), admin.getCreationTime());
 
             User user = createUser("Elek", "Érték", "ertekelek@ertek.el",
@@ -102,7 +102,7 @@ public class DataLoader implements ApplicationRunner {
                     "1111111", UserDataHelper.ROLE_USER);
             userData.save(user);
 
-            LOG.info("user added to database with email {} (creation time: {})",
+            LOG.debug("user added to database with email {} (creation time: {})",
                     user.getUsername(), user.getCreationTime());
         }
     }
@@ -150,7 +150,7 @@ public class DataLoader implements ApplicationRunner {
             data.setSecret("MRirdatlan007");
             adminData.save(data);
 
-            LOG.info("admin data added to database with id {}", data.getId());
+            LOG.debug("admin data added to database with id {}", data.getId());
         }
     }
 
@@ -172,19 +172,19 @@ public class DataLoader implements ApplicationRunner {
             shirt.setType(ClothDataHelper.TYPE_TSHIRT);
             typeData.save(shirt);
 
-            LOG.info("{} type added to database", shirt.getType());
+            LOG.debug("{} type added to database", shirt.getType());
 
             Type pullover = new Type();
             pullover.setType(ClothDataHelper.TYPE_PULLOVER);
             typeData.save(pullover);
 
-            LOG.info("{} type added to database", pullover.getType());
+            LOG.debug("{} type added to database", pullover.getType());
 
             Type pants = new Type();
             pants.setType(ClothDataHelper.TYPE_PANTS);
             typeData.save(pants);
 
-            LOG.info("{} type added to database", pants.getType());
+            LOG.debug("{} type added to database", pants.getType());
         }
     }
 
@@ -225,7 +225,7 @@ public class DataLoader implements ApplicationRunner {
         g.setGender(gender);
         g.setImage(image);
         genderData.save(g);
-        LOG.info("{} gender added to database with image id {}", g.getGender(), image.getId());
+        LOG.debug("{} gender added to database with image id {}", g.getGender(), image.getId());
     }
 
     /**
@@ -294,7 +294,7 @@ public class DataLoader implements ApplicationRunner {
         clothes.setImage(image);
         clothesData.save(clothes);
 
-        LOG.info("added new {} to database with name and price: {}, {}",
+        LOG.debug("added new {} to database with name and price: {}, {}",
                 clothes.getType().getType(), clothes.getName(), clothes.getPrice());
     }
 
@@ -317,7 +317,7 @@ public class DataLoader implements ApplicationRunner {
                 stock.setClothes(c);
                 stockData.save(stock);
 
-                LOG.info("added clothes to the stock (in database), clothId {}, size {}, quantity {}",
+                LOG.debug("added clothes to the stock (in database), clothId {}, size {}, quantity {}",
                         c.getId(), stock.getSize(), stock.getQuantity());
             }
         }
@@ -351,7 +351,7 @@ public class DataLoader implements ApplicationRunner {
         email.setSubject(subject);
         email.setMessageText(messageText);
         emailData.save(email);
-        LOG.info("added new email with type {}, subject {}",
+        LOG.debug("added new email with type {}, subject {}",
                 email.getMessageType(), email.getSubject());
     }
 
@@ -380,7 +380,7 @@ public class DataLoader implements ApplicationRunner {
                 order.setPurchasedClothesList(toBuy);
                 onlineOrderData.save(order);
 
-                LOG.info("online order added to database to user {}, purchased clothes' names are: {}, {}",
+                LOG.debug("online order added to database to user {}, purchased clothes' names are: {}, {}",
                         user.getUsername(), toBuy.get(0).getClothes().getName(), toBuy.get(1).getClothes().getName());
             }
 
@@ -430,20 +430,20 @@ public class DataLoader implements ApplicationRunner {
             String pngImg = ImageHelper.PNG;
             String jpegImg = ImageHelper.JPG;
             if (addImageToDatabase("src/main/resources/images/child_dress.png", ClothDataHelper.GENDER_CHILD, pngImg)) {
-                LOG.info("added image to database with name {}", ClothDataHelper.GENDER_CHILD);
+                LOG.debug("added image to database with name {}", ClothDataHelper.GENDER_CHILD);
             }
             if (addImageToDatabase("src/main/resources/images/man_dress.png", ClothDataHelper.GENDER_MALE, pngImg)) {
-                LOG.info("added image to database with name {}", ClothDataHelper.GENDER_MALE);
+                LOG.debug("added image to database with name {}", ClothDataHelper.GENDER_MALE);
             }
             if (addImageToDatabase("src/main/resources/images/woman_dress.png", ClothDataHelper.GENDER_FEMALE, pngImg)) {
-                LOG.info("added image to database with name {}", ClothDataHelper.GENDER_FEMALE);
+                LOG.debug("added image to database with name {}", ClothDataHelper.GENDER_FEMALE);
             }
             if (addImageToDatabase("src/main/resources/images/unisex.png", ClothDataHelper.GENDER_UNISEX, pngImg)) {
-                LOG.info("added image to database with name {}", ClothDataHelper.GENDER_UNISEX);
+                LOG.debug("added image to database with name {}", ClothDataHelper.GENDER_UNISEX);
             }
             if (addImageToDatabase("src/main/resources/images/Regular Fit Crew-neck T-shirt.jpeg",
                     "Regular Fit Crew-neck T-shirt.jpeg", jpegImg)) {
-                LOG.info("added image to database with name {}", "Regular Fit Crew-neck T-shirt");
+                LOG.debug("added image to database with name {}", "Regular Fit Crew-neck T-shirt");
             }
         }
     }
