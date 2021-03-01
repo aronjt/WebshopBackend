@@ -272,8 +272,8 @@ public class DataLoader implements ApplicationRunner {
                     pullover, female, femaleImg);
             createClothes("Mommy Little Baby", "For every darling.", 24.99f, ClothDataHelper.COLOR_WHITE,
                     pullover, child, childImg);
-            createClothes("Jack's Pants", "You cannot wear anything better!", 39.99f,
-                    ClothDataHelper.COLOR_BLACK, pants, male, maleImg);
+            createClothes("StraightTaperedJeans", "Straight fit jeans, washed effect, front zip and button closure.", 39.90f,
+                    ClothDataHelper.COLOR_WHITE, pants, male, maleImg);
             createClothes("Meow", "For ladies only!", 39.99f, ClothDataHelper.COLOR_PINK,
                     pants, female, femaleImg);
             createClothes("Winter Wearer", "Cold days will be no longer cold, if you wear these pants!", 34.99f,
@@ -402,7 +402,7 @@ public class DataLoader implements ApplicationRunner {
      */
     private List<PurchasedClothes> putClothesToCart(OnlineOrder order) {
         Clothes cloth1 = clothesData.findByName("Regular Fit Crew-neck T-shirt");
-        Clothes cloth2 = clothesData.findByName("Jack's Pants");
+        Clothes cloth2 = clothesData.findByName("StraightTaperedJeans");
 
         List<PurchasedClothes> toBuy = new ArrayList<>();
 
@@ -452,6 +452,10 @@ public class DataLoader implements ApplicationRunner {
             if (addImageToDatabase("src/main/resources/images/Regular Fit Crew-neck T-shirt.jpeg",
                     "Regular Fit Crew-neck T-shirt.jpeg", jpegImg)) {
                 LOG.debug("added image to database with name {}", "Regular Fit Crew-neck T-shirt");
+            }
+            if (addImageToDatabase("src/main/resources/images/StraightTaperedJeans.jpg",
+                    "StraightTaperedJeans.jpeg", jpegImg)) {
+                LOG.debug("added image to database with name {}", "StraightTaperedJeans");
             }
         }
     }
