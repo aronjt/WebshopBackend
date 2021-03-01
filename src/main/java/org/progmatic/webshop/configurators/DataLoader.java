@@ -262,7 +262,7 @@ public class DataLoader implements ApplicationRunner {
             Image reflectiveSportySweatshirt = imageData.findByName("REFLECTIVE SPORTY SWEATSHIRT.jpg");
             Image corduroyPants = imageData.findByName("CORDUROY PANTS.jpg");
             Image plushPalazzoPants = imageData.findByName("PLUSH PALAZZO PANTS.jpg");
-            Image athleticShirt = imageData.findByName("ATHLETIC SHIRT WITH REFLECTIVE SLEEVE");
+            Image athleticShirt = imageData.findByName("ATHLETIC SHIRT WITH REFLECTIVE SLEEVE.jpg");
 
             createClothes("BASIC MEDIUM WEIGHT T-SHIRT", "REGULAR FIT T-SHIRT MADE WITH MERCERIZED FABRIC. ROUND RIB NECKLINE AND SHORT SLEEVES.", 17.99f,
                     ClothDataHelper.COLOR_BEIGE, shirt, male, regularFitTShirt);
