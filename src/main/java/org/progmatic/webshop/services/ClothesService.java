@@ -18,6 +18,9 @@ import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Service for helping {@link org.progmatic.webshop.controllers.ClothesController}.
+ */
 @Service
 public class ClothesService {
 
@@ -26,6 +29,10 @@ public class ClothesService {
     @PersistenceContext
     EntityManager em;
 
+    /**
+     *
+     * @return all clothes represented in the database
+     */
     @Transactional
     public List<ClothDto> getAllClothes() {
         List<Clothes> clothes = em.createQuery("SELECT c FROM Clothes c", Clothes.class).getResultList();
@@ -33,10 +40,15 @@ public class ClothesService {
         for (Clothes clothe : clothes) {
             clothDtoList.add(new ClothDto(clothe));
         }
-        LOG.info("all clothes founded: {} orders in list", clothDtoList.size());
+        LOG.info("all clothes found: {} orders in list", clothDtoList.size());
         return clothDtoList;
     }
 
+    /**
+     *
+     * @param id is the id of the cloth
+     * @return one cloth with the given id
+     */
     @Transactional
     public ClothDto getOneCloth(long id) {
         Clothes clothes = em.find(Clothes.class, id);
@@ -44,19 +56,29 @@ public class ClothesService {
         return new ClothDto(clothes);
     }
 
+    /**
+     *
+     * @param gender is the gender of the clothes
+     * @return the clothes with the given gender
+     */
     @Transactional
     public List<ClothDto> getClothesFromGender(String gender) {
-        List<Clothes> clothesList = em.createQuery("SELECT c FROM Clothes c JOIN FETCH c.gender WHERE c.gender.gender = :gender", Clothes.class)
+        List<Clothes> clothesList = em.createQuery
+                ("SELECT c FROM Clothes c JOIN FETCH c.gender WHERE c.gender.gender = :gender", Clothes.class)
                 .setParameter("gender", gender)
                 .getResultList();
         List<ClothDto> clothDtoList = new ArrayList<>();
         for (Clothes clothes : clothesList) {
             clothDtoList.add(new ClothDto(clothes));
         }
-        LOG.info("all clothes founded by gender: {} orders in list", clothDtoList.size());
+        LOG.info("all clothes found by gender: {} orders in list", clothDtoList.size());
         return clothDtoList;
     }
 
+    /**
+     * Adds a new {@link Clothes} to the database.
+     * @param clothDto contains the cloth's short data
+     */
     @Transactional
     public void addNewCloth(ClothDto clothDto) {
         Clothes c = new Clothes(clothDto);
@@ -64,6 +86,11 @@ public class ClothesService {
         LOG.info("one cloth added to database");
     }
 
+    /**
+     * Filters the clothes.
+     * @param filter is the filter
+     * @return list of the clothes that have been found
+     */
     public List<ClothDto> filterClothes(FilterClothesDto filter) {
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
         BooleanBuilder whereCondition = new BooleanBuilder();
@@ -98,6 +125,11 @@ public class ClothesService {
         return id;
     }
 
+    /**
+     *
+     * @param id is the cloth's id
+     * @return the cloth with the given id represented in the {@link Stock}
+     */
     @Transactional
     public StockDto getStockLevel(long id) {
         List<Stock> stock = em.createQuery("SELECT s FROM Stock s WHERE s.clothes.id = :id", Stock.class).setParameter("id", id).getResultList();

@@ -19,6 +19,10 @@ import javax.mail.internet.MimeMessage;
 import javax.transaction.Transactional;
 import java.util.Properties;
 
+/**
+ * Service for helping {@link org.progmatic.webshop.controllers.RegistrationController} and
+ * {@link org.progmatic.webshop.controllers.PasswordForgottenController}
+ */
 @Service
 public class EmailSenderService {
 //    @Value("${value.of.url}")
@@ -45,6 +49,11 @@ public class EmailSenderService {
     }
 
 
+    /**
+     *
+     * @param messageType is
+     * @return
+     */
     public Email setEmail(String messageType) {
         return emailData.findByMessageType(messageType);
     }
