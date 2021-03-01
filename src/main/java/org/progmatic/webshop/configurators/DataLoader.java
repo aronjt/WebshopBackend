@@ -262,6 +262,7 @@ public class DataLoader implements ApplicationRunner {
             Image ruffledHemRibTop = imageData.findByName("RUFFLED HEM RIB TOP.jpg");
             Image overSizedSweatshirt = imageData.findByName("OVERSIZED SWEATSHIRT.jpg");
             Image contrastingZipSweatshirt = imageData.findByName("CONTRASTING ZIP SWEATSHIRT.jpg");
+            Image reflectiveSportySweatshirt = imageData.findByName("REFLECTIVE SPORTY SWEATSHIRT.jpg");
 
             createClothes("BASIC MEDIUM WEIGHT T-SHIRT", "REGULAR FIT T-SHIRT MADE WITH MERCERIZED FABRIC. ROUND RIB NECKLINE AND SHORT SLEEVES.", 17.99f,
                     ClothDataHelper.COLOR_BEIGE, shirt, male, regularFitTShirt);
@@ -273,8 +274,8 @@ public class DataLoader implements ApplicationRunner {
                     pullover, male, overSizedSweatshirt);
             createClothes("CONTRASTING ZIP SWEATSHIRT", "HIGH COLLAR SWEATSHIRT WITH CONTRAST ZIPPER. LONG SLEEVES WITH ELASTIC CUFFS.", 39.99f, ClothDataHelper.COLOR_BLACK,
                     pullover, female, contrastingZipSweatshirt);
-            createClothes("Mommy Little Baby", "For every darling.", 24.99f, ClothDataHelper.COLOR_WHITE,
-                    pullover, child, childImg);
+            createClothes("REFLECTIVE SPORTY SWEATSHIRT", "SPORTY SWEATSHIRT WITH HOOD AND LONG SLEEVES. RECESSED ZIP CLOSURE AT CHEST. FRONT AND SLEEVE POUCH", 24.99f, ClothDataHelper.COLOR_WHITE,
+                    pullover, child, reflectiveSportySweatshirt);
             createClothes("STRAIGHT TAPERED JEANS", "STRAIGHT FIT JEANS. FIVE POCKETS. WASHED EFFECT. FRONT ZIP AND BUTTON CLOSURE.", 39.99f,
                     ClothDataHelper.COLOR_WHITE, pants, male, straightTaperedJeans);
             createClothes("Meow", "For ladies only!", 39.99f, ClothDataHelper.COLOR_PINK,
@@ -471,6 +472,10 @@ public class DataLoader implements ApplicationRunner {
             if (addImageToDatabase("src/main/resources/images/CONTRASTING ZIP SWEATSHIRT.jpg",
                     "CONTRASTING ZIP SWEATSHIRT.jpg", jpegImg)) {
                 LOG.debug("added image to database with name {}", "CONTRASTING ZIP SWEATSHIRT.jpg");
+            }
+            if (addImageToDatabase("src/main/resources/images/REFLECTIVE SPORTY SWEATSHIRT.jpg",
+                    "REFLECTIVE SPORTY SWEATSHIRT.jpg", jpegImg)) {
+                LOG.debug("added image to database with name {}", "REFLECTIVE SPORTY SWEATSHIRT.jpg");
             }
         }
     }
