@@ -17,6 +17,9 @@ import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Service for helping {@link org.progmatic.webshop.controllers.OrderController}.
+ */
 @Service
 public class OrderService {
 
@@ -32,6 +35,11 @@ public class OrderService {
         this.uds = uds;
     }
 
+    /**
+     * Finds one {@link OnlineOrder} with the given id in the database.
+     * @param id is the order's id
+     * @return a {@link ListResult} contains the wanted order, or a {@link Message} if no order found
+     */
     @Transactional
     public Feedback getOneOrder(long id) {
         OnlineOrder order = em.find(OnlineOrder.class, id);
@@ -45,6 +53,10 @@ public class OrderService {
         return new Message("order cannot be found");
     }
 
+    /**
+     * Finds all {@link OnlineOrder} represented in the database.
+     * @return a {@link ListResult} contains all orders
+     */
     @Transactional
     public Feedback getAllOrders() {
         List<OnlineOrder> orders = em.createQuery(
@@ -62,23 +74,12 @@ public class OrderService {
         return new ListResult<>(orderDtos);
     }
 
-    /* TODO
-        how to do dis? only change field "isFinish" from false to true?
+    /**
+     * Finishes an order with the given id. So the {@link OnlineOrder}'s isFinish field will be set from
+     * false to true.
+     * @param id is the order's id
+     * @return a confirm {@link Message} about the finishing process
      */
-    /* maybe will not be used
-    @Transactional
-    public OrderDto changeOrder(long id, OnlineOrder newOrder) {
-        OnlineOrder oldOlder = em.find(OnlineOrder.class, id);
-        LOG.info("old older with id {} was: {}, {}, {}",
-                id, oldOlder.getPurchasedClothesList().size(), oldOlder.getTotalPrice(), oldOlder.isFinish());
-        oldOlder.setPurchasedClothesList(newOrder.getPurchasedClothesList());
-        oldOlder.setTotalPrice(sumTotalPrice(oldOlder.getPurchasedClothesList()));
-        oldOlder.setFinish(newOrder.isFinish());
-        LOG.info("new older with id {} is now: {}, {}, {}",
-                id, oldOlder.getPurchasedClothesList().size(), oldOlder.getTotalPrice(), oldOlder.isFinish());
-        return new OrderDto(oldOlder);
-    }*/
-
     @Transactional
     public Feedback finishOrder(long id) {
         OnlineOrder order = em.find(OnlineOrder.class, id);
@@ -100,6 +101,14 @@ public class OrderService {
         return new Message(true, "order is finished now");
     }
 
+    /**
+     * Saves a new order into the database.<br>
+     *     See {@link OrderService#createNewOrder(User)},
+     *     {@link OrderService#addPurchasedClothesToDBAndToOrder(List, OnlineOrder)} and
+     *     {@link OrderService#changeQuantitiesInStock(List)} for more information.
+     * @param orderDto is the new order
+     * @return a confirm {@link Message} about the saving process
+     */
     @Transactional
     public Feedback sendOrder(OrderDto orderDto) {
         User user = uds.getLoggedInUser();
@@ -124,6 +133,11 @@ public class OrderService {
         return new Message(false, "cannot create order, because user is null");
     }
 
+    /**
+     * Creates a new {@link OnlineOrder} object.
+     * @param user is the {@link User} who sent the order
+     * @return the created order
+     */
     private OnlineOrder createNewOrder(User user) {
         OnlineOrder order = new OnlineOrder();
         order.setUser(user);
@@ -132,6 +146,12 @@ public class OrderService {
         return order;
     }
 
+    /**
+     * Creates {@link PurchasedClothes} from every {@link PurchasedClothDto} that are in the list,
+     * and saves them into the database with the {@link OnlineOrder}.
+     * @param clothes is the list of clothes
+     * @param order is the order the {@link PurchasedClothes} belong to
+     */
     @Transactional
     public void addPurchasedClothesToDBAndToOrder(List<PurchasedClothDto> clothes, OnlineOrder order) {
         for (PurchasedClothDto c : clothes) {
@@ -143,6 +163,11 @@ public class OrderService {
         }
     }
 
+    /**
+     * Changes the quantity of the {@link Clothes} in the {@link Stock}
+     * by calling {@link OrderService#changeStock(Clothes, int)}.
+     * @param clothes is the list of {@link PurchasedClothes}
+     */
     @Transactional
     public void changeQuantitiesInStock(List<PurchasedClothes> clothes) {
         for (PurchasedClothes pc : clothes) {
@@ -156,6 +181,11 @@ public class OrderService {
         }
     }
 
+    /**
+     * Changes the quantity of one {@link Clothes} in the {@link Stock}.
+     * @param c is the cloth
+     * @param quantity is the number that will be subtracted from the stock's original quantity
+     */
     @Transactional
     public void changeStock(Clothes c, int quantity) {
         try {
