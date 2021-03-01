@@ -3,6 +3,11 @@ package org.progmatic.webshop.returnmodel;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A generic class used by HTTP response. Extends {@link Feedback}.<br>
+ *     Contains a list of generic type. It automatically sets the Feedback's success field to true.
+ * @param <T>
+ */
 public class ListResult<T> extends Feedback {
 
     private List<T> list = new ArrayList<>();
@@ -15,7 +20,6 @@ public class ListResult<T> extends Feedback {
         setSuccess(true);
         this.list = list;
     }
-
 
     public List<T> getList() {
         return list;

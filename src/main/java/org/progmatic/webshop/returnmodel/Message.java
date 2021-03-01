@@ -1,5 +1,8 @@
 package org.progmatic.webshop.returnmodel;
 
+/**
+ *
+ */
 public class Message extends Feedback {
 
     private String message;
