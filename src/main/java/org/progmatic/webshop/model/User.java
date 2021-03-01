@@ -14,6 +14,22 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.*;
 
+/**
+ * Entity for users.<br>
+ *     <ul>
+ *         <li>String username (aka email address)</li>
+ *         <li>String password</li>
+ *         <li>String firstName</li>
+ *         <li>String lastName</li>
+ *         <li>String country</li>
+ *         <li>int zipcode</li>
+ *         <li>String city</li>
+ *         <li>String address</li>
+ *         <li>String phoneNumber</li>
+ *         <li>int points</li>
+ *         <li>String UserRole</li>
+ *     </ul>
+ */
 @Entity
 public class User extends BaseEntity implements UserDetails {
 
@@ -65,6 +81,10 @@ public class User extends BaseEntity implements UserDetails {
     public User() {
     }
 
+    /**
+     * Works as dozer.
+     * @param registerUserDto is a {@link RegisterUserDto} that will be transformed to {@link User}
+     */
     public User(RegisterUserDto registerUserDto) {
         firstName=registerUserDto.getFirstName();
         lastName= registerUserDto.getLastName();

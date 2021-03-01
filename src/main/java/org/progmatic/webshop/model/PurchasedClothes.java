@@ -7,6 +7,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+/**
+ * Entity for purchased clothes.<br>
+ *     Columns:
+ *     <ul>
+ *         <li>long id</li>
+ *         <li>{@link Clothes} clothes</li>
+ *         <li>{@link OnlineOrder} onlineOrder</li>
+ *         <li>int quantity</li>
+ *         <li>String size</li>
+ *     </ul>
+ */
 @Entity
 public class PurchasedClothes {
 
@@ -24,9 +35,12 @@ public class PurchasedClothes {
 
     private String size;
 
-    public PurchasedClothes() {
-    }
+    public PurchasedClothes() {}
 
+    /**
+     * Works as dozer.
+     * @param cloth is a {@link PurchasedClothDto} that will be transformed to {@link PurchasedClothes}
+     */
     public PurchasedClothes(PurchasedClothDto cloth) {
         quantity = cloth.getQuantity();
         size = cloth.getSize();

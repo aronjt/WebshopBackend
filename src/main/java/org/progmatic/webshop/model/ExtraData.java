@@ -3,6 +3,14 @@ package org.progmatic.webshop.model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+/**
+ * Entity for extra data (only for admins).<br>
+ *     Columns:
+ *     <ul>
+ *         <li>int id</li>
+ *         <li>String secret</li>
+ *     </ul>
+ */
 @Entity
 public class ExtraData {
     @Id

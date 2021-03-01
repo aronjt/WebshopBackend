@@ -4,6 +4,17 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+/**
+ * Entity for confirmation token. This is used for confirming users' accounts.<br>
+ *     Columns:
+ *     <ul>
+ *         <li>long tokenid</li>
+ *         <li>String confirmationToken</li>
+ *         <li>LocalDateTime createdDate</li>
+ *         <li>LocalDateTime enableDate</li>
+ *         <li>{@link User} user</li>
+ *     </ul>
+ */
 @Entity
 public class ConfirmationToken {
 
@@ -15,8 +26,6 @@ public class ConfirmationToken {
     @Column
     private String confirmationToken;
 
-
-//    @Temporal(TemporalType.TIMESTAMP)
     @Column
     private LocalDateTime createdDate;
 
@@ -32,9 +41,7 @@ public class ConfirmationToken {
         confirmationToken = UUID.randomUUID().toString();
     }
 
-    public ConfirmationToken() {
-
-    }
+    public ConfirmationToken() {}
 
     public LocalDateTime getEnableDate() {
         return enableDate;
@@ -75,5 +82,5 @@ public class ConfirmationToken {
     public void setConfirmationToken(String confirmationToken) {
         this.confirmationToken = confirmationToken;
     }
-    // getters and setters
+
 }

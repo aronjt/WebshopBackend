@@ -2,6 +2,15 @@ package org.progmatic.webshop.model;
 
 import javax.persistence.*;
 
+/**
+ * Entity for images.<br>
+ *     Columns:
+ *     <ul>
+ *         <li>long id</li>
+ *         <li>byte[] Data</li>
+ *         <li>String name</li>
+ *     </ul>
+ */
 @Entity
 @Table
 public class Image {

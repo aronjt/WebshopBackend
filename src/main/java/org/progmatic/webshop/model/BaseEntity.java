@@ -9,6 +9,14 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 import java.time.LocalDateTime;
 
+/**
+ * Basic entity used by other entities.<br>
+ *     Contains:
+ *     <ul>
+ *         <li>long id</li>
+ *         <li>LocalDateTime creationTime (value: LocalDateTime.now()</li>
+ *     </ul>
+ */
 @MappedSuperclass
 public class BaseEntity {
 

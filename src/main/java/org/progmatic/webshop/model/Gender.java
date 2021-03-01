@@ -4,6 +4,14 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+/**
+ * Entity for genders.<br>
+ *     Columns:
+ *     <ul>
+ *         <li>String gender</li>
+ *         <li>{@link Image} image</li>
+ *     </ul>
+ */
 @Entity
 public class Gender {
 
@@ -13,8 +21,7 @@ public class Gender {
     @OneToOne
     private Image image;
 
-    public Gender() {
-    }
+    public Gender() {}
 
     public String getGender() {
         return gender;

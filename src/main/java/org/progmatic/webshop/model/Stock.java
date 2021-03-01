@@ -5,6 +5,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+/**
+ * Entity for stock.<br>
+ *     Columns:
+ *     <ul>
+ *         <li>long id</li>
+ *         <li>String size</li>
+ *         <li>int quantity</li>
+ *         <li>{@link Clothes} clothes</li>
+ *     </ul>
+ */
 @Entity
 public class Stock {
 
@@ -19,8 +29,7 @@ public class Stock {
     @ManyToOne
     private Clothes clothes;
 
-    public Stock() {
-    }
+    public Stock() {}
 
     public long getId() {
         return id;

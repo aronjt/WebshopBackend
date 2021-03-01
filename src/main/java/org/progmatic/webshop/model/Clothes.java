@@ -6,6 +6,19 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Entity for Clothes. Table name: Clothes. Extends {@link BaseEntity}.<br>
+ *     Columns:
+ *     <ul>
+ *         <li>String name</li>
+ *         <li>String details</li>
+ *         <li>float price</li>
+ *         <li>String color</li>
+ *         <li>{@link Type} type</li>
+ *         <li>{@link Gender} gender</li>
+ *         <li>{@link Image} image</li>
+ *     </ul>
+ */
 @Entity
 public class Clothes extends BaseEntity{
 
@@ -36,6 +49,10 @@ public class Clothes extends BaseEntity{
     public Clothes() {
     }
 
+    /**
+     * Works as dozer.
+     * @param c is a {@link ClothDto} to be transformed to {@link Clothes}
+     */
     public Clothes(ClothDto c) {
         name = c.getName();
         details = c.getDetails();

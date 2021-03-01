@@ -2,18 +2,28 @@ package org.progmatic.webshop.model;
 
 import javax.persistence.*;
 
+/**
+ * Entity for email sending. The table contains the information about emails that will be sent to user.<br>
+ *     Columns:
+ *     <ul>
+ *         <li>String messageType</li>
+ *         <li>String subject</li>
+ *         <li>String attachedFile</li>
+ *         <li>String messageText</li>
+ *         <li>Long emailId</li>
+ *     </ul>
+ */
 @Entity
 @Table
 public class Email {
-    private String messageType = null;
-    //    pl. registration,order,delete profile
-    private String subject = null;
-    private String attachedFile = null;
-    private String messageText = null;
+    private String messageType;
+    private String subject;
+    private String attachedFile;
+    private String messageText;
+
     @Id
     @GeneratedValue
     private Long emailId;
-
 
     public Email() {}
 

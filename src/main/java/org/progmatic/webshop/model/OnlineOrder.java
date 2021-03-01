@@ -7,6 +7,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.util.List;
 
+/**
+ * Entity for orders.<br>
+ *     Columns:
+ *     <ul>
+ *         <li>float totalPrice</li>
+ *         <li>boolean isFinish</li>
+ *         <li>List purchasedClothesList ({@link PurchasedClothes})</li>
+ *     </ul>
+ */
 @Entity
 public class OnlineOrder extends BaseEntity {
 
@@ -19,9 +28,14 @@ public class OnlineOrder extends BaseEntity {
     @OneToMany
     private List<PurchasedClothes> purchasedClothesList;
 
-    public OnlineOrder() {
-    }
+    public OnlineOrder() {}
 
+    /**
+     * Works as dozer.
+     * @param orderDto is an {@link OrderDto} to be transformed to {@link OnlineOrder}
+     * @param user is the {@link User} who owns the order
+     * @param purchasedClothesList is the {@link PurchasedClothes} that are in the order
+     */
     public OnlineOrder(OrderDto orderDto, User user, List<PurchasedClothes> purchasedClothesList) {
         totalPrice = orderDto.getTotalPrice();
         isFinish = orderDto.isFinish();
