@@ -354,6 +354,8 @@ public class DataLoader implements ApplicationRunner {
                           "please click here:<br>");
           createEmail(EmailSenderHelper.SHOPPING, "Shopping confirmation",
                   "Thank you for your shopping! Have a nice day!<br>");
+          createEmail(EmailSenderHelper.PASSWORD, "Forgotten password",
+                  "It happens with everyone! You can reset your password by clicking the link below:<br>");
       }
     }
 
