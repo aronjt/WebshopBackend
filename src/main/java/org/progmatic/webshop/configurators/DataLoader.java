@@ -254,9 +254,6 @@ public class DataLoader implements ApplicationRunner {
             Gender unisex = genderData.findByGender(ClothDataHelper.GENDER_UNISEX);
             Gender child = genderData.findByGender(ClothDataHelper.GENDER_CHILD);
 
-            Image femaleImg = imageData.findByName(ClothDataHelper.GENDER_FEMALE);
-            Image unImg = imageData.findByName(ClothDataHelper.GENDER_UNISEX);
-            Image childImg = imageData.findByName(ClothDataHelper.GENDER_CHILD);
             Image regularFitTShirt = imageData.findByName("BASIC MEDIUM WEIGHT T-SHIRT.jpg");
             Image straightTaperedJeans = imageData.findByName("STRAIGHT TAPERED JEANS.jpg");
             Image ruffledHemRibTop = imageData.findByName("RUFFLED HEM RIB TOP.jpg");
@@ -264,13 +261,15 @@ public class DataLoader implements ApplicationRunner {
             Image contrastingZipSweatshirt = imageData.findByName("CONTRASTING ZIP SWEATSHIRT.jpg");
             Image reflectiveSportySweatshirt = imageData.findByName("REFLECTIVE SPORTY SWEATSHIRT.jpg");
             Image corduroyPants = imageData.findByName("CORDUROY PANTS.jpg");
+            Image plushPalazzoPants = imageData.findByName("PLUSH PALAZZO PANTS.jpg");
+            Image athleticShirt = imageData.findByName("ATHLETIC SHIRT WITH REFLECTIVE SLEEVE");
 
             createClothes("BASIC MEDIUM WEIGHT T-SHIRT", "REGULAR FIT T-SHIRT MADE WITH MERCERIZED FABRIC. ROUND RIB NECKLINE AND SHORT SLEEVES.", 17.99f,
                     ClothDataHelper.COLOR_BEIGE, shirt, male, regularFitTShirt);
             createClothes("RUFFLED HEM RIB TOP", "ROUND NECK SLEEVELESS TOP. FLOUNCED HEM.", 17.99f, ClothDataHelper.COLOR_PINK,
                     shirt, female, ruffledHemRibTop);
-            createClothes("Progmatic", "Best Academy of the World!", 24.99f, ClothDataHelper.COLOR_WHITE,
-                    shirt, unisex, unImg);
+            createClothes("PLUSH PALAZZO PANTS", "PLUSH PALAZZO PANTS WITH ELASTIC WAISTBAND AND FRONT DRAWSTRING APPLIQUÉ. FRONT POCKETS.", 19.99f, ClothDataHelper.COLOR_GRAY,
+                    pants, child, plushPalazzoPants);
             createClothes("OVERSIZED SWEATSHIRT", "FULL CUT SWEATSHIRT WITH ROUND NECK AND LONG SLEEVES. RIBBED TRIM.", 39.99f, ClothDataHelper.COLOR_BLUE,
                     pullover, male, overSizedSweatshirt);
             createClothes("CONTRASTING ZIP SWEATSHIRT", "HIGH COLLAR SWEATSHIRT WITH CONTRAST ZIPPER. LONG SLEEVES WITH ELASTIC CUFFS.", 39.99f, ClothDataHelper.COLOR_BLACK,
@@ -281,8 +280,8 @@ public class DataLoader implements ApplicationRunner {
                     ClothDataHelper.COLOR_WHITE, pants, male, straightTaperedJeans);
             createClothes("CORDUROY PANTS", "HIGH-WAISTED PANTS WITH ELASTIC WAISTBAND. SIDE SLIT AT HEM.", 39.99f, ClothDataHelper.COLOR_BEIGE,
                     pants, female, corduroyPants);
-            createClothes("Winter Wearer", "Cold days will be no longer cold, if you wear these pants!", 34.99f,
-                    ClothDataHelper.COLOR_GRAY, pants, unisex, unImg);
+            createClothes("ATHLETIC SHIRT WITH REFLECTIVE SLEEVE", "ROUND NECK SHORT SLEEVE T-SHIRT. CHEST POCKET WITH TEXT PRINT. REFLECTIVE DETAIL AT SIDES ON SLEEVES.", 17.99f,
+                    ClothDataHelper.COLOR_WHITE, shirt, child, athleticShirt);
         }
     }
 
@@ -481,6 +480,14 @@ public class DataLoader implements ApplicationRunner {
             if (addImageToDatabase("src/main/resources/images/CORDUROY PANTS.jpg",
                     "CORDUROY PANTS.jpg", jpegImg)) {
                 LOG.debug("added image to database with name {}", "CORDUROY PANTS.jpg");
+            }
+            if (addImageToDatabase("src/main/resources/images/PLUSH PALAZZO PANTS.jpg",
+                    "PLUSH PALAZZO PANTS.jpg", jpegImg)) {
+                LOG.debug("added image to database with name {}", "PLUSH PALAZZO PANTS.jpg");
+            }
+            if (addImageToDatabase("src/main/resources/images/ATHLETIC SHIRT WITH REFLECTIVE SLEEVE.jpg",
+                    "ATHLETIC SHIRT WITH REFLECTIVE SLEEVE.jpg", jpegImg)) {
+                LOG.debug("added image to database with name {}", "ATHLETIC SHIRT WITH REFLECTIVE SLEEVE.jpg");
             }
         }
     }
