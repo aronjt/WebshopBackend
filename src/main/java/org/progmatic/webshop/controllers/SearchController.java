@@ -44,4 +44,9 @@ public class SearchController {
         return service.getTypes();
     }
 
+    @GetMapping("/colors")
+    public Feedback getColors() {
+        return service.getColors();
+    }
+
 }

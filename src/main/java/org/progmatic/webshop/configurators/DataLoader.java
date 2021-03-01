@@ -214,12 +214,10 @@ public class DataLoader implements ApplicationRunner {
             Image male = imageData.findByName(ClothDataHelper.GENDER_MALE);
             Image female = imageData.findByName(ClothDataHelper.GENDER_FEMALE);
             Image child = imageData.findByName(ClothDataHelper.GENDER_CHILD);
-            Image unisex = imageData.findByName(ClothDataHelper.GENDER_UNISEX);
 
             createGender(ClothDataHelper.GENDER_MALE, male);
             createGender(ClothDataHelper.GENDER_FEMALE, female);
             createGender(ClothDataHelper.GENDER_CHILD, child);
-            createGender(ClothDataHelper.GENDER_UNISEX, unisex);
         }
     }
 
@@ -251,12 +249,8 @@ public class DataLoader implements ApplicationRunner {
 
             Gender male = genderData.findByGender(ClothDataHelper.GENDER_MALE);
             Gender female = genderData.findByGender(ClothDataHelper.GENDER_FEMALE);
-            Gender unisex = genderData.findByGender(ClothDataHelper.GENDER_UNISEX);
             Gender child = genderData.findByGender(ClothDataHelper.GENDER_CHILD);
 
-            Image femaleImg = imageData.findByName(ClothDataHelper.GENDER_FEMALE);
-            Image unImg = imageData.findByName(ClothDataHelper.GENDER_UNISEX);
-            Image childImg = imageData.findByName(ClothDataHelper.GENDER_CHILD);
             Image regularFitTShirt = imageData.findByName("BASIC MEDIUM WEIGHT T-SHIRT.jpg");
             Image straightTaperedJeans = imageData.findByName("STRAIGHT TAPERED JEANS.jpg");
             Image ruffledHemRibTop = imageData.findByName("RUFFLED HEM RIB TOP.jpg");
@@ -264,13 +258,18 @@ public class DataLoader implements ApplicationRunner {
             Image contrastingZipSweatshirt = imageData.findByName("CONTRASTING ZIP SWEATSHIRT.jpg");
             Image reflectiveSportySweatshirt = imageData.findByName("REFLECTIVE SPORTY SWEATSHIRT.jpg");
             Image corduroyPants = imageData.findByName("CORDUROY PANTS.jpg");
+            Image plushPalazzoPants = imageData.findByName("PLUSH PALAZZO PANTS.jpg");
+            Image athleticShirt = imageData.findByName("ATHLETIC SHIRT WITH REFLECTIVE SLEEVE.jpg");
+            Image pocketTShirt = imageData.findByName("POCKET T-SHIRT PREMIUM.jpg");
+            Image buttonCrop = imageData.findByName("BUTTON CROP TOP.jpg");
+            Image rufflyFloralShirt = imageData.findByName("RUFFLY FLORAL SHIRT.jpg");
 
             createClothes("BASIC MEDIUM WEIGHT T-SHIRT", "REGULAR FIT T-SHIRT MADE WITH MERCERIZED FABRIC. ROUND RIB NECKLINE AND SHORT SLEEVES.", 17.99f,
                     ClothDataHelper.COLOR_BEIGE, shirt, male, regularFitTShirt);
             createClothes("RUFFLED HEM RIB TOP", "ROUND NECK SLEEVELESS TOP. FLOUNCED HEM.", 17.99f, ClothDataHelper.COLOR_PINK,
                     shirt, female, ruffledHemRibTop);
-            createClothes("Progmatic", "Best Academy of the World!", 24.99f, ClothDataHelper.COLOR_WHITE,
-                    shirt, unisex, unImg);
+            createClothes("PLUSH PALAZZO PANTS", "PLUSH PALAZZO PANTS WITH ELASTIC WAISTBAND AND FRONT DRAWSTRING APPLIQUÉ. FRONT POCKETS.", 19.99f, ClothDataHelper.COLOR_GRAY,
+                    pants, child, plushPalazzoPants);
             createClothes("OVERSIZED SWEATSHIRT", "FULL CUT SWEATSHIRT WITH ROUND NECK AND LONG SLEEVES. RIBBED TRIM.", 39.99f, ClothDataHelper.COLOR_BLUE,
                     pullover, male, overSizedSweatshirt);
             createClothes("CONTRASTING ZIP SWEATSHIRT", "HIGH COLLAR SWEATSHIRT WITH CONTRAST ZIPPER. LONG SLEEVES WITH ELASTIC CUFFS.", 39.99f, ClothDataHelper.COLOR_BLACK,
@@ -281,8 +280,14 @@ public class DataLoader implements ApplicationRunner {
                     ClothDataHelper.COLOR_WHITE, pants, male, straightTaperedJeans);
             createClothes("CORDUROY PANTS", "HIGH-WAISTED PANTS WITH ELASTIC WAISTBAND. SIDE SLIT AT HEM.", 39.99f, ClothDataHelper.COLOR_BEIGE,
                     pants, female, corduroyPants);
-            createClothes("Winter Wearer", "Cold days will be no longer cold, if you wear these pants!", 34.99f,
-                    ClothDataHelper.COLOR_GRAY, pants, unisex, unImg);
+            createClothes("ATHLETIC SHIRT WITH REFLECTIVE SLEEVE", "ROUND NECK SHORT SLEEVE T-SHIRT. CHEST POCKET WITH TEXT PRINT. REFLECTIVE DETAIL AT SIDES ON SLEEVES.", 17.99f,
+                    ClothDataHelper.COLOR_WHITE, shirt, child, athleticShirt);
+            createClothes("POCKET T-SHIRT PREMIUM", "FULL CUT T-SHIRT WITH ROUND NECK AND LONG SLEEVES. CHEST PATCH POCKET.", 39.99f, ClothDataHelper.COLOR_WHITE,
+                    shirt, male, pocketTShirt);
+            createClothes("BUTTON CROP TOP", "STRAIGHT NECK CROP TOP WITH LONG SLEEVES. FRONT BUTTON DETAIL.", 19.99f, ClothDataHelper.COLOR_WHITE,
+                    shirt, female, buttonCrop);
+            createClothes("RUFFLY FLORAL SHIRT", "ROUND NECK LONG SLEEVE SHIRT. RUFFLY TRIM.", 12.99f, ClothDataHelper.COLOR_WHITE,
+                    shirt, child, rufflyFloralShirt);
         }
     }
 
@@ -396,7 +401,6 @@ public class DataLoader implements ApplicationRunner {
                 LOG.debug("online order added to database to user {}, purchased clothes' names are: {}, {}",
                         user.getUsername(), toBuy.get(0).getClothes().getName(), toBuy.get(1).getClothes().getName());
             }
-
         }
     }
 
@@ -440,47 +444,63 @@ public class DataLoader implements ApplicationRunner {
         long imgNum = imageData.count();
 
         if (imgNum == 0) {
-            String pngImg = ImageHelper.PNG;
-            String jpegImg = ImageHelper.JPG;
-            if (addImageToDatabase("src/main/resources/images/children_dress.jpg", ClothDataHelper.GENDER_CHILD, jpegImg)) {
+            String jpgImg = ImageHelper.JPG;
+            if (addImageToDatabase("src/main/resources/images/children_dress.jpg", ClothDataHelper.GENDER_CHILD, jpgImg)) {
                 LOG.debug("added image to database with name {}", ClothDataHelper.GENDER_CHILD);
             }
-            if (addImageToDatabase("src/main/resources/images/men_dress.jpeg", ClothDataHelper.GENDER_MALE, jpegImg)) {
+            if (addImageToDatabase("src/main/resources/images/men_dress.jpeg", ClothDataHelper.GENDER_MALE, jpgImg)) {
                 LOG.debug("added image to database with name {}", ClothDataHelper.GENDER_MALE);
             }
-            if (addImageToDatabase("src/main/resources/images/women_dress.jpg", ClothDataHelper.GENDER_FEMALE, jpegImg)) {
+            if (addImageToDatabase("src/main/resources/images/women_dress.jpg", ClothDataHelper.GENDER_FEMALE, jpgImg)) {
                 LOG.debug("added image to database with name {}", ClothDataHelper.GENDER_FEMALE);
             }
-            if (addImageToDatabase("src/main/resources/images/unisex.png", ClothDataHelper.GENDER_UNISEX, pngImg)) {
-                LOG.debug("added image to database with name {}", ClothDataHelper.GENDER_UNISEX);
-            }
             if (addImageToDatabase("src/main/resources/images/BASIC MEDIUM WEIGHT T-SHIRT.jpg",
-                    "BASIC MEDIUM WEIGHT T-SHIRT.jpg", jpegImg)) {
+                    "BASIC MEDIUM WEIGHT T-SHIRT.jpg", jpgImg)) {
                 LOG.debug("added image to database with name {}", "BASIC MEDIUM WEIGHT T-SHIRT");
             }
             if (addImageToDatabase("src/main/resources/images/STRAIGHT TAPERED JEANS.jpg",
-                    "STRAIGHT TAPERED JEANS.jpg", jpegImg)) {
+                    "STRAIGHT TAPERED JEANS.jpg", jpgImg)) {
                 LOG.debug("added image to database with name {}", "StraightTaperedJeans");
             }
             if (addImageToDatabase("src/main/resources/images/RUFFLED HEM RIB TOP.jpg",
-                    "RUFFLED HEM RIB TOP.jpg", jpegImg)) {
+                    "RUFFLED HEM RIB TOP.jpg", jpgImg)) {
                 LOG.debug("added image to database with name {}", "RUFFLED HEM RIB TOP");
             }
             if (addImageToDatabase("src/main/resources/images/OVERSIZED SWEATSHIRT.jpg",
-                    "OVERSIZED SWEATSHIRT.jpg", jpegImg)) {
+                    "OVERSIZED SWEATSHIRT.jpg", jpgImg)) {
                 LOG.debug("added image to database with name {}", "OVERSIZED SWEATSHIRT.jpg");
             }
             if (addImageToDatabase("src/main/resources/images/CONTRASTING ZIP SWEATSHIRT.jpg",
-                    "CONTRASTING ZIP SWEATSHIRT.jpg", jpegImg)) {
+                    "CONTRASTING ZIP SWEATSHIRT.jpg", jpgImg)) {
                 LOG.debug("added image to database with name {}", "CONTRASTING ZIP SWEATSHIRT.jpg");
             }
             if (addImageToDatabase("src/main/resources/images/REFLECTIVE SPORTY SWEATSHIRT.jpg",
-                    "REFLECTIVE SPORTY SWEATSHIRT.jpg", jpegImg)) {
+                    "REFLECTIVE SPORTY SWEATSHIRT.jpg", jpgImg)) {
                 LOG.debug("added image to database with name {}", "REFLECTIVE SPORTY SWEATSHIRT.jpg");
             }
             if (addImageToDatabase("src/main/resources/images/CORDUROY PANTS.jpg",
-                    "CORDUROY PANTS.jpg", jpegImg)) {
+                    "CORDUROY PANTS.jpg", jpgImg)) {
                 LOG.debug("added image to database with name {}", "CORDUROY PANTS.jpg");
+            }
+            if (addImageToDatabase("src/main/resources/images/PLUSH PALAZZO PANTS.jpg",
+                    "PLUSH PALAZZO PANTS.jpg", jpgImg)) {
+                LOG.debug("added image to database with name {}", "PLUSH PALAZZO PANTS.jpg");
+            }
+            if (addImageToDatabase("src/main/resources/images/ATHLETIC SHIRT WITH REFLECTIVE SLEEVE.jpg",
+                    "ATHLETIC SHIRT WITH REFLECTIVE SLEEVE.jpg", jpgImg)) {
+                LOG.debug("added image to database with name {}", "ATHLETIC SHIRT WITH REFLECTIVE SLEEVE.jpg");
+            }
+            if (addImageToDatabase("src/main/resources/images/POCKET T-SHIRT PREMIUM.jpg",
+                    "POCKET T-SHIRT PREMIUM.jpg", jpgImg)) {
+                LOG.debug("added image to database with name {}", "POCKET T-SHIRT PREMIUM.jpg");
+            }
+            if (addImageToDatabase("src/main/resources/images/BUTTON CROP TOP.jpg",
+                    "BUTTON CROP TOP.jpg", jpgImg)) {
+                LOG.debug("added image to database with name {}", "BUTTON CROP TOP.jpg");
+            }
+            if (addImageToDatabase("src/main/resources/images/RUFFLY FLORAL SHIRT.jpg",
+                    "RUFFLY FLORAL SHIRT.jpg", jpgImg)) {
+                LOG.debug("added image to database with name {}", "RUFFLY FLORAL SHIRT.jpg");
             }
         }
     }

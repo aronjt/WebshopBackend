@@ -32,4 +32,9 @@ public class SearchService {
         return new ListResult<>(em.createQuery("SELECT t FROM Type t", Type.class).getResultList());
     }
 
+    @Transactional
+    public ListResult<String> getColors() {
+        return new ListResult<>(em.createQuery("SELECT DISTINCT c.color FROM Clothes c", String.class).getResultList());
+    }
+
 }
