@@ -13,11 +13,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.awt.*;
 import java.time.LocalDateTime;
 
 /**
@@ -91,14 +93,15 @@ public class PasswordForgottenController {
      * Endpoint for resetting the password and adding a new one.<br>
      *     After the user clicked on the link from the email, a new password can be set.
      * @param userConfirmationToken is a token that has been sent in the password reset email
-     * @param newPassword is the new password to the account
-     * @param userName is the user's name (email address)
+     * @param password is the new password to the account
+     * @param username is the user's name (email address)
      * @return a confirm {@link Message} about the new password setting process
      */
-    @GetMapping(value = "/confirm-password")
+    @PostMapping(value = "/confirm-password",
+    consumes ={MediaType.APPLICATION_FORM_URLENCODED_VALUE})
     public Feedback confirmUserAccount(@RequestParam("token") String userConfirmationToken,
-                                       @RequestParam("password") String newPassword,
-                                       @RequestParam("username") String userName) {
+                                        String password,
+                                        String username) {
         ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(userConfirmationToken);
 
         Message feedback = new Message();
@@ -107,9 +110,9 @@ public class PasswordForgottenController {
             LOG.info("Token is not null");
             if (RegistrationService.checkTheDate(token.getEnableDate())) {
                 LOG.info("Token is not expired");
-                if (userName.equals(token.getUser().getUsername())) {
+                if (username.equals(token.getUser().getUsername())) {
                     User user = userRepository.findByUsername(token.getUser().getUsername());
-                    user.setPassword(passwordEncoder.encode(newPassword));
+                    user.setPassword(passwordEncoder.encode(password));
                     userRepository.save(user);
                     feedback.setSuccess(true);
                     feedback.setMessage("New password verified ");
