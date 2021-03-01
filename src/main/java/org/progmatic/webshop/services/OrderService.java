@@ -53,9 +53,7 @@ public class OrderService {
 
         List<OrderDto> orderDtos = new ArrayList<>();
         for (OnlineOrder o : orders) {
-            OrderDto od = new OrderDto(o);
-            od.addToPurchasedClothesList(o.getPurchasedClothesList());
-            orderDtos.add(od);
+            orderDtos.add(new OrderDto(o));
         }
 
         LOG.info("all orders found: {} orders in list",

@@ -38,13 +38,16 @@ public class OrderDto {
         totalPrice = order.getTotalPrice();
         isFinish = order.isFinish();
         userId = order.getUser().getId();
+        if (order.getPurchasedClothesList() != null) {
+            addToPurchasedClothesList(order.getPurchasedClothesList());
+        }
     }
 
     public void setPurchasedClothesList(List<PurchasedClothDto> list) {
         purchasedClothesList = list;
     }
 
-    public void addToPurchasedClothesList(List<PurchasedClothes> list) {
+    private void addToPurchasedClothesList(List<PurchasedClothes> list) {
         purchasedClothesList = new ArrayList<>();
         for (PurchasedClothes pc : list) {
             purchasedClothesList.add(new PurchasedClothDto(pc));
