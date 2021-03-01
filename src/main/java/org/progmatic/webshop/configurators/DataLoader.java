@@ -258,13 +258,14 @@ public class DataLoader implements ApplicationRunner {
             Image femaleImg = imageData.findByName(ClothDataHelper.GENDER_FEMALE);
             Image unImg = imageData.findByName(ClothDataHelper.GENDER_UNISEX);
             Image childImg = imageData.findByName(ClothDataHelper.GENDER_CHILD);
-            Image regularFitTShirt = imageData.findByName("Regular Fit Crew-neck T-shirt.jpeg");
-            Image straightTaperedJeans = imageData.findByName("Straight Tapered Jeans");
+            Image regularFitTShirt = imageData.findByName("BASIC MEDIUM WEIGHT T-SHIRT.jpg");
+            Image straightTaperedJeans = imageData.findByName("StraightTaperedJeans.jpeg");
+            Image ruffledHemRibTop = imageData.findByName("RUFFLED HEM RIB TOP.jpg");
 
-            createClothes("Regular Fit Crew-neck T-shirt", "Regular fit, Round Neck, Cotton 100%", 6.99f,
+            createClothes("BASIC MEDIUM WEIGHT T-SHIRT", "REGULAR FIT T-SHIRT MADE WITH MERCERIZED FABRIC. ROUND RIB NECKLINE AND SHORT SLEEVES.", 17.90f,
                     ClothDataHelper.COLOR_BEIGE, shirt, male, regularFitTShirt);
-            createClothes("Hello Kitty", "Cutest t-shirt of the world!", 14.99f, ClothDataHelper.COLOR_PINK,
-                    shirt, female, femaleImg);
+            createClothes("RUFFLED HEM RIB TOP", "ROUND NECK SLEEVELESS TOP. FLOUNCED HEM.", 17.90f, ClothDataHelper.COLOR_PINK,
+                    shirt, female, ruffledHemRibTop);
             createClothes("Progmatic", "Best Academy of the World!", 24.99f, ClothDataHelper.COLOR_WHITE,
                     shirt, unisex, unImg);
             createClothes("Jackie", "Very comfy.", 29.99f, ClothDataHelper.COLOR_BLUE,
@@ -273,7 +274,7 @@ public class DataLoader implements ApplicationRunner {
                     pullover, female, femaleImg);
             createClothes("Mommy Little Baby", "For every darling.", 24.99f, ClothDataHelper.COLOR_WHITE,
                     pullover, child, childImg);
-            createClothes("Straight Tapered Jeans", "Straight fit jeans, washed effect, front zip and button closure.", 39.90f,
+            createClothes("STRAIGHT TAPERED JEANS", "STRAIGHT FIT JEANS. FIVE POCKETS. WASHED EFFECT. FRONT ZIP AND BUTTON CLOSURE.", 39.90f,
                     ClothDataHelper.COLOR_WHITE, pants, male, straightTaperedJeans);
             createClothes("Meow", "For ladies only!", 39.99f, ClothDataHelper.COLOR_PINK,
                     pants, female, femaleImg);
@@ -389,8 +390,8 @@ public class DataLoader implements ApplicationRunner {
                 order.setPurchasedClothesList(toBuy);
                 onlineOrderData.save(order);
 
-                LOG.info("online order added to database to user {}, purchased clothes' names are: {}, {}",
-                        user.getUsername(), toBuy.get(0).getClothes().getName(), toBuy.get(0).getClothes().getName());
+                LOG.debug("online order added to database to user {}, purchased clothes' names are: {}, {}",
+                        user.getUsername(), toBuy.get(0).getClothes().getName(), toBuy.get(1).getClothes().getName());
             }
 
         }
@@ -402,7 +403,7 @@ public class DataLoader implements ApplicationRunner {
      * @return the list of purchased clothes
      */
     private List<PurchasedClothes> putClothesToCart(OnlineOrder order) {
-        Clothes cloth1 = clothesData.findByName("Regular Fit Crew-neck T-shirt");
+        Clothes cloth1 = clothesData.findByName("BASIC MEDIUM WEIGHT T-SHIRT");
         Clothes cloth2 = clothesData.findByName("Straight Tapered Jeans");
 
         List<PurchasedClothes> toBuy = new ArrayList<>();
@@ -450,13 +451,17 @@ public class DataLoader implements ApplicationRunner {
             if (addImageToDatabase("src/main/resources/images/unisex.png", ClothDataHelper.GENDER_UNISEX, pngImg)) {
                 LOG.debug("added image to database with name {}", ClothDataHelper.GENDER_UNISEX);
             }
-            if (addImageToDatabase("src/main/resources/images/Regular Fit Crew-neck T-shirt.jpeg",
-                    "Regular Fit Crew-neck T-shirt.jpeg", jpegImg)) {
-                LOG.debug("added image to database with name {}", "Regular Fit Crew-neck T-shirt");
+            if (addImageToDatabase("src/main/resources/images/BASIC MEDIUM WEIGHT T-SHIRT.jpg",
+                    "BASIC MEDIUM WEIGHT T-SHIRT.jpg", jpegImg)) {
+                LOG.debug("added image to database with name {}", "BASIC MEDIUM WEIGHT T-SHIRT");
             }
             if (addImageToDatabase("src/main/resources/images/StraightTaperedJeans.jpg",
                     "StraightTaperedJeans.jpeg", jpegImg)) {
                 LOG.debug("added image to database with name {}", "StraightTaperedJeans");
+            }
+            if (addImageToDatabase("src/main/resources/images/RUFFLED HEM RIB TOP.jpg",
+                    "RUFFLED HEM RIB TOP.jpg", jpegImg)) {
+                LOG.debug("added image to database with name {}", "RUFFLED HEM RIB TOP");
             }
         }
     }
