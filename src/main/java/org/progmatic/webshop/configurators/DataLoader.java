@@ -403,7 +403,7 @@ public class DataLoader implements ApplicationRunner {
      */
     private List<PurchasedClothes> putClothesToCart(OnlineOrder order) {
         Clothes cloth1 = clothesData.findByName("Regular Fit Crew-neck T-shirt");
-        Clothes cloth2 = clothesData.findByName("StraightTaperedJeans");
+        Clothes cloth2 = clothesData.findByName("Straight Tapered Jeans");
 
         List<PurchasedClothes> toBuy = new ArrayList<>();
 
