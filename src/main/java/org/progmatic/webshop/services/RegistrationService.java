@@ -5,9 +5,18 @@ import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
 
+/**
+ * Helper class for {@link org.progmatic.webshop.controllers.RegistrationController} and
+ * {@link org.progmatic.webshop.controllers.PasswordForgottenController}
+ */
 public class RegistrationService {
     private static final Logger LOG = LoggerFactory.getLogger(RegistrationService.class);
 
+    /**
+     * Checks that the given time is before LocalDateTime.now().
+     * @param enableDate is the time to be checked
+     * @return true or false
+     */
     public static boolean checkTheDate(LocalDateTime enableDate) {
 
         if (LocalDateTime.now().isBefore(enableDate)) {
