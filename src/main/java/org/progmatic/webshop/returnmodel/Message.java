@@ -1,7 +1,8 @@
 package org.progmatic.webshop.returnmodel;
 
 /**
- *
+ * A class used for HTTP responses. Extends {@link Feedback}.<br>
+ *     It can be used to send confirmation messages.
  */
 public class Message extends Feedback {
 

@@ -1,7 +1,10 @@
 package org.progmatic.webshop.returnmodel;
 
-import org.progmatic.webshop.dto.RegisterUserDto;
-
+/**
+ * A generic class used for HTTP responses. Extends {@link Feedback}.<br>
+ *     Contains an object of generic type.
+ * @param <T>
+ */
 public class Result<T> extends Feedback {
 
     private  T t;
