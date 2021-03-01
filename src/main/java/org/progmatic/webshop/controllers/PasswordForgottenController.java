@@ -73,7 +73,7 @@ public class PasswordForgottenController {
             LocalDateTime tomorrow = confirmationToken.getCreatedDate().plusDays(1);
             confirmationToken.setEnableDate(tomorrow);
             confirmationTokenRepository.save(confirmationToken);
-            sendEmail.prepareConfirmationEmail(existingUser, EmailSenderHelper.REGISTRATION, confirmationToken);
+            sendEmail.prepareConfirmationEmail(existingUser, EmailSenderHelper.PASSWORD, confirmationToken);
             feedback.setSuccess(true);
             feedback.setMessage("Password Confirmation token sent to User");
             LOG.info("Password Confirmation token sent to User");
@@ -111,7 +111,7 @@ public class PasswordForgottenController {
                     user.setPassword(passwordEncoder.encode(newPassword));
                     userRepository.save(user);
                     feedback.setSuccess(true);
-                    feedback.setMessage("New password verified");
+                    feedback.setMessage("New password verified ");
                     LOG.info("Email validated");
                 } else {
                     LOG.info("Email not valid");
