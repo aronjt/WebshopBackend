@@ -254,7 +254,6 @@ public class DataLoader implements ApplicationRunner {
             Gender unisex = genderData.findByGender(ClothDataHelper.GENDER_UNISEX);
             Gender child = genderData.findByGender(ClothDataHelper.GENDER_CHILD);
 
-            Image maleImg = imageData.findByName(ClothDataHelper.GENDER_MALE);
             Image femaleImg = imageData.findByName(ClothDataHelper.GENDER_FEMALE);
             Image unImg = imageData.findByName(ClothDataHelper.GENDER_UNISEX);
             Image childImg = imageData.findByName(ClothDataHelper.GENDER_CHILD);
@@ -262,20 +261,21 @@ public class DataLoader implements ApplicationRunner {
             Image straightTaperedJeans = imageData.findByName("STRAIGHT TAPERED JEANS.jpg");
             Image ruffledHemRibTop = imageData.findByName("RUFFLED HEM RIB TOP.jpg");
             Image overSizedSweatshirt = imageData.findByName("OVERSIZED SWEATSHIRT.jpg");
+            Image contrastingZipSweatshirt = imageData.findByName("CONTRASTING ZIP SWEATSHIRT.jpg");
 
-            createClothes("BASIC MEDIUM WEIGHT T-SHIRT", "REGULAR FIT T-SHIRT MADE WITH MERCERIZED FABRIC. ROUND RIB NECKLINE AND SHORT SLEEVES.", 17.90f,
+            createClothes("BASIC MEDIUM WEIGHT T-SHIRT", "REGULAR FIT T-SHIRT MADE WITH MERCERIZED FABRIC. ROUND RIB NECKLINE AND SHORT SLEEVES.", 17.99f,
                     ClothDataHelper.COLOR_BEIGE, shirt, male, regularFitTShirt);
-            createClothes("RUFFLED HEM RIB TOP", "ROUND NECK SLEEVELESS TOP. FLOUNCED HEM.", 17.90f, ClothDataHelper.COLOR_PINK,
+            createClothes("RUFFLED HEM RIB TOP", "ROUND NECK SLEEVELESS TOP. FLOUNCED HEM.", 17.99f, ClothDataHelper.COLOR_PINK,
                     shirt, female, ruffledHemRibTop);
             createClothes("Progmatic", "Best Academy of the World!", 24.99f, ClothDataHelper.COLOR_WHITE,
                     shirt, unisex, unImg);
-            createClothes("OVERSIZED SWEATSHIRT", "FULL CUT SWEATSHIRT WITH ROUND NECK AND LONG SLEEVES. RIBBED TRIM.", 39.90f, ClothDataHelper.COLOR_BLUE,
+            createClothes("OVERSIZED SWEATSHIRT", "FULL CUT SWEATSHIRT WITH ROUND NECK AND LONG SLEEVES. RIBBED TRIM.", 39.99f, ClothDataHelper.COLOR_BLUE,
                     pullover, male, overSizedSweatshirt);
-            createClothes("Baby Doll", "Nice and soft.", 34.99f, ClothDataHelper.COLOR_PINK,
-                    pullover, female, femaleImg);
+            createClothes("CONTRASTING ZIP SWEATSHIRT", "HIGH COLLAR SWEATSHIRT WITH CONTRAST ZIPPER. LONG SLEEVES WITH ELASTIC CUFFS.", 39.99f, ClothDataHelper.COLOR_BLACK,
+                    pullover, female, contrastingZipSweatshirt);
             createClothes("Mommy Little Baby", "For every darling.", 24.99f, ClothDataHelper.COLOR_WHITE,
                     pullover, child, childImg);
-            createClothes("STRAIGHT TAPERED JEANS", "STRAIGHT FIT JEANS. FIVE POCKETS. WASHED EFFECT. FRONT ZIP AND BUTTON CLOSURE.", 39.90f,
+            createClothes("STRAIGHT TAPERED JEANS", "STRAIGHT FIT JEANS. FIVE POCKETS. WASHED EFFECT. FRONT ZIP AND BUTTON CLOSURE.", 39.99f,
                     ClothDataHelper.COLOR_WHITE, pants, male, straightTaperedJeans);
             createClothes("Meow", "For ladies only!", 39.99f, ClothDataHelper.COLOR_PINK,
                     pants, female, femaleImg);
@@ -466,7 +466,11 @@ public class DataLoader implements ApplicationRunner {
             }
             if (addImageToDatabase("src/main/resources/images/OVERSIZED SWEATSHIRT.jpg",
                     "OVERSIZED SWEATSHIRT.jpg", jpegImg)) {
-                LOG.debug("added image to database with name {}", "OVERSIZED SWEATSHIRT");
+                LOG.debug("added image to database with name {}", "OVERSIZED SWEATSHIRT.jpg");
+            }
+            if (addImageToDatabase("src/main/resources/images/CONTRASTING ZIP SWEATSHIRT.jpg",
+                    "CONTRASTING ZIP SWEATSHIRT.jpg", jpegImg)) {
+                LOG.debug("added image to database with name {}", "CONTRASTING ZIP SWEATSHIRT.jpg");
             }
         }
     }
