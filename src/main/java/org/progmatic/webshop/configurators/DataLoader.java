@@ -440,7 +440,7 @@ public class DataLoader implements ApplicationRunner {
             if (addImageToDatabase("src/main/resources/images/child_dress.png", ClothDataHelper.GENDER_CHILD, pngImg)) {
                 LOG.debug("added image to database with name {}", ClothDataHelper.GENDER_CHILD);
             }
-            if (addImageToDatabase("src/main/resources/images/man_dress.png", ClothDataHelper.GENDER_MALE, pngImg)) {
+            if (addImageToDatabase("src/main/resources/images/men_dress.jpeg", ClothDataHelper.GENDER_MALE, jpegImg)) {
                 LOG.debug("added image to database with name {}", ClothDataHelper.GENDER_MALE);
             }
             if (addImageToDatabase("src/main/resources/images/women_dress.jpg", ClothDataHelper.GENDER_FEMALE, jpegImg)) {
