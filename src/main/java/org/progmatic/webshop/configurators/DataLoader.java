@@ -259,7 +259,7 @@ public class DataLoader implements ApplicationRunner {
             Image unImg = imageData.findByName(ClothDataHelper.GENDER_UNISEX);
             Image childImg = imageData.findByName(ClothDataHelper.GENDER_CHILD);
             Image regularFitTShirt = imageData.findByName("BASIC MEDIUM WEIGHT T-SHIRT.jpg");
-            Image straightTaperedJeans = imageData.findByName("STRAIGHT TAPERED JEANS");
+            Image straightTaperedJeans = imageData.findByName("STRAIGHT TAPERED JEANS.jpg");
             Image ruffledHemRibTop = imageData.findByName("RUFFLED HEM RIB TOP.jpg");
 
             createClothes("BASIC MEDIUM WEIGHT T-SHIRT", "REGULAR FIT T-SHIRT MADE WITH MERCERIZED FABRIC. ROUND RIB NECKLINE AND SHORT SLEEVES.", 17.90f,
@@ -456,7 +456,7 @@ public class DataLoader implements ApplicationRunner {
                 LOG.debug("added image to database with name {}", "BASIC MEDIUM WEIGHT T-SHIRT");
             }
             if (addImageToDatabase("src/main/resources/images/STRAIGHT TAPERED JEANS.jpg",
-                    "STRAIGHT TAPERED JEANS.jpeg", jpegImg)) {
+                    "STRAIGHT TAPERED JEANS.jpg", jpegImg)) {
                 LOG.debug("added image to database with name {}", "StraightTaperedJeans");
             }
             if (addImageToDatabase("src/main/resources/images/RUFFLED HEM RIB TOP.jpg",
