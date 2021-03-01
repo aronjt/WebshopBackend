@@ -1,7 +1,9 @@
 package org.progmatic.webshop.dto;
 
 import org.progmatic.webshop.model.OnlineOrder;
+import org.progmatic.webshop.model.PurchasedClothes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,6 +42,13 @@ public class OrderDto {
 
     public void setPurchasedClothesList(List<PurchasedClothDto> list) {
         purchasedClothesList = list;
+    }
+
+    public void addToPurchasedClothesList(List<PurchasedClothes> list) {
+        purchasedClothesList = new ArrayList<>();
+        for (PurchasedClothes pc : list) {
+            purchasedClothesList.add(new PurchasedClothDto(pc));
+        }
     }
 
     public long getId() {
