@@ -82,7 +82,7 @@ public class DataLoader implements ApplicationRunner {
     }
 
     /**
-     * Uploads a {@link User} entity with ROLE_ADMIN and one with ROLE_USER to the database.<br>
+     * Uploads two {@link User} entity with ROLE_ADMIN and one with ROLE_USER to the database.<br>
      *     Roles can be found in {@link UserDataHelper}.
      */
     public void createUsers() {
@@ -96,6 +96,14 @@ public class DataLoader implements ApplicationRunner {
 
             LOG.debug("admin added to database with email {} (creation time: {})",
                     admin.getUsername(), admin.getCreationTime());
+
+            User joAdmin = createUser("Jo", "King", "iamjoking@gmail.com",
+                    "password", 555, "Goland", "Module", "123 Syntax Street",
+                    "555 55 55", UserDataHelper.ROLE_ADMIN);
+            userData.save(joAdmin);
+
+            LOG.debug("admin added to database with email {} (creation time: {})",
+                    joAdmin.getUsername(), joAdmin.getCreationTime());
 
             User user = createUser("Elek", "Érték", "ertekelek@ertek.el",
                     "jelszó", 9999, "Óperencia", "Túlnan", "Felis út 1.",
