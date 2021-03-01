@@ -25,6 +25,11 @@ import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * An {@link ApplicationRunner} class to fill up the database with default data for testing and presentation
+ * if the analyzed table of the database does not contain any data.<br>
+ * @apiNote It may not be used when the application runs in real life.
+ */
 @Component
 public class DataLoader implements ApplicationRunner {
 
@@ -67,16 +72,19 @@ public class DataLoader implements ApplicationRunner {
     public void run(ApplicationArguments args) {
         createUsers();
         createAdminData();
+        createImages();
         createTypes();
         createGenders();
-        createImages();
         createClothes();
         putSomeClothesIntoTheStock();
         createEmails();
         createOrder();
-        setImagesToGenders();
     }
 
+    /**
+     * Uploads two {@link User} entity with ROLE_ADMIN and one with ROLE_USER to the database.<br>
+     *     Roles can be found in {@link UserDataHelper}.
+     */
     public void createUsers() {
         long usersNum = userData.count();
 
@@ -86,19 +94,41 @@ public class DataLoader implements ApplicationRunner {
                     "06 1 234 5678", UserDataHelper.ROLE_ADMIN);
             userData.save(admin);
 
-            LOG.info("admin added to database with email {} (creation time: {})",
+            LOG.debug("admin added to database with email {} (creation time: {})",
                     admin.getUsername(), admin.getCreationTime());
+
+            User joAdmin = createUser("Jo", "King", "iamjoking@gmail.com",
+                    "password", 555, "Goland", "Module", "123 Syntax Street",
+                    "555 55 55", UserDataHelper.ROLE_ADMIN);
+            userData.save(joAdmin);
+
+            LOG.debug("admin added to database with email {} (creation time: {})",
+                    joAdmin.getUsername(), joAdmin.getCreationTime());
 
             User user = createUser("Elek", "Érték", "ertekelek@ertek.el",
                     "jelszó", 9999, "Óperencia", "Túlnan", "Felis út 1.",
                     "1111111", UserDataHelper.ROLE_USER);
             userData.save(user);
 
-            LOG.info("user added to database with email {} (creation time: {})",
+            LOG.debug("user added to database with email {} (creation time: {})",
                     user.getUsername(), user.getCreationTime());
         }
     }
 
+    /**
+     * Creates a {@link User}.
+     * @param firstName is the first name
+     * @param lastName is the last name
+     * @param email is the email address (also username)
+     * @param pw is the password
+     * @param zip is the zip code
+     * @param country is the country
+     * @param city is the city
+     * @param address is the address
+     * @param phone is the phone number
+     * @param role is the role (comes from {@link UserDataHelper})
+     * @return the created {@link User} object
+     */
     private User createUser(String firstName, String lastName, String email, String pw, int zip, String country,
                             String city, String address, String phone, String role) {
         User user = new User();
@@ -116,6 +146,9 @@ public class DataLoader implements ApplicationRunner {
         return user;
     }
 
+    /**
+     * Uploads extra data for admin to the database by creating an {@link ExtraData} object.
+     */
     public void createAdminData() {
         long adminNum = adminData.count();
 
@@ -125,10 +158,20 @@ public class DataLoader implements ApplicationRunner {
             data.setSecret("MRirdatlan007");
             adminData.save(data);
 
-            LOG.info("admin data added to database with id {}", data.getId());
+            LOG.debug("admin data added to database with id {}", data.getId());
         }
     }
 
+    /**
+     * Uploads three {@link Type} entities to the database:<br>
+     *     <ul>
+     *     <li>t-shirt</li>
+     *     <li>pullover</li>
+     *     <li>pants</li>
+     *     </ul>
+     *     <br>
+     * These types can be found in {@link ClothDataHelper}.
+     */
     public void createTypes() {
         long typeNum = typeData.count();
 
@@ -137,53 +180,67 @@ public class DataLoader implements ApplicationRunner {
             shirt.setType(ClothDataHelper.TYPE_TSHIRT);
             typeData.save(shirt);
 
-            LOG.info("{} type added to database", shirt.getType());
+            LOG.debug("{} type added to database", shirt.getType());
 
             Type pullover = new Type();
             pullover.setType(ClothDataHelper.TYPE_PULLOVER);
             typeData.save(pullover);
 
-            LOG.info("{} type added to database", pullover.getType());
+            LOG.debug("{} type added to database", pullover.getType());
 
             Type pants = new Type();
             pants.setType(ClothDataHelper.TYPE_PANTS);
             typeData.save(pants);
 
-            LOG.info("{} type added to database", pants.getType());
+            LOG.debug("{} type added to database", pants.getType());
         }
     }
 
+    /**
+     * Uploads four {@link Gender} entities to the database:<br>
+     *     <ul>
+     *     <li>male</li>
+     *     <li>female</li>
+     *     <li>child</li>
+     *     <li>unisex</li>
+     *     </ul>
+     *     <br>
+     *     These genders can be found in {@link ClothDataHelper}.
+     */
     public void createGenders() {
         long genderNum = genderData.count();
 
         if (genderNum == 0) {
-            Gender male = new Gender();
-            male.setGender(ClothDataHelper.GENDER_MALE);
-            genderData.save(male);
+            Image male = imageData.findByName(ClothDataHelper.GENDER_MALE);
+            Image female = imageData.findByName(ClothDataHelper.GENDER_FEMALE);
+            Image child = imageData.findByName(ClothDataHelper.GENDER_CHILD);
+            Image unisex = imageData.findByName(ClothDataHelper.GENDER_UNISEX);
 
-            LOG.info("{} gender added to database", male.getGender());
-
-            Gender female = new Gender();
-            female.setGender(ClothDataHelper.GENDER_FEMALE);
-            genderData.save(female);
-
-            LOG.info("{} gender added to database", female.getGender());
-
-            Gender child = new Gender();
-            child.setGender(ClothDataHelper.GENDER_CHILD);
-            genderData.save(child);
-
-            LOG.info("{} gender added to database", child.getGender());
-
-            Gender unisex = new Gender();
-            unisex.setGender(ClothDataHelper.GENDER_UNISEX);
-            genderData.save(unisex);
-
-            LOG.info("{} gender added to database", unisex.getGender());
-
+            createGender(ClothDataHelper.GENDER_MALE, male);
+            createGender(ClothDataHelper.GENDER_FEMALE, female);
+            createGender(ClothDataHelper.GENDER_CHILD, child);
+            createGender(ClothDataHelper.GENDER_UNISEX, unisex);
         }
     }
 
+    /**
+     * Uploads a {@link Gender} entity to the database.
+     * @param gender is the name of the gender comes from {@link ClothDataHelper}
+     * @param image is the image for the gender comes from the database
+     */
+    private void createGender(String gender, Image image) {
+        Gender g = new Gender();
+        g.setGender(gender);
+        g.setImage(image);
+        genderData.save(g);
+        LOG.debug("{} gender added to database with image id {}", g.getGender(), image.getId());
+    }
+
+    /**
+     * Uploads nine {@link Clothes} entities to the database.<br>
+     *     The clothes' information (names, details, prices) are random, but colors can be found in {@link ClothDataHelper},
+     *     and types, genders and images come from the database.
+     */
     public void createClothes() {
         long clothNum = clothesData.count();
 
@@ -203,8 +260,8 @@ public class DataLoader implements ApplicationRunner {
             Image childImg = imageData.findByName(ClothDataHelper.GENDER_CHILD);
             Image regularFitTShirt = imageData.findByName("Regular Fit Crew-neck T-shirt.jpeg");
 
-            createClothes("Regular Fit Crew-neck T-shirt", "Regular fit, Round Neck, Cotton 100%", 6.99f, ClothDataHelper.COLOR_BEIGE,
-                    shirt, male, regularFitTShirt);
+            createClothes("Regular Fit Crew-neck T-shirt", "Regular fit, Round Neck, Cotton 100%", 6.99f,
+                    ClothDataHelper.COLOR_BEIGE, shirt, male, regularFitTShirt);
             createClothes("Hello Kitty", "Cutest t-shirt of the world!", 14.99f, ClothDataHelper.COLOR_PINK,
                     shirt, female, femaleImg);
             createClothes("Progmatic", "Best Academy of the World!", 24.99f, ClothDataHelper.COLOR_WHITE,
@@ -215,8 +272,8 @@ public class DataLoader implements ApplicationRunner {
                     pullover, female, femaleImg);
             createClothes("Mommy Little Baby", "For every darling.", 24.99f, ClothDataHelper.COLOR_WHITE,
                     pullover, child, childImg);
-            createClothes("Jack's Pants", "You cannot wear anything better!", 39.99f, ClothDataHelper.COLOR_BLACK,
-                    pants, male, maleImg);
+            createClothes("Jack's Pants", "You cannot wear anything better!", 39.99f,
+                    ClothDataHelper.COLOR_BLACK, pants, male, maleImg);
             createClothes("Meow", "For ladies only!", 39.99f, ClothDataHelper.COLOR_PINK,
                     pants, female, femaleImg);
             createClothes("Winter Wearer", "Cold days will be no longer cold, if you wear these pants!", 34.99f,
@@ -224,6 +281,16 @@ public class DataLoader implements ApplicationRunner {
         }
     }
 
+    /**
+     * Uploads one {@link Clothes} entity to the database.
+     * @param name is the name
+     * @param details is a short details
+     * @param price is the price
+     * @param color is the color comes from {@link ClothDataHelper}
+     * @param type is the type comes from the database
+     * @param gender is the gender comes from the database
+     * @param image is the image comes from the database
+     */
     private void createClothes(String name, String details, float price, String color, Type type, Gender gender, Image image) {
         Clothes clothes = new Clothes();
         clothes.setName(name);
@@ -235,10 +302,15 @@ public class DataLoader implements ApplicationRunner {
         clothes.setImage(image);
         clothesData.save(clothes);
 
-        LOG.info("added new {} to database with name and price: {}, {}",
+        LOG.debug("added new {} to database with name and price: {}, {}",
                 clothes.getType().getType(), clothes.getName(), clothes.getPrice());
     }
 
+    /**
+     * Uploads {@link Stock} entities to the database from the existing {@link Clothes}.<br>
+     *     Every clothes from the database will be presented in the Stock table in the database
+     *     with random size (comes from {@link ClothDataHelper}) and in random quantity (between 0 and 4).
+     */
     public void putSomeClothesIntoTheStock() {
         long stockNum = stockData.count();
 
@@ -253,33 +325,48 @@ public class DataLoader implements ApplicationRunner {
                 stock.setClothes(c);
                 stockData.save(stock);
 
-                LOG.info("added clothes to the stock (in database), clothId {}, size {}, quantity {}",
+                LOG.debug("added clothes to the stock (in database), clothId {}, size {}, quantity {}",
                         c.getId(), stock.getSize(), stock.getQuantity());
             }
         }
     }
 
+    /**
+     * Uploads an {@link Email} entity to the database with type registration and one with shipping.<br>
+     *     These types come from {@link EmailSenderHelper}.
+     */
     public void createEmails() {
       long emailNum = emailData.count();
 
-      if (emailNum==0) {
+      if (emailNum == 0) {
           createEmail(EmailSenderHelper.REGISTRATION, "Registration verification",
-                  "Thank you for your registration! Have a nice day!<br>To confirm your account, please click here:<br>");
+                  "Thank you for your registration! Have a nice day!<br>To confirm your account, " +
+                          "please click here:<br>");
           createEmail(EmailSenderHelper.SHOPPING, "Shopping confirmation",
                   "Thank you for your shopping! Have a nice day!<br>");
       }
     }
 
+    /**
+     * Uploads an {@link Email} entity to the database.
+     * @param messageType is the type of the email (comes from {@link EmailSenderHelper}
+     * @param subject is the subject
+     * @param messageText is the text of the email
+     */
     private void createEmail(String messageType, String subject, String messageText) {
         Email email = new Email();
         email.setMessageType(messageType);
         email.setSubject(subject);
         email.setMessageText(messageText);
         emailData.save(email);
-        LOG.info("added new email with type {}, subject {}",
+        LOG.debug("added new email with type {}, subject {}",
                 email.getMessageType(), email.getSubject());
     }
 
+    /**
+     * Uploads an {@link OnlineOrder} entity to the database with {@link PurchasedClothes}.<br>
+     *     See {@link DataLoader#putClothesToCart(OnlineOrder)}.
+     */
     public void createOrder() {
         long orderNum = onlineOrderData.count();
 
@@ -301,13 +388,18 @@ public class DataLoader implements ApplicationRunner {
                 order.setPurchasedClothesList(toBuy);
                 onlineOrderData.save(order);
 
-                LOG.info("online order added to database to user {}, purchased clothes' names are: {}, {}",
+                LOG.debug("online order added to database to user {}, purchased clothes' names are: {}, {}",
                         user.getUsername(), toBuy.get(0).getClothes().getName(), toBuy.get(1).getClothes().getName());
             }
 
         }
     }
 
+    /**
+     * Uploads two {@link PurchasedClothes} entities to the database.
+     * @param order is the {@link OnlineOrder} which should contain the purchased clothes
+     * @return the list of purchased clothes
+     */
     private List<PurchasedClothes> putClothesToCart(OnlineOrder order) {
         Clothes cloth1 = clothesData.findByName("Regular Fit Crew-neck T-shirt");
         Clothes cloth2 = clothesData.findByName("Jack's Pants");
@@ -334,6 +426,11 @@ public class DataLoader implements ApplicationRunner {
         return toBuy;
     }
 
+    /**
+     * Uploads {@link Image} entities to the database.<br>
+     *     Images can be found in src/main/resources/images folder.<br>
+     *     This method uses {@link ImageHelper} to get correct content types of images.
+     */
     public void createImages() {
         long imgNum = imageData.count();
 
@@ -341,65 +438,31 @@ public class DataLoader implements ApplicationRunner {
             String pngImg = ImageHelper.PNG;
             String jpegImg = ImageHelper.JPG;
             if (addImageToDatabase("src/main/resources/images/child_dress.png", ClothDataHelper.GENDER_CHILD, pngImg)) {
-                LOG.info("added image to database with name {}", ClothDataHelper.GENDER_CHILD);
+                LOG.debug("added image to database with name {}", ClothDataHelper.GENDER_CHILD);
             }
             if (addImageToDatabase("src/main/resources/images/man_dress.png", ClothDataHelper.GENDER_MALE, pngImg)) {
-                LOG.info("added image to database with name {}", ClothDataHelper.GENDER_MALE);
+                LOG.debug("added image to database with name {}", ClothDataHelper.GENDER_MALE);
             }
-            if (addImageToDatabase("src/main/resources/images/women_dress.jpg", ClothDataHelper.GENDER_FEMALE, jpegImg)) {
-                LOG.info("added image to database with name {}", ClothDataHelper.GENDER_FEMALE);
+            if (addImageToDatabase("src/main/resources/images/woman_dress.png", ClothDataHelper.GENDER_FEMALE, pngImg)) {
+                LOG.debug("added image to database with name {}", ClothDataHelper.GENDER_FEMALE);
             }
             if (addImageToDatabase("src/main/resources/images/unisex.png", ClothDataHelper.GENDER_UNISEX, pngImg)) {
-                LOG.info("added image to database with name {}", ClothDataHelper.GENDER_UNISEX);
+                LOG.debug("added image to database with name {}", ClothDataHelper.GENDER_UNISEX);
             }
-            if (addImageToDatabase("src/main/resources/images/Regular Fit Crew-neck T-shirt.jpeg", "Regular Fit Crew-neck T-shirt.jpeg", jpegImg)) {
-                LOG.info("added image to database with name {}", "Regular Fit Crew-neck T-shirt");
-            }
-        }
-    }
-
-    public void setImagesToGenders() {
-        Gender man = genderData.findByGender(ClothDataHelper.GENDER_MALE);
-        Image manImg = imageData.findByName(ClothDataHelper.GENDER_MALE);
-        if (man != null && manImg != null) {
-            if (man.getImage() == null) {
-                man.setImage(manImg);
-                genderData.save(man);
-                LOG.info("added image to gender {}", man.getGender());
-            }
-        }
-
-        Gender woman = genderData.findByGender(ClothDataHelper.GENDER_FEMALE);
-        Image womanImg = imageData.findByName(ClothDataHelper.GENDER_FEMALE);
-        if (woman != null && womanImg != null) {
-            if (woman.getImage() == null) {
-                woman.setImage(womanImg);
-                genderData.save(woman);
-                LOG.info("added image to gender {}", woman.getGender());
-            }
-        }
-
-        Gender child = genderData.findByGender(ClothDataHelper.GENDER_CHILD);
-        Image childImg = imageData.findByName(ClothDataHelper.GENDER_CHILD);
-        if (child != null && childImg != null) {
-            if (child.getImage() == null) {
-                child.setImage(childImg);
-                genderData.save(child);
-                LOG.info("added image to gender {}", child.getGender());
-            }
-        }
-
-        Gender uni = genderData.findByGender(ClothDataHelper.GENDER_UNISEX);
-        Image unImg = imageData.findByName(ClothDataHelper.GENDER_UNISEX);
-        if (uni != null && unImg != null) {
-            if (uni.getImage() == null) {
-                uni.setImage(unImg);
-                genderData.save(uni);
-                LOG.info("added image to gender {}", uni.getGender());
+            if (addImageToDatabase("src/main/resources/images/Regular Fit Crew-neck T-shirt.jpeg",
+                    "Regular Fit Crew-neck T-shirt.jpeg", jpegImg)) {
+                LOG.debug("added image to database with name {}", "Regular Fit Crew-neck T-shirt");
             }
         }
     }
 
+    /**
+     * Uploads an {@link Image} to the database by creating a {@link MockMultipartFile} object.
+     * @param filepath is the filepath where the image can be found
+     * @param name is the name that will be added to the image (must be unique)
+     * @param contentType is the content type of the image (comes from {@link ImageHelper})
+     * @return true if the upload was successfully, or false if any exception occurred
+     */
     private boolean addImageToDatabase(String filepath, String name, String contentType) {
         try {
             File file = new File(filepath);

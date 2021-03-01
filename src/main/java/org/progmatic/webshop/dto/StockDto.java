@@ -1,5 +1,15 @@
 package org.progmatic.webshop.dto;
 
+/**
+ * DTO for {@link org.progmatic.webshop.model.Stock} entity.<br>
+ *     Contains:
+ *     <ul>
+ *         <li>int sizeS</li>
+ *         <li>int sizeM</li>
+ *         <li>int sizeL</li>
+ *         <li>int sizeXl</li>
+ *     </ul>
+ */
 public class StockDto {
 
     private int sizeS;

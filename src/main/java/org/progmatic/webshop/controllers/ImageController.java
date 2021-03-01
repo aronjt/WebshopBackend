@@ -14,6 +14,14 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * Controls actions related to images.<br>
+ *     Containing endpoints:
+ *     <ul>
+ *         <li>/image, post</li>
+ *         <li>/images/{id}, get</li>
+ *     </ul>
+ */
 @RestController
 public class ImageController {
     private final ImageService imageService;
@@ -28,7 +36,13 @@ public class ImageController {
         this.imageData = imageData;
     }
 
-
+    /**
+     * Endpoint for uploading an image, and saving it in the database.<br>
+     *     See {@link ImageService#compressBytes(byte[])} for more information.
+     * @param file is the image file that will be uploaded
+     * @return a confirm {@link Message} about the uploading process
+     * @throws IOException if something went wrong while uploading the image
+     */
     @PostMapping("/image")
     public Feedback uploadImage(@RequestParam("image") MultipartFile file) throws IOException {
         Image img = new Image(file.getOriginalFilename(),
@@ -37,6 +51,12 @@ public class ImageController {
         return new Message(true, "successful image upload");
     }
 
+    /**
+     * Endpoint for getting one image with the given id.<br>
+     *     See {@link ImageService#decompressBytes(byte[])} for more information.
+     * @param imageId is the image's id in the database
+     * @return the byte code of the wanted image in a representable image format
+     */
     @GetMapping(path = {"/images/{id}"}, produces = MediaType.IMAGE_PNG_VALUE)
     public byte[] getImageById(@PathVariable("id") Long imageId) {
         final Optional<Image> retrievedImage = imageData.findById(imageId);

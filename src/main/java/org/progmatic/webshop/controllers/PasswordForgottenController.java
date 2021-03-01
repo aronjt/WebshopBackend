@@ -20,6 +20,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.time.LocalDateTime;
 
+/**
+ * Controls forgotten passwords actions.<br>
+ *     Containing endpoints:
+ *     <ul>
+ *         <li>/forgottenpassword/{emailAdress}, post</li>
+ *         <li>/confirm-password, get</li>
+ *     </ul>
+ */
 @RestController
 public class PasswordForgottenController {
     private final static Logger LOG = LoggerFactory.getLogger(PasswordForgottenController.class);
@@ -46,6 +54,14 @@ public class PasswordForgottenController {
 
     }
 
+    /**
+     * Endpoint for sending an email to the user who has forgot the password.<br>
+     *     The sent email's text and subject can be found in the database. The email type can be found in
+     *     {@link EmailSenderHelper}.<br>
+     *     See {@link EmailSenderService#prepareConfirmationEmail(User, String, ConfirmationToken)} for more information.
+     * @param emailAdress is the user's email address
+     * @return a confirm {@link Message} about the email sending process
+     */
     @PostMapping(value = "/forgottenpassword/{emailAdress}")
     public Feedback newPassword(@PathVariable("emailAdress") String emailAdress) {
         User existingUser = userRepository.findByUsername(emailAdress);
@@ -70,7 +86,14 @@ public class PasswordForgottenController {
         return feedback;
     }
 
-
+    /**
+     * Endpoint for resetting the password and adding a new one.<br>
+     *     After the user clicked on the link from the email, a new password can be set.
+     * @param userConfirmationToken is a token that has been sent in the password reset email
+     * @param newPassword is the new password to the account
+     * @param userName is the user's name (email address)
+     * @return a confirm {@link Message} about the new password setting process
+     */
     @GetMapping(value = "/confirm-password")
     public Feedback confirmUserAccount(@RequestParam("token") String userConfirmationToken,
                                        @RequestParam("password") String newPassword,

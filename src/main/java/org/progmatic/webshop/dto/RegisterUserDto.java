@@ -2,6 +2,22 @@ package org.progmatic.webshop.dto;
 
 import org.progmatic.webshop.model.User;
 
+/**
+ * DTO for {@link User} entity.<br>
+ *     Contains:
+ *     <ul>
+ *         <li>String firstName</li>
+ *         <li>String lastName</li>
+ *         <li>String password</li>
+ *         <li>String email</li>
+ *         <li>String country</li>
+ *         <li>int zipcode</li>
+ *         <li>String city</li>
+ *         <li>String address</li>
+ *         <li>String phoneNumber</li>
+ *         <li>long id</li>
+ *     </ul>
+ */
 public class RegisterUserDto {
     private String firstName;
     private String lastName;
@@ -17,6 +33,11 @@ public class RegisterUserDto {
     public RegisterUserDto() {
     }
 
+    /**
+     * Works as dozer.<br>
+     *     Important, that password will be NOT presented because of security maintenance.
+     * @param user is the {@link User} that will be transformed to {@link RegisterUserDto}
+     */
     public RegisterUserDto(User user) {
         firstName = user.getFirstName();
         lastName = user.getLastName();

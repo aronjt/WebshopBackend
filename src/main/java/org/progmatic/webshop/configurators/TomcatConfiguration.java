@@ -8,6 +8,9 @@ import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Configures Tomcat server to set Cookies' SameSite property to be None.
+ */
 @Configuration
 public class TomcatConfiguration {
 

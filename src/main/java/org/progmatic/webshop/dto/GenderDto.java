@@ -2,6 +2,14 @@ package org.progmatic.webshop.dto;
 
 import org.progmatic.webshop.model.Gender;
 
+/**
+ * DTO for {@link Gender} entity.<br>
+ *     Contains:
+ *     <ul>
+ *         <li>String gender</li>
+ *         <li>long imageId</li>
+ *     </ul>
+ */
 public class GenderDto {
 
     private String gender;
@@ -9,6 +17,10 @@ public class GenderDto {
 
     public GenderDto() {}
 
+    /**
+     * Works as dozer.
+     * @param gender is the gender that will be transformed to {@link GenderDto}
+     */
     public GenderDto(Gender gender) {
         this.gender = gender.getGender();
         imageId = gender.getImage().getId();
