@@ -53,7 +53,7 @@ public class RegistrationController {
     /**
      * Endpoint for registering a new user.<br>
      *     After a successful registration, an account confirmation email will be sent.<br>
-     *     See {@link EmailSenderService#prepareConfirmationEmail(User, String, ConfirmationToken)} for more information.
+     *     See {@link EmailSenderService#prepareConfirmationEmail(User, String, ConfirmationToken, String)} for more information.
      * @param registerUserDto is the data of the new user
      * @return a confirm {@link Message} about the registration process
      */
@@ -70,7 +70,7 @@ public class RegistrationController {
             service.createUser(user);
             confirmationToken = new ConfirmationToken(user);
             confirmationTokenRepository.save(confirmationToken);
-            sendEmail.prepareConfirmationEmail(user, EmailSenderHelper.REGISTRATION, confirmationToken);
+            sendEmail.prepareConfirmationEmail(user, EmailSenderHelper.REGISTRATION, confirmationToken, valueOfUrl);
             message = new Message(true, "Confirmation token sent to New User");
         }
         return message;
@@ -78,7 +78,7 @@ public class RegistrationController {
 
     /**
      * Endpoint for confirming the new user's account.<br>
-     *     See {@link EmailSenderService#prepareConfirmationEmail(User, String, ConfirmationToken)} for more information.
+     *     See {@link EmailSenderService#prepareConfirmationEmail(User, String, ConfirmationToken, String)} for more information.
      * @param confirmationToken is the token that has been sent in email after the registration
      * @return a confirm {@link Message} about the confirmation process
      */
@@ -95,7 +95,7 @@ public class RegistrationController {
             } else {
                 ConfirmationToken newToken = new ConfirmationToken(user);
                 confirmationTokenRepository.save(newToken);
-                sendEmail.prepareConfirmationEmail(user, EmailSenderHelper.REGISTRATION, newToken);
+                sendEmail.prepareConfirmationEmail(user, EmailSenderHelper.REGISTRATION, newToken, valueOfUrl);
                 message = new Message("This token is broken ! We sent you new one to your email address.");
             }
         } else {

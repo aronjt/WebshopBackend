@@ -31,6 +31,8 @@ import java.time.LocalDateTime;
 @RestController
 public class PasswordForgottenController {
     private final static Logger LOG = LoggerFactory.getLogger(PasswordForgottenController.class);
+    @Value("${value.of.password.url}")
+    private String valueOfUrl;
 
     private final UserData userRepository;
     private final ConfirmationTokenData confirmationTokenRepository;
@@ -39,8 +41,7 @@ public class PasswordForgottenController {
     EmailSenderService sendEmail;
     PasswordEncoder passwordEncoder;
 
-    @Value("${value.of.password.url}")
-    private String valueOfUrl;
+
 
     @Autowired
     public PasswordForgottenController(EmailSenderService sendEmail, EntityManager entityManager, UserData userRepository,
@@ -58,7 +59,7 @@ public class PasswordForgottenController {
      * Endpoint for sending an email to the user who has forgot the password.<br>
      *     The sent email's text and subject can be found in the database. The email type can be found in
      *     {@link EmailSenderHelper}.<br>
-     *     See {@link EmailSenderService#prepareConfirmationEmail(User, String, ConfirmationToken)} for more information.
+     *     See {@link EmailSenderService#prepareConfirmationEmail(User, String, ConfirmationToken, String)} for more information.
      * @param emailAdress is the user's email address
      * @return a confirm {@link Message} about the email sending process
      */
@@ -73,7 +74,7 @@ public class PasswordForgottenController {
             LocalDateTime tomorrow = confirmationToken.getCreatedDate().plusDays(1);
             confirmationToken.setEnableDate(tomorrow);
             confirmationTokenRepository.save(confirmationToken);
-            sendEmail.prepareConfirmationEmail(existingUser, EmailSenderHelper.PASSWORD, confirmationToken);
+            sendEmail.prepareConfirmationEmail(existingUser, EmailSenderHelper.PASSWORD, confirmationToken,valueOfUrl);
             feedback.setSuccess(true);
             feedback.setMessage("Password Confirmation token sent to User");
             LOG.info("Password Confirmation token sent to User");

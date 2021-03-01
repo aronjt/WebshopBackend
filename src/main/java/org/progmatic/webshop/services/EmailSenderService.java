@@ -21,8 +21,11 @@ import java.util.Properties;
 
 @Service
 public class EmailSenderService {
-    @Value("${value.of.url}")
-    private String valueOfUrl;
+//    @Value("${value.of.url}")
+//    private String valueOfUrl;
+
+//    @Value("${value.of.password.url}")
+//    private String valueOfNewPasswordUrl;
     private final AdminData adminData;
     private String fromPassword;
 
@@ -71,7 +74,7 @@ public class EmailSenderService {
     }
 
     @Transactional
-    public void prepareConfirmationEmail(User toUser, String messageType, ConfirmationToken confirmationToken) {
+    public void prepareConfirmationEmail(User toUser, String messageType, ConfirmationToken confirmationToken, String valueOfUrl) {
 
         ExtraData aData = adminData.findAdminDataById(EmailSenderHelper.ID);
         fromPassword = aData.getSecret();
@@ -97,7 +100,7 @@ public class EmailSenderService {
 
             message.setContent(
                     "<h1>"+ subject+"</h1>"
-                            + getMessageTextWithConfirmationToken(toUser, emailDataByMessageType, confirmationToken),
+                            + getMessageTextWithConfirmationToken(toUser, emailDataByMessageType, confirmationToken,valueOfUrl),
                     "text/html");
         } catch (MessagingException e) {
             e.printStackTrace();
@@ -105,7 +108,7 @@ public class EmailSenderService {
 transportEmail(message);
     }
 
-    public String getMessageTextWithConfirmationToken(User toUser, Email email, ConfirmationToken confirmationToken) throws MessagingException {
+    public String getMessageTextWithConfirmationToken(User toUser, Email email, ConfirmationToken confirmationToken, String valueOfUrl) throws MessagingException {
         String text = "<p style=\"font-size:20px\">Hello " +
                 toUser.getFirstName() +
                 ",<br>" +
