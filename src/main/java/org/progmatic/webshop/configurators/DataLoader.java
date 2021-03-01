@@ -259,6 +259,7 @@ public class DataLoader implements ApplicationRunner {
             Image unImg = imageData.findByName(ClothDataHelper.GENDER_UNISEX);
             Image childImg = imageData.findByName(ClothDataHelper.GENDER_CHILD);
             Image regularFitTShirt = imageData.findByName("Regular Fit Crew-neck T-shirt.jpeg");
+            Image straightTaperedJeans = imageData.findByName("Straight Tapered Jeans");
 
             createClothes("Regular Fit Crew-neck T-shirt", "Regular fit, Round Neck, Cotton 100%", 6.99f,
                     ClothDataHelper.COLOR_BEIGE, shirt, male, regularFitTShirt);
@@ -272,8 +273,8 @@ public class DataLoader implements ApplicationRunner {
                     pullover, female, femaleImg);
             createClothes("Mommy Little Baby", "For every darling.", 24.99f, ClothDataHelper.COLOR_WHITE,
                     pullover, child, childImg);
-            createClothes("StraightTaperedJeans", "Straight fit jeans, washed effect, front zip and button closure.", 39.90f,
-                    ClothDataHelper.COLOR_WHITE, pants, male, maleImg);
+            createClothes("Straight Tapered Jeans", "Straight fit jeans, washed effect, front zip and button closure.", 39.90f,
+                    ClothDataHelper.COLOR_WHITE, pants, male, straightTaperedJeans);
             createClothes("Meow", "For ladies only!", 39.99f, ClothDataHelper.COLOR_PINK,
                     pants, female, femaleImg);
             createClothes("Winter Wearer", "Cold days will be no longer cold, if you wear these pants!", 34.99f,
