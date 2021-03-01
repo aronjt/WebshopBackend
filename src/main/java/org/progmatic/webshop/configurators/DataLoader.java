@@ -259,7 +259,7 @@ public class DataLoader implements ApplicationRunner {
             Image unImg = imageData.findByName(ClothDataHelper.GENDER_UNISEX);
             Image childImg = imageData.findByName(ClothDataHelper.GENDER_CHILD);
             Image regularFitTShirt = imageData.findByName("Regular Fit Crew-neck T-shirt.jpeg");
-            Image straightTaperedJeans = imageData.findByName("Straight Tapered Jeans");
+            Image straightTaperedJeans = imageData.findByName("StraightTaperedJeans.jpeg");
 
             createClothes("Regular Fit Crew-neck T-shirt", "Regular fit, Round Neck, Cotton 100%", 6.99f,
                     ClothDataHelper.COLOR_BEIGE, shirt, male, regularFitTShirt);
