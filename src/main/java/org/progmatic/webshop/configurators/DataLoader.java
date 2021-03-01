@@ -214,12 +214,10 @@ public class DataLoader implements ApplicationRunner {
             Image male = imageData.findByName(ClothDataHelper.GENDER_MALE);
             Image female = imageData.findByName(ClothDataHelper.GENDER_FEMALE);
             Image child = imageData.findByName(ClothDataHelper.GENDER_CHILD);
-            Image unisex = imageData.findByName(ClothDataHelper.GENDER_UNISEX);
 
             createGender(ClothDataHelper.GENDER_MALE, male);
             createGender(ClothDataHelper.GENDER_FEMALE, female);
             createGender(ClothDataHelper.GENDER_CHILD, child);
-            createGender(ClothDataHelper.GENDER_UNISEX, unisex);
         }
     }
 
@@ -251,7 +249,6 @@ public class DataLoader implements ApplicationRunner {
 
             Gender male = genderData.findByGender(ClothDataHelper.GENDER_MALE);
             Gender female = genderData.findByGender(ClothDataHelper.GENDER_FEMALE);
-            Gender unisex = genderData.findByGender(ClothDataHelper.GENDER_UNISEX);
             Gender child = genderData.findByGender(ClothDataHelper.GENDER_CHILD);
 
             Image regularFitTShirt = imageData.findByName("BASIC MEDIUM WEIGHT T-SHIRT.jpg");
@@ -395,7 +392,6 @@ public class DataLoader implements ApplicationRunner {
                 LOG.debug("online order added to database to user {}, purchased clothes' names are: {}, {}",
                         user.getUsername(), toBuy.get(0).getClothes().getName(), toBuy.get(1).getClothes().getName());
             }
-
         }
     }
 
@@ -439,54 +435,50 @@ public class DataLoader implements ApplicationRunner {
         long imgNum = imageData.count();
 
         if (imgNum == 0) {
-            String pngImg = ImageHelper.PNG;
-            String jpegImg = ImageHelper.JPG;
-            if (addImageToDatabase("src/main/resources/images/children_dress.jpg", ClothDataHelper.GENDER_CHILD, jpegImg)) {
+            String jpgImg = ImageHelper.JPG;
+            if (addImageToDatabase("src/main/resources/images/children_dress.jpg", ClothDataHelper.GENDER_CHILD, jpgImg)) {
                 LOG.debug("added image to database with name {}", ClothDataHelper.GENDER_CHILD);
             }
-            if (addImageToDatabase("src/main/resources/images/men_dress.jpeg", ClothDataHelper.GENDER_MALE, jpegImg)) {
+            if (addImageToDatabase("src/main/resources/images/men_dress.jpeg", ClothDataHelper.GENDER_MALE, jpgImg)) {
                 LOG.debug("added image to database with name {}", ClothDataHelper.GENDER_MALE);
             }
-            if (addImageToDatabase("src/main/resources/images/women_dress.jpg", ClothDataHelper.GENDER_FEMALE, jpegImg)) {
+            if (addImageToDatabase("src/main/resources/images/women_dress.jpg", ClothDataHelper.GENDER_FEMALE, jpgImg)) {
                 LOG.debug("added image to database with name {}", ClothDataHelper.GENDER_FEMALE);
             }
-            if (addImageToDatabase("src/main/resources/images/unisex.png", ClothDataHelper.GENDER_UNISEX, pngImg)) {
-                LOG.debug("added image to database with name {}", ClothDataHelper.GENDER_UNISEX);
-            }
             if (addImageToDatabase("src/main/resources/images/BASIC MEDIUM WEIGHT T-SHIRT.jpg",
-                    "BASIC MEDIUM WEIGHT T-SHIRT.jpg", jpegImg)) {
+                    "BASIC MEDIUM WEIGHT T-SHIRT.jpg", jpgImg)) {
                 LOG.debug("added image to database with name {}", "BASIC MEDIUM WEIGHT T-SHIRT");
             }
             if (addImageToDatabase("src/main/resources/images/STRAIGHT TAPERED JEANS.jpg",
-                    "STRAIGHT TAPERED JEANS.jpg", jpegImg)) {
+                    "STRAIGHT TAPERED JEANS.jpg", jpgImg)) {
                 LOG.debug("added image to database with name {}", "StraightTaperedJeans");
             }
             if (addImageToDatabase("src/main/resources/images/RUFFLED HEM RIB TOP.jpg",
-                    "RUFFLED HEM RIB TOP.jpg", jpegImg)) {
+                    "RUFFLED HEM RIB TOP.jpg", jpgImg)) {
                 LOG.debug("added image to database with name {}", "RUFFLED HEM RIB TOP");
             }
             if (addImageToDatabase("src/main/resources/images/OVERSIZED SWEATSHIRT.jpg",
-                    "OVERSIZED SWEATSHIRT.jpg", jpegImg)) {
+                    "OVERSIZED SWEATSHIRT.jpg", jpgImg)) {
                 LOG.debug("added image to database with name {}", "OVERSIZED SWEATSHIRT.jpg");
             }
             if (addImageToDatabase("src/main/resources/images/CONTRASTING ZIP SWEATSHIRT.jpg",
-                    "CONTRASTING ZIP SWEATSHIRT.jpg", jpegImg)) {
+                    "CONTRASTING ZIP SWEATSHIRT.jpg", jpgImg)) {
                 LOG.debug("added image to database with name {}", "CONTRASTING ZIP SWEATSHIRT.jpg");
             }
             if (addImageToDatabase("src/main/resources/images/REFLECTIVE SPORTY SWEATSHIRT.jpg",
-                    "REFLECTIVE SPORTY SWEATSHIRT.jpg", jpegImg)) {
+                    "REFLECTIVE SPORTY SWEATSHIRT.jpg", jpgImg)) {
                 LOG.debug("added image to database with name {}", "REFLECTIVE SPORTY SWEATSHIRT.jpg");
             }
             if (addImageToDatabase("src/main/resources/images/CORDUROY PANTS.jpg",
-                    "CORDUROY PANTS.jpg", jpegImg)) {
+                    "CORDUROY PANTS.jpg", jpgImg)) {
                 LOG.debug("added image to database with name {}", "CORDUROY PANTS.jpg");
             }
             if (addImageToDatabase("src/main/resources/images/PLUSH PALAZZO PANTS.jpg",
-                    "PLUSH PALAZZO PANTS.jpg", jpegImg)) {
+                    "PLUSH PALAZZO PANTS.jpg", jpgImg)) {
                 LOG.debug("added image to database with name {}", "PLUSH PALAZZO PANTS.jpg");
             }
             if (addImageToDatabase("src/main/resources/images/ATHLETIC SHIRT WITH REFLECTIVE SLEEVE.jpg",
-                    "ATHLETIC SHIRT WITH REFLECTIVE SLEEVE.jpg", jpegImg)) {
+                    "ATHLETIC SHIRT WITH REFLECTIVE SLEEVE.jpg", jpgImg)) {
                 LOG.debug("added image to database with name {}", "ATHLETIC SHIRT WITH REFLECTIVE SLEEVE.jpg");
             }
         }
