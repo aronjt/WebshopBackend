@@ -11,6 +11,10 @@ import java.io.IOException;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
+
+/**
+ * Service for helping {@link ImageService}.
+ */
 @Service
 public class ImageService {
     private static final Logger LOG = LoggerFactory.getLogger(ImageService.class);
@@ -73,4 +77,5 @@ public class ImageService {
         }
         return outputStream.toByteArray();
     }
+
 }

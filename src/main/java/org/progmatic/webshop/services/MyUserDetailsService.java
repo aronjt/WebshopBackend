@@ -27,6 +27,9 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
 
+/**
+ * Service for helping {@link org.progmatic.webshop.controllers.UserController}. Implements {@link UserDetailsService}.
+ */
 @Service
 public class MyUserDetailsService implements UserDetailsService {
 
@@ -42,6 +45,12 @@ public class MyUserDetailsService implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     * Finds the user by username in the database.
+     * @param username is the username
+     * @return the user has been found
+     * @throws UsernameNotFoundException if something went wrong
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         LOG.info("User loaded by username");
@@ -50,6 +59,11 @@ public class MyUserDetailsService implements UserDetailsService {
                 .getSingleResult();
     }
 
+    /**
+     * Checks the user's existence in the database.
+     * @param username is the username
+     * @return true if the user is represented in the database, false otherwise
+     */
     @Transactional
     public boolean userExists(String username) {
         try {
@@ -65,6 +79,10 @@ public class MyUserDetailsService implements UserDetailsService {
         }
     }
 
+    /**
+     *
+     * @return all users represented in the database in a list
+     */
     @Transactional
     public ListResult<UserDto> listAllUsers() {
         List<User> users = em.createQuery("SELECT u FROM User u", User.class).getResultList();
@@ -76,6 +94,10 @@ public class MyUserDetailsService implements UserDetailsService {
         return usersDto;
     }
 
+    /**
+     * Saves a new user into the database.
+     * @param user is the user who will be saved
+     */
     @Transactional
     public void createUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -83,6 +105,10 @@ public class MyUserDetailsService implements UserDetailsService {
         LOG.info("User created, email: {}", user.getUsername());
     }
 
+    /**
+     * Gets the logged-in user from the {@link SecurityContextHolder}.
+     * @return the logged-in user as {@link User}
+     */
     public User getLoggedInUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
@@ -96,6 +122,11 @@ public class MyUserDetailsService implements UserDetailsService {
         return null;
     }
 
+    /**
+     * Gets the logged-in user through {@link MyUserDetailsService#getLoggedInUser()}, and create a
+     * {@link RegisterUserDto} from it.
+     * @return the logged-in user as {@link RegisterUserDto}
+     */
     @Transactional
     public RegisterUserDto getLoggedInRegisterDto() {
         User loggedInUser = getLoggedInUser();
@@ -108,12 +139,22 @@ public class MyUserDetailsService implements UserDetailsService {
         return null;
     }
 
+    /**
+     * Finds a user in the database with the given id.
+     * @param id is the user's id
+     * @return the user has been found, or null if no user has been found
+     */
     @Transactional
     public User getUser(long id) {
         LOG.info("User has given back");
         return em.find(User.class, id);
     }
 
+    /**
+     * Edits the logged-in user's data in the database.
+     * @param userDto contains the fields that should be edited
+     * @return a confirm {@link Message} about the editing process
+     */
     @Transactional
     public Feedback editUser(RegisterUserDto userDto) {
         User loggedInUser = em.find(User.class, getLoggedInUser().getId());
@@ -139,6 +180,10 @@ public class MyUserDetailsService implements UserDetailsService {
         return new Message(true, "Successfully changed");
     }
 
+    /**
+     *
+     * @return all orders that belong to the logged-in user, or a {@link Message} if no order has been found
+     */
     @Transactional
     public Feedback getUserOrders() {
         User loggedInUser = getLoggedInUser();
