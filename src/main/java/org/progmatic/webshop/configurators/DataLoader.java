@@ -402,12 +402,12 @@ public class DataLoader implements ApplicationRunner {
      * @return the list of purchased clothes
      */
     private List<PurchasedClothes> putClothesToCart(OnlineOrder order) {
-        /*Clothes cloth1 = clothesData.findByName("Regular Fit Crew-neck T-shirt");
-        Clothes cloth2 = clothesData.findByName("StraightTaperedJeans");*/
+        Clothes cloth1 = clothesData.findByName("Regular Fit Crew-neck T-shirt");
+        Clothes cloth2 = clothesData.findByName("Straight Tapered Jeans");
 
         List<PurchasedClothes> toBuy = new ArrayList<>();
 
-        /*PurchasedClothes buy1 = new PurchasedClothes();
+        PurchasedClothes buy1 = new PurchasedClothes();
         buy1.setClothes(cloth1);
         buy1.setQuantity(1);
         buy1.setSize(ClothDataHelper.SIZE_M);
@@ -422,19 +422,7 @@ public class DataLoader implements ApplicationRunner {
         toBuy.add(buy1);
         toBuy.add(buy2);
         pcData.save(buy1);
-        pcData.save(buy2);*/
-
-        List<Clothes> clothes = clothesData.findAll();
-        if (clothes.size() > 0) {
-            int index = (int)(Math.random() * clothes.size());
-            Clothes c = clothes.get(index);
-            PurchasedClothes pc = new PurchasedClothes();
-            pc.setClothes(c);
-            pc.setQuantity(1);
-            pc.setSize(ClothDataHelper.SIZE_M);
-            pc.setOnlineOrder(order);
-            toBuy.add(pc);
-        }
+        pcData.save(buy2);
 
         return toBuy;
     }
