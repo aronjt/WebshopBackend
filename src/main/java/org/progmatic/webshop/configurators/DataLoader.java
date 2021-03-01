@@ -261,6 +261,7 @@ public class DataLoader implements ApplicationRunner {
             Image regularFitTShirt = imageData.findByName("BASIC MEDIUM WEIGHT T-SHIRT.jpg");
             Image straightTaperedJeans = imageData.findByName("STRAIGHT TAPERED JEANS.jpg");
             Image ruffledHemRibTop = imageData.findByName("RUFFLED HEM RIB TOP.jpg");
+            Image overSizedSweatshirt = imageData.findByName("OVERSIZED SWEATSHIRT.jpg");
 
             createClothes("BASIC MEDIUM WEIGHT T-SHIRT", "REGULAR FIT T-SHIRT MADE WITH MERCERIZED FABRIC. ROUND RIB NECKLINE AND SHORT SLEEVES.", 17.90f,
                     ClothDataHelper.COLOR_BEIGE, shirt, male, regularFitTShirt);
@@ -268,8 +269,8 @@ public class DataLoader implements ApplicationRunner {
                     shirt, female, ruffledHemRibTop);
             createClothes("Progmatic", "Best Academy of the World!", 24.99f, ClothDataHelper.COLOR_WHITE,
                     shirt, unisex, unImg);
-            createClothes("Jackie", "Very comfy.", 29.99f, ClothDataHelper.COLOR_BLUE,
-                    pullover, male, maleImg);
+            createClothes("OVERSIZED SWEATSHIRT", "FULL CUT SWEATSHIRT WITH ROUND NECK AND LONG SLEEVES. RIBBED TRIM.", 39.90f, ClothDataHelper.COLOR_BLUE,
+                    pullover, male, overSizedSweatshirt);
             createClothes("Baby Doll", "Nice and soft.", 34.99f, ClothDataHelper.COLOR_PINK,
                     pullover, female, femaleImg);
             createClothes("Mommy Little Baby", "For every darling.", 24.99f, ClothDataHelper.COLOR_WHITE,
@@ -462,6 +463,10 @@ public class DataLoader implements ApplicationRunner {
             if (addImageToDatabase("src/main/resources/images/RUFFLED HEM RIB TOP.jpg",
                     "RUFFLED HEM RIB TOP.jpg", jpegImg)) {
                 LOG.debug("added image to database with name {}", "RUFFLED HEM RIB TOP");
+            }
+            if (addImageToDatabase("src/main/resources/images/OVERSIZED SWEATSHIRT.jpg",
+                    "OVERSIZED SWEATSHIRT.jpg", jpegImg)) {
+                LOG.debug("added image to database with name {}", "OVERSIZED SWEATSHIRT");
             }
         }
     }
