@@ -51,13 +51,17 @@ public class EmailSenderService {
 
     /**
      *
-     * @param messageType is
-     * @return
+     * @param messageType is the type of the message (see {@link EmailSenderHelper})
+     * @return an email with the given type found in the database
      */
     public Email setEmail(String messageType) {
         return emailData.findByMessageType(messageType);
     }
 
+    /**
+     *
+     * @return a Session prepared for sending the email
+     */
     @Transactional
     public Session prepareSession(
     ) {
@@ -82,6 +86,14 @@ public class EmailSenderService {
         return session;
     }
 
+    /**
+     *
+     * @param toUser is the user who will receive the email
+     * @param messageType is the type of the email
+     * @param confirmationToken is the token that is required for resetting password or account verification,
+     *                          and will be sent in the email
+     * @param valueOfUrl is the url of the link that will be sent in the email
+     */
     @Transactional
     public void prepareConfirmationEmail(User toUser, String messageType, ConfirmationToken confirmationToken, String valueOfUrl) {
 
@@ -114,9 +126,19 @@ public class EmailSenderService {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
-transportEmail(message);
+        transportEmail(message);
     }
 
+    /**
+     * Sets the email's body.
+     * @param toUser is the user who will receive the email
+     * @param email is the email that will be sent
+     * @param confirmationToken is the token that is required for resetting password or account verification,
+     *                          and will be sent in the email
+     * @param valueOfUrl is the url of the link that will be sent in the email
+     * @return the full text of the email
+     * @throws MessagingException if something went wrong
+     */
     public String getMessageTextWithConfirmationToken(User toUser, Email email, ConfirmationToken confirmationToken, String valueOfUrl) throws MessagingException {
         String text = "<p style=\"font-size:20px\">Hello " +
                 toUser.getFirstName() +
@@ -132,6 +154,10 @@ transportEmail(message);
         return text;
     }
 
+    /**
+     * Sends the email.
+     * @param message is the message that will be sent
+     */
     @Transactional
     public void transportEmail( MimeMessage message) {
 
@@ -148,45 +174,56 @@ transportEmail(message);
             transport.close();
         } catch (MessagingException e) {
             e.printStackTrace();
-        }}
-
-        @Transactional
-        public void prepareSuccesfulOrderEmail(OrderDto order, User loggedInUser,String messageType) {
-
-            ExtraData aData = adminData.findAdminDataById(EmailSenderHelper.ID);
-            fromPassword = aData.getSecret();
-            Email emailDataByMessageType = setEmail(messageType);
-
-            String toEmail = loggedInUser.getUsername();
-
-            String fromEmail = EmailSenderHelper.ADMIN_EMAIL_ADDRESS;
-            InternetAddress addressFrom = null;
-            try {
-                addressFrom = new InternetAddress(fromEmail);
-            } catch (AddressException e) {
-                e.printStackTrace();
-            }
-            MimeMessage message = new MimeMessage(prepareSession());
-
-
-            String subject = emailDataByMessageType.getSubject();
-            try {
-                message.setSender(addressFrom);
-                message.addRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
-                message.setSubject(subject);
-
-
-                message.setContent(
-                        "<h1>"+subject +"</h1>"+
-                        getMessageTextForOrder(loggedInUser,emailDataByMessageType),
-                        "text/html");
-            } catch (MessagingException e) {
-                e.printStackTrace();
-            }
-            transportEmail(message);
-
         }
+    }
 
+    /**
+     * Prepares an email to send one after a successful ordering
+     * @param order is the order that have been sent
+     * @param loggedInUser is the user who has sent the order
+     * @param messageType is the type of the message
+     */
+    @Transactional
+    public void prepareSuccesfulOrderEmail(OrderDto order, User loggedInUser,String messageType) {
+
+        ExtraData aData = adminData.findAdminDataById(EmailSenderHelper.ID);
+        fromPassword = aData.getSecret();
+        Email emailDataByMessageType = setEmail(messageType);
+
+        String toEmail = loggedInUser.getUsername();
+
+        String fromEmail = EmailSenderHelper.ADMIN_EMAIL_ADDRESS;
+        InternetAddress addressFrom = null;
+        try {
+            addressFrom = new InternetAddress(fromEmail);
+        } catch (AddressException e) {
+            e.printStackTrace();
+        }
+        MimeMessage message = new MimeMessage(prepareSession());
+
+        String subject = emailDataByMessageType.getSubject();
+        try {
+            message.setSender(addressFrom);
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
+            message.setSubject(subject);
+
+            message.setContent(
+                    "<h1>"+subject +"</h1>"+
+                            getMessageTextForOrder(loggedInUser,emailDataByMessageType),
+                        "text/html");
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+        transportEmail(message);
+    }
+
+    /**
+     * Sets the email body for orders.
+     * @param toUser is the user who will receive the email
+     * @param email is the email that will be sent
+     * @return the full text of the email
+     * @throws MessagingException if something went wrong
+     */
     public String getMessageTextForOrder(User toUser, Email email) throws MessagingException {
         String text = "<p style=\"font-size:20px\">Hello " +
                 toUser.getFirstName() +
@@ -199,5 +236,5 @@ transportEmail(message);
                 + "\">our website</a>.</p>";
         return text;
     }
-    }
 
+}
