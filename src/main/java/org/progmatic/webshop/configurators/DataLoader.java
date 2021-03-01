@@ -260,6 +260,9 @@ public class DataLoader implements ApplicationRunner {
             Image corduroyPants = imageData.findByName("CORDUROY PANTS.jpg");
             Image plushPalazzoPants = imageData.findByName("PLUSH PALAZZO PANTS.jpg");
             Image athleticShirt = imageData.findByName("ATHLETIC SHIRT WITH REFLECTIVE SLEEVE.jpg");
+            Image pocketTShirt = imageData.findByName("POCKET T-SHIRT PREMIUM.jpg");
+            Image buttonCrop = imageData.findByName("BUTTON CROP TOP.jpg");
+            Image rufflyFloralShirt = imageData.findByName("RUFFLY FLORAL SHIRT");
 
             createClothes("BASIC MEDIUM WEIGHT T-SHIRT", "REGULAR FIT T-SHIRT MADE WITH MERCERIZED FABRIC. ROUND RIB NECKLINE AND SHORT SLEEVES.", 17.99f,
                     ClothDataHelper.COLOR_BEIGE, shirt, male, regularFitTShirt);
@@ -279,6 +282,12 @@ public class DataLoader implements ApplicationRunner {
                     pants, female, corduroyPants);
             createClothes("ATHLETIC SHIRT WITH REFLECTIVE SLEEVE", "ROUND NECK SHORT SLEEVE T-SHIRT. CHEST POCKET WITH TEXT PRINT. REFLECTIVE DETAIL AT SIDES ON SLEEVES.", 17.99f,
                     ClothDataHelper.COLOR_WHITE, shirt, child, athleticShirt);
+            createClothes("POCKET T-SHIRT PREMIUM", "FULL CUT T-SHIRT WITH ROUND NECK AND LONG SLEEVES. CHEST PATCH POCKET.", 39.99f, ClothDataHelper.COLOR_WHITE,
+                    shirt, male, pocketTShirt);
+            createClothes("BUTTON CROP TOP", "STRAIGHT NECK CROP TOP WITH LONG SLEEVES. FRONT BUTTON DETAIL.", 19.99f, ClothDataHelper.COLOR_WHITE,
+                    shirt, female, buttonCrop);
+            createClothes("RUFFLY FLORAL SHIRT", "ROUND NECK LONG SLEEVE SHIRT. RUFFLY TRIM.", 12.99f, ClothDataHelper.COLOR_WHITE,
+                    shirt, child, rufflyFloralShirt);
         }
     }
 
@@ -480,6 +489,18 @@ public class DataLoader implements ApplicationRunner {
             if (addImageToDatabase("src/main/resources/images/ATHLETIC SHIRT WITH REFLECTIVE SLEEVE.jpg",
                     "ATHLETIC SHIRT WITH REFLECTIVE SLEEVE.jpg", jpgImg)) {
                 LOG.debug("added image to database with name {}", "ATHLETIC SHIRT WITH REFLECTIVE SLEEVE.jpg");
+            }
+            if (addImageToDatabase("src/main/resources/images/POCKET T-SHIRT PREMIUM.jpg",
+                    "POCKET T-SHIRT PREMIUM.jpg", jpgImg)) {
+                LOG.debug("added image to database with name {}", "POCKET T-SHIRT PREMIUM.jpg");
+            }
+            if (addImageToDatabase("src/main/resources/images/BUTTON CROP TOP.jpg",
+                    "BUTTON CROP TOP.jpg", jpgImg)) {
+                LOG.debug("added image to database with name {}", "BUTTON CROP TOP.jpg");
+            }
+            if (addImageToDatabase("src/main/resources/images/RUFFLY FLORAL SHIRT.jpg",
+                    "RUFFLY FLORAL SHIRT.jpg", jpgImg)) {
+                LOG.debug("added image to database with name {}", "RUFFLY FLORAL SHIRT.jpg");
             }
         }
     }
