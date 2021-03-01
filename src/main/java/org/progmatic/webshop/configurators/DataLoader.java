@@ -260,10 +260,11 @@ public class DataLoader implements ApplicationRunner {
             Image childImg = imageData.findByName(ClothDataHelper.GENDER_CHILD);
             Image regularFitTShirt = imageData.findByName("Regular Fit Crew-neck T-shirt.jpeg");
             Image straightTaperedJeans = imageData.findByName("StraightTaperedJeans.jpeg");
+            Image ruffledHemRibTop = imageData.findByName("RUFFLED HEM RIB TOP.jpg");
 
             createClothes("Regular Fit Crew-neck T-shirt", "Regular fit, Round Neck, Cotton 100%", 6.99f,
                     ClothDataHelper.COLOR_BEIGE, shirt, male, regularFitTShirt);
-            createClothes("Hello Kitty", "Cutest t-shirt of the world!", 14.99f, ClothDataHelper.COLOR_PINK,
+            createClothes("RUFFLED HEM RIB TOP", "ROUND NECK SLEEVELESS TOP. FLOUNCED HEM.", 17.90f, ClothDataHelper.COLOR_PINK,
                     shirt, female, femaleImg);
             createClothes("Progmatic", "Best Academy of the World!", 24.99f, ClothDataHelper.COLOR_WHITE,
                     shirt, unisex, unImg);
@@ -273,7 +274,7 @@ public class DataLoader implements ApplicationRunner {
                     pullover, female, femaleImg);
             createClothes("Mommy Little Baby", "For every darling.", 24.99f, ClothDataHelper.COLOR_WHITE,
                     pullover, child, childImg);
-            createClothes("Straight Tapered Jeans", "Straight fit jeans, washed effect, front zip and button closure.", 39.90f,
+            createClothes("STRAIGHT TAPERED JEANS", "STRAIGHT FIT JEANS. FIVE POCKETS. WASHED EFFECT. FRONT ZIP AND BUTTON CLOSURE.", 39.90f,
                     ClothDataHelper.COLOR_WHITE, pants, male, straightTaperedJeans);
             createClothes("Meow", "For ladies only!", 39.99f, ClothDataHelper.COLOR_PINK,
                     pants, female, femaleImg);
@@ -457,6 +458,10 @@ public class DataLoader implements ApplicationRunner {
             if (addImageToDatabase("src/main/resources/images/StraightTaperedJeans.jpg",
                     "StraightTaperedJeans.jpeg", jpegImg)) {
                 LOG.debug("added image to database with name {}", "StraightTaperedJeans");
+            }
+            if (addImageToDatabase("src/main/resources/images/RUFFLED HEM RIB TOP.jpg",
+                    "RUFFLED HEM RIB TOP.jpg", jpegImg)) {
+                LOG.debug("added image to database with name {}", "RUFFLED HEM RIB TOP.jpg");
             }
         }
     }
