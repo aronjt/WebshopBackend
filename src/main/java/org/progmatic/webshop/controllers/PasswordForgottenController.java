@@ -105,7 +105,6 @@ public class PasswordForgottenController {
         ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(userConfirmationToken);
 
         Message feedback = new Message();
-//       todo ellenőrizni a enabledate et
         if (token != null) {
             LOG.info("Token is not null");
             if (RegistrationService.checkTheDate(token.getEnableDate())) {

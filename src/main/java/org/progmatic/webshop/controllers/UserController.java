@@ -9,6 +9,7 @@ import org.progmatic.webshop.returnmodel.Message;
 import org.progmatic.webshop.returnmodel.Result;
 import org.progmatic.webshop.services.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -38,6 +39,7 @@ public class UserController {
      *     See {@link MyUserDetailsService#listAllUsers()} for more information.
      * @return a {@link ListResult} that contains all users
      */
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/users")
     public Feedback listAllUser(){
         return userService.listAllUsers();
@@ -49,6 +51,7 @@ public class UserController {
      * @param id is the user's id (in the database)
      * @return a {@link ListResult} that contains the single user
      */
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/users/{id}")
     public Feedback getUser(@PathVariable("id") long id) {
         ListResult<UserDto> userDtoList = new ListResult<>();

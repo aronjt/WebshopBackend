@@ -8,6 +8,7 @@ import org.progmatic.webshop.services.ImageService;
 import org.progmatic.webshop.services.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -43,6 +44,7 @@ public class ImageController {
      * @return a confirm {@link Message} about the uploading process
      * @throws IOException if something went wrong while uploading the image
      */
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping("/image")
     public Feedback uploadImage(@RequestParam("image") MultipartFile file) throws IOException {
         Image img = new Image(file.getOriginalFilename(),

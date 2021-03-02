@@ -25,7 +25,7 @@ public class OnlineOrder extends BaseEntity {
     @ManyToOne
     private User user;
 
-    @OneToMany
+    @OneToMany(mappedBy = "onlineOrder")
     private List<PurchasedClothes> purchasedClothesList;
 
     public OnlineOrder() {}
