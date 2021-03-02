@@ -23,7 +23,6 @@ public class ClothDto {
     private String color;
     private long imageId;
 
-
     /**
      * Works as dozer.
      * @param clothes is the cloth that will be transformed to {@link ClothDto}
