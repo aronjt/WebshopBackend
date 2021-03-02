@@ -389,19 +389,20 @@ public class DataLoader implements ApplicationRunner {
                 OnlineOrder order = new OnlineOrder();
                 order.setUser(user);
                 order.setFinish(false);
+                onlineOrderData.save(order);
+
                 List<PurchasedClothes> toBuy = putClothesToCart(order);
 
                 float sum = 0;
                 for (PurchasedClothes c : toBuy) {
-                    sum += c.getClothes().getPrice();
+                    sum += c.getClothes().getPrice() * c.getQuantity();
                 }
+
                 order.setTotalPrice(sum);
-
                 order.setPurchasedClothesList(toBuy);
-                onlineOrderData.save(order);
 
-                LOG.debug("online order added to database to user {}, purchased clothes' names are: {}, {}",
-                        user.getUsername(), toBuy.get(0).getClothes().getName(), toBuy.get(1).getClothes().getName());
+                LOG.debug("online order added to database to user {}, purchased clothes' names are: {}",
+                        user.getUsername(), toBuy.get(0).getClothes().getName());
             }
         }
     }
@@ -412,27 +413,18 @@ public class DataLoader implements ApplicationRunner {
      * @return the list of purchased clothes
      */
     private List<PurchasedClothes> putClothesToCart(OnlineOrder order) {
-        Clothes cloth1 = clothesData.findByName("BASIC MEDIUM WEIGHT T-SHIRT");
-        Clothes cloth2 = clothesData.findByName("Straight Tapered Jeans");
-
+        List<Clothes> clothes = clothesData.findAll();
         List<PurchasedClothes> toBuy = new ArrayList<>();
 
-        PurchasedClothes buy1 = new PurchasedClothes();
-        buy1.setClothes(cloth1);
-        buy1.setQuantity(1);
-        buy1.setSize(ClothDataHelper.SIZE_M);
-        buy1.setOnlineOrder(order);
-
-        PurchasedClothes buy2 = new PurchasedClothes();
-        buy2.setClothes(cloth2);
-        buy2.setQuantity(2);
-        buy2.setSize(ClothDataHelper.SIZE_XL);
-        buy2.setOnlineOrder(order);
-
-        toBuy.add(buy1);
-        toBuy.add(buy2);
-        pcData.save(buy1);
-        pcData.save(buy2);
+        if (clothes.size() > 0) {
+            PurchasedClothes p = new PurchasedClothes();
+            p.setClothes(clothes.get(0));
+            p.setSize(ClothDataHelper.SIZE_M);
+            p.setQuantity(2);
+            p.setOnlineOrder(order);
+            pcData.save(p);
+            toBuy.add(p);
+        }
 
         return toBuy;
     }

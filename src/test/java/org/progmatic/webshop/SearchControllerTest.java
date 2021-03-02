@@ -2,6 +2,7 @@ package org.progmatic.webshop;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.progmatic.webshop.helpers.ClothDataHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -43,6 +44,17 @@ class SearchControllerTest {
         String response = result.getResponse().getContentAsString();
         assertTrue(response.contains("true"));
         assertTrue(response.contains("type"));
+    }
+
+    @Test
+    void get_all_colors() throws Exception {
+        MvcResult result = mockMvc.perform(
+                get("/colors"))
+                .andExpect(status().isOk())
+                .andReturn();
+        String response = result.getResponse().getContentAsString();
+        assertTrue(response.contains("true"));
+        assertTrue(response.contains(ClothDataHelper.COLOR_PINK));
     }
 
 }

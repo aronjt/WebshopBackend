@@ -2,9 +2,9 @@ package org.progmatic.webshop.testconfig;
 
 import org.progmatic.webshop.configurators.DataLoader;
 import org.progmatic.webshop.dto.RegisterUserDto;
+import org.progmatic.webshop.helpers.ClothDataHelper;
 import org.progmatic.webshop.jpareps.*;
-import org.progmatic.webshop.model.ConfirmationToken;
-import org.progmatic.webshop.model.User;
+import org.progmatic.webshop.model.*;
 import org.progmatic.webshop.services.ImageService;
 import org.progmatic.webshop.testservice.TestService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,6 +35,7 @@ public class TestDataLoader extends DataLoader {
 
         addUserToDB();
         addTokensToUser();
+        addCloth();
     }
 
     @Transactional
@@ -77,6 +78,41 @@ public class TestDataLoader extends DataLoader {
             ConfirmationToken token = new ConfirmationToken(user);
             token.setEnableDate(enableDate);
             return token;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Transactional
+    public void addCloth() {
+        Type t = getTShirtType();
+        Gender g = getFemaleGender();
+
+        Clothes c = new Clothes();
+        c.setName("Little Bunny");
+        c.setDetails("Some description...");
+        c.setPrice(99.99f);
+        c.setColor(ClothDataHelper.COLOR_PINK);
+        c.setType(t);
+        c.setGender(g);
+        em.persist(c);
+    }
+
+    public Gender getFemaleGender() {
+        try {
+            return em.createQuery("SELECT g FROM Gender g WHERE g.gender = :tName", Gender.class)
+                    .setParameter("tName", ClothDataHelper.GENDER_FEMALE)
+                    .getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public Type getTShirtType() {
+        try {
+            return em.createQuery("SELECT t FROM Type t WHERE t.type = :tName", Type.class)
+                    .setParameter("tName", ClothDataHelper.TYPE_TSHIRT)
+                    .getSingleResult();
         } catch (Exception e) {
             return null;
         }
