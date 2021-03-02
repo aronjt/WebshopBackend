@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Controls our home! Beware!
  */
 @RestController
-public class HomeController {
+public class CsrfController {
 
     /**
      * Endpoint for getting CSRF-token.
