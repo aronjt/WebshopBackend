@@ -76,6 +76,7 @@ class UserControllerTest {
     }
 
     @Test
+    @WithUserDetails(TestService.ADMIN_EMAIL)
     void get_all_users() throws Exception {
         MvcResult result = mockMvc.perform(
                 get("/users"))
@@ -112,6 +113,7 @@ class UserControllerTest {
     }
 
     @Test
+    @WithUserDetails(TestService.ADMIN_EMAIL)
     void get_one_user() throws Exception {
         long id = service.getOneUser();
         if (id != 0) {
