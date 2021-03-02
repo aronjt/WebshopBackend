@@ -1,5 +1,6 @@
 package org.progmatic.webshop.controllers;
 
+import org.progmatic.webshop.dto.NewPasswordUserDto;
 import org.progmatic.webshop.jpareps.ConfirmationTokenData;
 import org.progmatic.webshop.jpareps.UserData;
 import org.progmatic.webshop.helpers.EmailSenderHelper;
@@ -93,15 +94,11 @@ public class PasswordForgottenController {
      * Endpoint for resetting the password and adding a new one.<br>
      *     After the user clicked on the link from the email, a new password can be set.
      * @param userConfirmationToken is a token that has been sent in the password reset email
-     * @param password is the new password to the account
-     * @param username is the user's name (email address)
      * @return a confirm {@link Message} about the new password setting process
      */
-    @PostMapping(value = "/confirm-password",
-    consumes ={MediaType.APPLICATION_FORM_URLENCODED_VALUE})
+    @PostMapping(value = "/confirm-password")
     public Feedback confirmUserAccount(@RequestParam("token") String userConfirmationToken,
-                                        String password,
-                                        String username) {
+                                        @RequestBody NewPasswordUserDto newPasswordUserDto ) {
         ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(userConfirmationToken);
 
         Message feedback = new Message();
@@ -110,9 +107,9 @@ public class PasswordForgottenController {
             LOG.info("Token is not null");
             if (RegistrationService.checkTheDate(token.getEnableDate())) {
                 LOG.info("Token is not expired");
-                if (username.equals(token.getUser().getUsername())) {
+                if (newPasswordUserDto.getUsername().equals(token.getUser().getUsername())) {
                     User user = userRepository.findByUsername(token.getUser().getUsername());
-                    user.setPassword(passwordEncoder.encode(password));
+                    user.setPassword(passwordEncoder.encode(newPasswordUserDto.getPassword()));
                     userRepository.save(user);
                     feedback.setSuccess(true);
                     feedback.setMessage("New password verified ");
