@@ -96,7 +96,7 @@ public class OrderController {
         Feedback orderFeedback = service.sendOrder(order);
 
         if (orderFeedback.isSuccess()){
-//            todo emailkuldes
+//
             sendEmail.prepareSuccesfulOrderEmail(order,uds.getLoggedInUser(), EmailSenderHelper.SHOPPING);
         }
 

@@ -118,13 +118,6 @@ public class ClothesService {
         return clothDtoList;
     }
 
-    //TODO
-    @Transactional
-    public long editCloth(long id) {
-        em.find(Clothes.class, id);
-        return id;
-    }
-
     /**
      *
      * @param id is the cloth's id

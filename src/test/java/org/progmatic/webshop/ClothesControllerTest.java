@@ -87,10 +87,7 @@ class ClothesControllerTest {
         }
     }
 
-    /* TODO
-        fix addNewCloth method in ClothesController
-            ClothDto does not contain TYPE and GENDER, but should (I think)
-     */
+
     @Test
     void add_new_clothes() throws Exception {
         String json = service.createJson(service.createClothes());
