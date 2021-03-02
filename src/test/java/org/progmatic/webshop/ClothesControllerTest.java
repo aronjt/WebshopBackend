@@ -65,13 +65,12 @@ class ClothesControllerTest {
     @Test
     void get_clothes_with_given_gender() throws Exception {
         MvcResult result = mockMvc.perform(
-                get("/clothes")
-                    .param("gender", ClothDataHelper.GENDER_FEMALE))
+                get("/clothes?gender=male"))
                 .andExpect(status().isOk())
                 .andReturn();
         String response = result.getResponse().getContentAsString();
+        System.out.println(response);
         assertTrue(response.contains("true"));
-        assertTrue(response.contains("name"));
     }
 
     @Test

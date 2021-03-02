@@ -33,7 +33,9 @@ public class ClothDto {
         details = clothes.getDetails();
         price = clothes.getPrice();
         color = clothes.getColor();
-        imageId = clothes.getImage().getId();
+        if (clothes.getImage() != null) {
+            imageId = clothes.getImage().getId();
+        }
     }
 
     public ClothDto() {
