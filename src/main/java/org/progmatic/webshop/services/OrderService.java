@@ -192,7 +192,8 @@ public class OrderService {
             Stock stock = em.createQuery("SELECT s FROM Stock s WHERE s.clothes = :cloth", Stock.class)
                     .setParameter("cloth", c)
                     .getSingleResult();
-            stock.setQuantity(stock.getQuantity() - quantity);
+            int newQuantity = Math.max(stock.getQuantity() - quantity, 0);
+            stock.setQuantity(newQuantity);
         } catch (NoResultException e) {
             LOG.warn("cloth with id {} not found in stock",
                     c.getId());
