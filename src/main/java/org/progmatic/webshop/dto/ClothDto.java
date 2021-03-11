@@ -21,6 +21,8 @@ public class ClothDto {
     private String details;
     private float price;
     private String color;
+    private String gender;
+    private String type;
     private long imageId;
 
     /**
@@ -33,6 +35,8 @@ public class ClothDto {
         details = clothes.getDetails();
         price = clothes.getPrice();
         color = clothes.getColor();
+        gender = clothes.getGender().getGender();
+        type = clothes.getType().getType();
         if (clothes.getImage() != null) {
             imageId = clothes.getImage().getId();
         }
@@ -79,6 +83,22 @@ public class ClothDto {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public long getImageId() {
