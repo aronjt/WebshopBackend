@@ -80,10 +80,11 @@ public class ClothesService {
      * @param clothDto contains the cloth's short data
      */
     @Transactional
-    public void addNewCloth(ClothDto clothDto) {
+    public Clothes addNewCloth(ClothDto clothDto) {
         Clothes c = new Clothes(clothDto);
         em.persist(c);
         LOG.info("one cloth added to database");
+        return c;
     }
 
     /**
@@ -125,7 +126,8 @@ public class ClothesService {
      */
     @Transactional
     public StockDto getStockLevel(long id) {
-        List<Stock> stock = em.createQuery("SELECT s FROM Stock s WHERE s.clothes.id = :id", Stock.class).setParameter("id", id).getResultList();
+        List<Stock> stock = em.createQuery("SELECT s FROM Stock s WHERE s.clothes.id = :id", Stock.class)
+                .setParameter("id", id).getResultList();
         StockDto stockDto = new StockDto();
         for (Stock stock1 : stock) {
             switch (stock1.getSize()) {
@@ -137,6 +139,23 @@ public class ClothesService {
         }
         LOG.info("Stock level has given back");
         return stockDto;
+    }
+
+    @Transactional
+    public void addClothToStock(Clothes c) {
+        List<Stock> stocks = em.createQuery("SELECT s FROM Stock s", Stock.class).getResultList();
+        boolean alreadyInStock = false;
+        for (Stock s : stocks) {
+            if (s.getClothes().equals(c)) {
+                alreadyInStock = true;
+                break;
+            }
+        }
+        if (!alreadyInStock) {
+            Stock s = new Stock();
+            s.setClothes(c);
+            em.persist(s);
+        }
     }
 
 

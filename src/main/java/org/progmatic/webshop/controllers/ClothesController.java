@@ -1,6 +1,7 @@
 package org.progmatic.webshop.controllers;
 
 import org.progmatic.webshop.dto.*;
+import org.progmatic.webshop.model.Clothes;
 import org.progmatic.webshop.returnmodel.Feedback;
 import org.progmatic.webshop.returnmodel.Message;
 import org.progmatic.webshop.returnmodel.ListResult;
@@ -49,7 +50,8 @@ public class ClothesController {
      */
     @PostMapping("/clothes")
     public Feedback addNewCloth(@RequestBody ClothDto cloth) {
-        clothesService.addNewCloth(cloth);
+        Clothes c = clothesService.addNewCloth(cloth);
+        clothesService.addClothToStock(c);
         return new Message(true, "Cloth successfully added");
     }
 
@@ -96,7 +98,7 @@ public class ClothesController {
      */
     @PutMapping("/clothes/{id}")
     public Feedback editCloth(@PathVariable("id") long id) {
-        return null;
+        return new Message("Soz.");
     }
 
     /**
