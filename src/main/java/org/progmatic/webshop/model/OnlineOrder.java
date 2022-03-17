@@ -41,6 +41,7 @@ public class OnlineOrder extends BaseEntity {
         isFinish = orderDto.isFinish();
         this.user = user;
         this.purchasedClothesList = purchasedClothesList;
+
     }
 
     public float getTotalPrice() {
